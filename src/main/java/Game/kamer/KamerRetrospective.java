@@ -24,6 +24,7 @@ public class KamerRetrospective extends Kamer {
         toonHint();
     }
 
+    @Override
     public void toonHint(){
         // 🎯 Hints voor vraag 0
         hintContext.voegHintToe(0, new HelpHint("Bij de Sprint Planning doet iedereen mee."));

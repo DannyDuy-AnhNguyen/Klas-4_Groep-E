@@ -4,18 +4,38 @@ import Game.antwoord.Antwoord;
 import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
+import Game.hint.FunnyHint;
+import Game.hint.HelpHint;
+import Game.hint.HintContext;
 
 import java.util.Scanner;
 
 public class KamerReview extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private final HintContext hintContext = new HintContext();
     private Status status;
 
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
         deur.setOpen(false);
         this.antwoordStrategie = antwoordStrategie;
+        toonHint();
+    }
+
+    @Override
+    public void toonHint(){
+        // 🎯 Hints voor vraag 0
+        hintContext.voegHintToe(0, new HelpHint("Het begint altijd na de sprint"));
+        hintContext.voegHintToe(0, new FunnyHint("Wordt je geinterviewed nadat je gesprint hebt voor de Olympische Spelen?"));
+
+        // 🎯 Hints voor vraag 1
+        hintContext.voegHintToe(1, new HelpHint("Na de sprint wordt er teruggekeken wat je afgelopen sprint gekeken wat je met je team gedaan hebt"));
+        hintContext.voegHintToe(1, new FunnyHint("Om goed te kunnen sprinten, moet je naar de feedback van Usain Bolt luisteren. Hij is een lightning bolt⚡"));
+
+        // 🎯 Hints voor vraag 2
+        hintContext.voegHintToe(2, new HelpHint("Wat is nuttig om bij een review te houden?"));
+        hintContext.voegHintToe(2, new FunnyHint("Sprint review geeft jou ook speciale superkracht om 'Transparant' te zijn!"));
     }
 
     @Override
@@ -71,6 +91,9 @@ public class KamerReview extends Kamer {
         } else {
             speler.voegMonsterToe("Sprint Confusie");
             System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
+
+            // 👇 Toon een hint
+            hintContext.toonWillekeurigeHint(huidigeVraag);
         }
     }
 

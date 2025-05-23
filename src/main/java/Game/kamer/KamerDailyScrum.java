@@ -23,7 +23,7 @@ public class KamerDailyScrum extends Kamer {
         toonHint();
     }
 
-//    @Override
+    @Override
     public void toonHint(){
         // 🎯 Hints voor vraag 0
         hintContext.voegHintToe(0, new HelpHint("Scrum kent maar een paar officiële rollen."));

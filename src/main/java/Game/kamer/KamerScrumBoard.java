@@ -4,6 +4,9 @@ import Game.antwoord.Antwoord;
 import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
+import Game.hint.FunnyHint;
+import Game.hint.HelpHint;
+import Game.hint.HintContext;
 
 import java.util.Scanner;
 
@@ -11,12 +14,25 @@ public class KamerScrumBoard extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
     private Status status;
+    private final HintContext hintContext = new HintContext();
     private boolean introGetoond = false;
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board");
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
+        toonHint();
+    }
+
+    @Override
+    public void toonHint(){
+        // 🎯 Hints voor vraag 0
+        hintContext.voegHintToe(0, new HelpHint("Scrum-proces begint altijd eerst met epic."));
+        hintContext.voegHintToe(0, new FunnyHint("Spiegeltje Spiegeltje aan de want, wie is het meest epic van het land?"));
+
+        // 🎯 Hints voor vraag 1
+        hintContext.voegHintToe(1, new HelpHint("Scrumboard begint met de product backlog en dan nog een backlog."));
+        hintContext.voegHintToe(1, new FunnyHint("Het product wordt geproduceerd en sprint sneller Usain Bolt. Gas gas gas!"));
     }
 
     @Override
@@ -67,6 +83,9 @@ public class KamerScrumBoard extends Kamer {
             System.out.println("\n❌ Fout, probeer opnieuw.");
             speler.voegMonsterToe("Scrum Verwarring");
             System.out.println("Monster 'Scrum Verwarring' verschijnt! Probeer het opnieuw.\n");
+
+            // 👇 Toon een hint
+            hintContext.toonWillekeurigeHint(huidigeVraag);
         }
     }
 

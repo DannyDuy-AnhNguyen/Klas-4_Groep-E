@@ -64,7 +64,7 @@ public abstract class Kamer {
     public abstract void verwerkResultaat(boolean antwoordstrategie, Speler speler);
 
     //Hint abstract method
-//    public abstract void toonHint();
+    public abstract void toonHint();
 
     public void updateScore(boolean correct, Speler speler) {
         if (correct) {

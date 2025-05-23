@@ -14,7 +14,7 @@ public class AntwoordFinaleTIA implements Antwoord {
                 return false;
             }
         } else if (vraagIndex == 1) {
-            if (antwoord.equals("a")) {
+            if (antwoord.equals("b")) {
                 System.out.println("Correct! Antwoord bij vraag 2 is juist.");
                 return true;
             } else {
