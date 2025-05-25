@@ -23,6 +23,7 @@ public class KamerDailyScrum extends Kamer {
         toonHint();
     }
 
+
     @Override
     public void toonHint(){
         // 🎯 Hints voor vraag 0
