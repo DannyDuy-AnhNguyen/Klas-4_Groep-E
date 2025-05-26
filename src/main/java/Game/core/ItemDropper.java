@@ -1,6 +1,7 @@
 package Game.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -10,24 +11,26 @@ public class ItemDropper {
     public static List<Item> genereerItemsVoorKamer() {
         List<Item> drops = new ArrayList<>();
 
-        // 40% kans op nutteloze rots
+        // Bepaal het totaal aantal items (0 t/m 3)
+        int totaalAantalItems = random.nextInt(4); // 0, 1, 2 of 3
+
+        // Voeg met 40% kans een nutteloze rots toe
+        List<Item> mogelijkeItems = new ArrayList<>();
         if (random.nextDouble() < 0.4) {
-            drops.add(new Item("Rots", "nutteloos"));
+            mogelijkeItems.add(new Item("Rots", "nutteloos"));
         }
 
-        // Kies 1-2 andere bruikbare items uit deze lijst
-        List<Item> mogelijkeItems = List.of(
+        // Voeg bruikbare items toe
+        List<Item> bruikbareItems = List.of(
                 new Item("Hint Scroll", "hint"),
-                new Item("Scrum Zwaard", "kill"),
-                new Item("Energie Snack", "boost"),
-                new Item("Magische Post-it", "unlock")
-        );
+                new Item("Scrum Zwaard", "kill")
+                );
+        mogelijkeItems.addAll(bruikbareItems);
 
-        int aantal = 1 + random.nextInt(2); // 1 of 2 extra items
-        List<Item> kopie = new ArrayList<>(mogelijkeItems);
-        for (int i = 0; i < aantal && !kopie.isEmpty(); i++) {
-            int index = random.nextInt(kopie.size());
-            drops.add(kopie.remove(index));
+        // Schud de lijst en selecteer maximaal [totaalAantalItems]
+        Collections.shuffle(mogelijkeItems);
+        for (int i = 0; i < Math.min(totaalAantalItems, mogelijkeItems.size()); i++) {
+            drops.add(mogelijkeItems.get(i));
         }
 
         return drops;

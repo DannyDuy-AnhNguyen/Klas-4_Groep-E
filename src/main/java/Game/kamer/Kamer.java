@@ -63,7 +63,7 @@ public abstract class Kamer {
     public abstract void verwerkOpdracht(int huidigeVraag);
     public abstract void verwerkResultaat(boolean antwoordstrategie, Speler speler);
 
-    //Hint abstract method
+    //Hint abstract method waar de hint objecten erin gezet wordt.
     public abstract void toonHint();
 
     public void updateScore(boolean correct, Speler speler) {

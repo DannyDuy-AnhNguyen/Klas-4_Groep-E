@@ -24,7 +24,7 @@ public class HintContext {
         gekozenHint.toon();
     }
 
-    // Alle hints verwijderen
+    // Alle hints verwijderen, misschien voor later als we het nodig hebben
     public void wisAlleHints() {
         hintMap.clear();
     }

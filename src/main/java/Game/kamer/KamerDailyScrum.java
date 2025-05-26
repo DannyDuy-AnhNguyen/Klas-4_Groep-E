@@ -15,14 +15,16 @@ public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
+    private Scanner scanner;
+
 
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
+        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }
-
 
     @Override
     public void toonHint(){
@@ -39,6 +41,16 @@ public class KamerDailyScrum extends Kamer {
     public void betreedIntro() {
         System.out.println("\nJe bent nu in de kamer: " + naam);
         deur.toonStatus();
+        System.out.println();
+
+        System.out.println("📦 Items in deze kamer:");
+        if (items.isEmpty()) {
+            System.out.println("- Geen items beschikbaar.");
+        } else {
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println((i + 1) + ") " + items.get(i));
+            }
+        }
         System.out.println();
     }
 
@@ -79,12 +91,6 @@ public class KamerDailyScrum extends Kamer {
                 setVoltooid();
                 deur.setOpen(true);
                 speler.voegVoltooideKamerToe(2);
-
-                // Update de status meteen na voltooiing
-                if (status != null) {
-                    status.update(speler);
-                }
-
                 System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             }
 
@@ -92,8 +98,14 @@ public class KamerDailyScrum extends Kamer {
             speler.voegMonsterToe("Verlies van Focus");
             System.out.println("\n❌ Fout! Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
 
-            // 👇 Toon een hint
-            hintContext.toonWillekeurigeHint(huidigeVraag);
+            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+
+            if(antwoord.equals("ja")){
+                // 👇 Toon een hint
+                hintContext.toonWillekeurigeHint(huidigeVraag);
+            }else
+
 
             System.out.println("Probeer het opnieuw.\n");
         }
@@ -108,8 +120,6 @@ public class KamerDailyScrum extends Kamer {
         }
 
         this.status = new Status(speler);
-        Scanner scanner = new Scanner(System.in);
-
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -128,10 +138,33 @@ public class KamerDailyScrum extends Kamer {
                     System.out.println("📦 Geen items in deze kamer.");
                 } else {
                     System.out.println("📦 Items in deze kamer:");
-                    for (Item item : items) {
-                        System.out.println("- " + item);
+                    for (int i = 0; i < items.size(); i++) {
+                        System.out.println((i + 1) + ") " + items.get(i));
                     }
                 }
+                System.out.println();
+            } else if (antwoord.startsWith("pak ")) {
+                String itemInput = antwoord.substring(4).trim();
+                Item gekozenItem = null;
+
+                try {
+                    int index = Integer.parseInt(itemInput) - 1;
+                    if (index >= 0 && index < items.size()) {
+                        gekozenItem = items.remove(index);
+                    } else {
+                        System.out.println("❌ Ongeldig itemnummer.");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    gekozenItem = neemItem(itemInput);
+                }
+
+                if (gekozenItem != null) {
+                    speler.voegItemToe(gekozenItem);
+                } else if (!itemInput.matches("\\d+")) {
+                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+                }
+
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
@@ -140,18 +173,14 @@ public class KamerDailyScrum extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help', 'pak [item]' of 'naar andere kamer'.\n");
             }
         }
 
-        // Voor het geval het while-loop eindigt zonder alle vragen beantwoord te hebben
         if (!isVoltooid()) {
             setVoltooid();
             deur.setOpen(true);
             speler.voegVoltooideKamerToe(2);
-            if (status != null) {
-                status.update(speler);
-            }
             System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
         }
     }

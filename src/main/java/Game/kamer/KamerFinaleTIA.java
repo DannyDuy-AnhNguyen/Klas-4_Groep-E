@@ -42,9 +42,19 @@ public class KamerFinaleTIA extends Kamer {
     }
 
     @Override
-    public void betreedIntro(){
+    public void betreedIntro() {
+        System.out.println("\nJe bent nu in de kamer: " + naam);
+        deur.toonStatus();
         System.out.println();
-        System.out.println("Je bent nu in de kamer: " + naam);
+
+        System.out.println("📦 Items in deze kamer:");
+        if (items.isEmpty()) {
+            System.out.println("- Geen items beschikbaar.");
+        } else {
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println((i + 1) + ") " + items.get(i));
+            }
+        }
         System.out.println();
     }
 
@@ -122,10 +132,33 @@ public class KamerFinaleTIA extends Kamer {
                     System.out.println("📦 Geen items in deze kamer.");
                 } else {
                     System.out.println("📦 Items in deze kamer:");
-                    for (Item item : items) {
-                        System.out.println("- " + item);
+                    for (int i = 0; i < items.size(); i++) {
+                        System.out.println((i + 1) + ") " + items.get(i));
                     }
                 }
+                System.out.println();
+            } else if (antwoord.startsWith("pak ")) {
+                String itemInput = antwoord.substring(4).trim();
+                Item gekozenItem = null;
+
+                try {
+                    int index = Integer.parseInt(itemInput) - 1;
+                    if (index >= 0 && index < items.size()) {
+                        gekozenItem = items.remove(index);
+                    } else {
+                        System.out.println("❌ Ongeldig itemnummer.");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    gekozenItem = neemItem(itemInput); // Zorg dat deze methode bestaat
+                }
+
+                if (gekozenItem != null) {
+                    speler.voegItemToe(gekozenItem);
+                } else if (!itemInput.matches("\\d+")) {
+                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+                }
+
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.");
@@ -137,7 +170,7 @@ public class KamerFinaleTIA extends Kamer {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(correct, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help', 'pak [item]' of 'naar andere kamer'.\n");
             }
         }
 

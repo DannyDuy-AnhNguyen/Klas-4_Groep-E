@@ -36,11 +36,21 @@ public class KamerPlanning extends Kamer {
 
     @Override
     public void betreedIntro() {
-        System.out.println();
-        System.out.println("Je bent nu in de kamer: " + naam);
+        System.out.println("\nJe bent nu in de kamer: " + naam);
         deur.toonStatus();
         System.out.println();
+
+        System.out.println("📦 Items in deze kamer:");
+        if (items.isEmpty()) {
+            System.out.println("- Geen items beschikbaar.");
+        } else {
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println((i + 1) + ") " + items.get(i));
+            }
+        }
+        System.out.println();
     }
+
 
     @Override
     public void verwerkFeedback(int huidigeVraag) {
@@ -69,6 +79,7 @@ public class KamerPlanning extends Kamer {
         }
     }
 
+    //             String antwoord = scanner.nextLine().trim().toLowerCase();
     @Override
     public void verwerkResultaat(boolean correct, Speler speler){
         if (correct) {
@@ -114,10 +125,33 @@ public class KamerPlanning extends Kamer {
                     System.out.println("📦 Geen items in deze kamer.");
                 } else {
                     System.out.println("📦 Items in deze kamer:");
-                    for (Item item : items) {
-                        System.out.println("- " + item);
+                    for (int i = 0; i < items.size(); i++) {
+                        System.out.println((i + 1) + ") " + items.get(i));
                     }
                 }
+                System.out.println();
+            } else if (antwoord.startsWith("pak ")) {
+                String itemInput = antwoord.substring(4).trim();
+                Item gekozenItem = null;
+
+                try {
+                    int index = Integer.parseInt(itemInput) - 1;
+                    if (index >= 0 && index < items.size()) {
+                        gekozenItem = items.remove(index);
+                    } else {
+                        System.out.println("❌ Ongeldig itemnummer.");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    gekozenItem = neemItem(itemInput);
+                }
+
+                if (gekozenItem != null) {
+                    speler.voegItemToe(gekozenItem);
+                } else if (!itemInput.matches("\\d+")) {
+                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+                }
+
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
@@ -126,14 +160,14 @@ public class KamerPlanning extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(2);
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override

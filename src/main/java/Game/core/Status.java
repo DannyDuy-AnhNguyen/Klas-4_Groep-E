@@ -10,10 +10,6 @@ public class Status implements Observer {
 
     @Override
     public void update(Speler speler) {
-        toonStatus();
-    }
-
-    public void toonStatus() {
         System.out.println("\n=== STATUS ===");
         System.out.println("Speler: " + speler.getNaam());
         System.out.println("Score: " + speler.getScore());

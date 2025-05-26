@@ -15,6 +15,7 @@ public class Speler {
     private List<Item> inventory = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
 
+
     // === Naam ===
     public void setNaam(String naam) {
         this.naam = naam;
@@ -152,8 +153,12 @@ public class Speler {
     }
 
     // === Observer pattern ===
+    //🙂Heb het in de if else gedaan, omdat het anders steeds de status steeds toevoegd,
+    //😭maar het heeft ook impact op de items.
     public void voegObserverToe(Observer observer) {
-        observers.add(observer);
+        if(observers.isEmpty()){
+            observers.add(observer);
+        }
     }
 
     public void notifyObservers() {
