@@ -5,4 +5,5 @@ public class ItemWapen extends Item{
         super(naam, effect);
     }
 
+
 }

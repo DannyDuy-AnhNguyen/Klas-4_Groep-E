@@ -19,7 +19,7 @@ public class ItemDropper {
         // Voeg met 40% kans een nutteloze rots toe
         List<Item> mogelijkeItems = new ArrayList<>();
         if (random.nextDouble() < 0.4) {
-            mogelijkeItems.add(new ItemRots("Rots", "nutteloos"));
+            mogelijkeItems.add(new ItemNutteloos("Rots", "nutteloos"));
         }
 
         // Voeg bruikbare items toe
