@@ -2,6 +2,7 @@ package Game.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Speler {
     private String naam;
@@ -9,12 +10,14 @@ public class Speler {
     private int score = 0;
     private int streak = 0;
     private int sleutels = 1;
+    private int levens = 3;
 
     private List<Integer> voltooideKamers = new ArrayList<>();
     private List<String> monsters = new ArrayList<>();
     private List<Item> inventory = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
 
+    private Scanner scanner = new Scanner(System.in);
 
     // === Naam ===
     public void setNaam(String naam) {
@@ -86,6 +89,52 @@ public class Speler {
         }
     }
 
+    // === Levenssysteem ===
+    public int getLevens() {
+        return levens;
+    }
+
+    public void verliesLeven() {
+        levens--;
+        System.out.println("💔 Je hebt een leven verloren! Resterende levens: " + levens);
+        notifyObservers();
+
+        if (levens <= 0) {
+            gameOver();
+        }
+    }
+
+    public void resetLevens() {
+        levens = 3;
+        notifyObservers();
+    }
+
+    private void gameOver() {
+        System.out.println("\n🛑 GAME OVER! Je hebt geen levens meer.");
+        System.out.print("Wil je opnieuw beginnen? (ja/nee): ");
+        String keuze = scanner.nextLine().trim().toLowerCase();
+
+        if (keuze.equals("ja")) {
+            resetSpel();
+        } else {
+            System.out.println("👋 Bedankt voor het spelen!");
+            System.exit(0);
+        }
+    }
+
+    private void resetSpel() {
+        score = 0;
+        streak = 0;
+        sleutels = 1;
+        levens = 3;
+        positie = 0;
+        voltooideKamers.clear();
+        monsters.clear();
+        inventory.clear();
+        System.out.println("🔄 Het spel is opnieuw gestart.");
+        notifyObservers();
+    }
+
     // === Voltooide kamers ===
     public void voegVoltooideKamerToe(int kamerIndex) {
         if (!voltooideKamers.contains(kamerIndex)) {
@@ -148,15 +197,22 @@ public class Speler {
         }
 
         System.out.println("🧪 Je gebruikt het item: " + item.getNaam() + " (" + item.getEffect() + ")");
+
+        // ➕ Effect uitvoeren
+        switch (item.getEffect()) {
+            case "kill" -> System.out.println("🗡️ Het Scrum Zwaard is gebruikt! Een monster is verslagen.");
+            case "hint" -> System.out.println("💡 Hint Scroll gebruikt! Misschien helpt het je straks.");
+            case "nutteloos" -> System.out.println("🪨 Je gebruikt de rots... niets gebeurt.");
+            default -> System.out.println("❓ Geen effect bekend voor dit item.");
+        }
+
         inventory.remove(item);
         notifyObservers();
     }
 
     // === Observer pattern ===
-    //🙂Heb het in de if else gedaan, omdat het anders steeds de status steeds toevoegd,
-    //😭maar het heeft ook impact op de items.
     public void voegObserverToe(Observer observer) {
-        if(observers.isEmpty()){
+        if (observers.isEmpty()) {
             observers.add(observer);
         }
     }

@@ -56,7 +56,7 @@ public abstract class Kamer {
     }
 
     // Abstracte methoden die concrete kamers moeten implementeren
-    public abstract void betreedIntro();
+    public abstract void betreedIntro(); // In plaats van KamerInfo() maken we gebruik van deze abstracte methode.
     public abstract void betreed(Speler speler);
     public abstract boolean verwerkAntwoord(String antwoord, Speler speler);
     public abstract void verwerkFeedback(int huidigeVraag);

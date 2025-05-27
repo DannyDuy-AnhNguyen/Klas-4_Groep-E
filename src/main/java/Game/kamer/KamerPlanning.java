@@ -7,6 +7,7 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.monster.Misverstand;
 
 import java.util.Scanner;
 
@@ -15,10 +16,13 @@ public class KamerPlanning extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
+    private Scanner scanner;
+    private Misverstand misverstand = new Misverstand();
 
     public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning");
         this.antwoordStrategie = antwoordStrategie;
+        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }
@@ -79,20 +83,33 @@ public class KamerPlanning extends Kamer {
         }
     }
 
-    //             String antwoord = scanner.nextLine().trim().toLowerCase();
     @Override
-    public void verwerkResultaat(boolean correct, Speler speler){
+    public void verwerkResultaat(boolean correct, Speler speler) {
         if (correct) {
             speler.verhoogScore(10);
             verwerkFeedback(huidigeVraag);
             huidigeVraag++;
             System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
         } else {
+            System.out.println("\n❌ Fout! Een monster verschijnt!");
             speler.voegMonsterToe("Misverstand");
-            System.out.println("\n❌ Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.\n");
 
-            // 👇 Toon een hint
-            hintContext.toonWillekeurigeHint(huidigeVraag);
+            Scanner input = new Scanner(System.in);
+            while (true) {
+                System.out.println("Wil je de monster nu bestrijden? (ja/nee)");
+                String keuze = input.nextLine().trim().toLowerCase();
+
+                if (keuze.equals("ja")) {
+                    bestrijdMonster(speler);
+                    break;
+                } else if (keuze.equals("nee")) {
+                    System.out.println("De monster zal je het hele spel blijven achtervolgen.");
+                    System.out.println("Je kunt hem op elk moment bestrijden met het commando 'bestrijdt monster'.\n");
+                    break;
+                } else {
+                    System.out.println("Ongeldige invoer, typ 'ja' of 'nee'.");
+                }
+            }
         }
     }
 
@@ -105,8 +122,6 @@ public class KamerPlanning extends Kamer {
         }
 
         this.status = new Status(speler);
-        Scanner scanner = new Scanner(System.in);
-
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -153,6 +168,10 @@ public class KamerPlanning extends Kamer {
                 }
 
                 System.out.println();
+            } else if (antwoord.startsWith("gebruik ")) {
+                String itemNaam = antwoord.substring(8).trim();
+                speler.gebruikItem(itemNaam);
+                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
@@ -160,7 +179,7 @@ public class KamerPlanning extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
@@ -169,6 +188,7 @@ public class KamerPlanning extends Kamer {
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
         speler.voegVoltooideKamerToe(1);
     }
+
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
@@ -182,5 +202,57 @@ public class KamerPlanning extends Kamer {
         System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
         System.out.println("Gebruik 'help' om deze hulp te zien.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
+    }
+
+    public void bestrijdMonster(Speler speler) {
+        System.out.println("Monster 'Misverstand' verschijnt! Deze monster achtervolgt jou de hele Spel tenzij je hem nu verslaat!");
+        System.out.println("Wil je de monster nu bestrijden? (ja/nee)");
+
+        String keuze = scanner.nextLine().trim().toLowerCase();
+
+        if (keuze.equals("ja")) {
+            int vragenTeBeantwoorden = 4;
+
+            System.out.println("Wil je een item gebruiken om het makkelijker te maken? (ja/nee)");
+            String itemKeuze = scanner.nextLine().trim().toLowerCase();
+
+            if (itemKeuze.equals("ja")) {
+                System.out.println("Welk item wil je gebruiken?");
+                String itemNaam = scanner.nextLine().trim();
+
+                boolean gebruikt = true;
+                speler.gebruikItem(itemNaam);
+                if (gebruikt) {
+                    System.out.println("Je hebt het item '" + itemNaam + "' gebruikt.");
+                    vragenTeBeantwoorden--;
+                } else {
+                    System.out.println("Dat item heb je niet of kan niet gebruikt worden.");
+                }
+            }
+
+            for (int i = 0; i < vragenTeBeantwoorden; i++) {
+                System.out.println("Monster vraag " + (i + 1) + ": [vul hier een echte vraag in]");
+                String antwoord = scanner.nextLine().trim();
+
+                // Simpele check, pas aan naar eigen logica
+                if (!antwoord.equalsIgnoreCase("correct")) {
+                    speler.verliesLeven();
+                    System.out.println("Fout antwoord! Je verliest een leven. Levens over: " + speler.getLevens());
+                    if (speler.getLevens() <= 0) {
+                        System.out.println("Game Over!");
+                        // Hier kun je exit doen of iets anders
+                        break;
+                    }
+                } else {
+                    System.out.println("Goed antwoord!");
+                }
+            }
+
+            System.out.println("Je hebt de monster verslagen!");
+            speler.verwijderMonster("Misverstand");
+
+        } else {
+            System.out.println("De monster blijft je achtervolgen! Je kunt hem later bestrijden met het commando 'bestrijd monster'.");
+        }
     }
 }

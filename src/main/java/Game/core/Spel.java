@@ -13,6 +13,7 @@ public class Spel {
     private Scanner scanner;
     private Status status;
     private KamerFactory kamerFactory;
+    private Kamer huidigeKamer = null;
 
     public Spel() {
         this.scanner = new Scanner(System.in);
@@ -39,7 +40,10 @@ public class Spel {
         System.out.println();
 
         while (true) {
-            toonKamerOpties();
+            if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
+                toonKamerOpties();
+            }
+
             System.out.print("> ");
             String input = scanner.nextLine().trim().toLowerCase();
 
@@ -57,11 +61,21 @@ public class Spel {
             } else if (input.startsWith("gebruik ")) {
                 speler.gebruikItem(input.substring(8).trim());
             } else if (input.startsWith("ga naar kamer")) {
-                verwerkKamerCommando(input);
+                verwerkKamerCommando(input); // => stelt ook huidigeKamer in
+            } else if (huidigeKamer != null && !huidigeKamer.isVoltooid()) {
+                // 👉 Stuur het antwoord door naar de kamer zelf
+                huidigeKamer.verwerkAntwoord(input, speler);
+
+                if (huidigeKamer.isVoltooid()) {
+                    System.out.println("✅ Deze kamer is voltooid!");
+                    controleerEnStartFinale();
+                    huidigeKamer = null;
+                }
             } else {
-                System.out.println("Onbekend commando. Probeer opnieuw.");
+                System.out.println("❌ Onbekend commando. Gebruik: ga naar kamer X");
             }
         }
+
     }
 
     private void verwerkKamerCommando(String input) {
@@ -70,7 +84,7 @@ public class Spel {
             Kamer gekozenKamer = null;
 
             try {
-                int nummer = Integer.parseInt(argument) - 1;
+                int nummer = Integer.parseInt(argument.trim()) - 1;
                 if (nummer >= 0 && nummer < kamers.size()) {
                     gekozenKamer = kamers.get(nummer);
                 }
@@ -89,6 +103,7 @@ public class Spel {
             }
 
             if (!gekozenKamer.isVoltooid()) {
+//                huidigeKamer = gekozenKamer;
                 gekozenKamer.betreed(speler);
                 if (gekozenKamer.isVoltooid()) {
                     System.out.println("✅ Deze kamer is voltooid!");
@@ -218,8 +233,6 @@ public class Spel {
                         "　／￣|　　 |　|　|\n" +
                         "　| (￣ヽ＿_ヽ_)__)\n" +
                         "　＼二つ\n";
-
-
 
         System.out.println(art);
         System.out.println("");

@@ -15,10 +15,12 @@ public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
+    private Scanner scanner;
 
     public KamerFinaleTIA(Antwoord antwoordStrategie) {
         super("Finale TIA Kamer – Waarom Scrum?");
         this.antwoordStrategie = antwoordStrategie;
+        this.scanner = new Scanner(System.in);
         toonHint();
     }
 
@@ -85,7 +87,7 @@ public class KamerFinaleTIA extends Kamer {
             System.out.println("c) 2001");
             System.out.println("d) 2010");
         } else if (huidigeVraag == 2) {
-            System.out.println("3. Is Scrum's de afkorting van Scrumario?");
+            System.out.println("3. Is Scrum Scrumario?");
             System.out.println("a) Ja");
             System.out.println("b) Ja");
             System.out.println("c) Ja");
@@ -105,18 +107,28 @@ public class KamerFinaleTIA extends Kamer {
         } else {
             System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
 
-            // 👇 Toon een hint
-            hintContext.toonWillekeurigeHint(huidigeVraag);
+            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+
+            if(antwoord.equals("ja")){
+                // 👇 Toon een hint
+                hintContext.toonWillekeurigeHint(huidigeVraag);
+            }
         }
     }
 
     @Override
     public void betreed(Speler speler) {
-        this.status = new Status(speler);
-        Scanner scanner = new Scanner(System.in);
+        if (!deur.isOpen()) {
+            System.out.println("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
+            deur.toonStatus();
+            return;
+        }
 
-        while (huidigeVraag < 4) {
-            betreedIntro();
+        this.status = new Status(speler);
+        betreedIntro();
+
+        while (huidigeVraag < 2) {
             verwerkOpdracht(huidigeVraag);
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -150,7 +162,7 @@ public class KamerFinaleTIA extends Kamer {
                         continue;
                     }
                 } catch (NumberFormatException e) {
-                    gekozenItem = neemItem(itemInput); // Zorg dat deze methode bestaat
+                    gekozenItem = neemItem(itemInput);
                 }
 
                 if (gekozenItem != null) {
@@ -160,22 +172,25 @@ public class KamerFinaleTIA extends Kamer {
                 }
 
                 System.out.println();
+            } else if (antwoord.startsWith("gebruik ")) {
+                String itemNaam = antwoord.substring(8).trim();
+                speler.gebruikItem(itemNaam);
+                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je verlaat deze kamer.");
+                System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (huidigeVraag == 3 && verwerkAntwoordOpenVraag(antwoord)) {
-                huidigeVraag++;
-                System.out.println("Je hebt de open vraag goed beantwoord!\n");
             } else if (antwoord.matches("[a-d]")) {
-                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                verwerkResultaat(correct, speler);
+                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help', 'pak [item]' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Gefeliciteerd! Je hebt alle vragen goed beantwoord en de laatste kamer voltooid.");
         setVoltooid();
+        deur.setOpen(true);
+        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override

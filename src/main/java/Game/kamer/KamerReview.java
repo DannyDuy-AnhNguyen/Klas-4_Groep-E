@@ -15,11 +15,13 @@ public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
+    private Scanner scanner;
 
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
         deur.setOpen(false);
         this.antwoordStrategie = antwoordStrategie;
+        this.scanner = new Scanner(System.in);
         toonHint();
     }
 
@@ -101,8 +103,13 @@ public class KamerReview extends Kamer {
             speler.voegMonsterToe("Sprint Confusie");
             System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
 
-            // 👇 Toon een hint
-            hintContext.toonWillekeurigeHint(huidigeVraag);
+            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+
+            if(antwoord.equals("ja")){
+                // 👇 Toon een hint
+                hintContext.toonWillekeurigeHint(huidigeVraag);
+            }
         }
     }
     @Override
@@ -114,11 +121,9 @@ public class KamerReview extends Kamer {
         }
 
         this.status = new Status(speler);
-        Scanner scanner = new Scanner(System.in);
-
         betreedIntro();
 
-        while (huidigeVraag < 3) {
+        while (huidigeVraag < 2) {
             verwerkOpdracht(huidigeVraag);
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -152,7 +157,7 @@ public class KamerReview extends Kamer {
                         continue;
                     }
                 } catch (NumberFormatException e) {
-                    gekozenItem = neemItem(itemInput); // Zorg dat deze methode bestaat
+                    gekozenItem = neemItem(itemInput);
                 }
 
                 if (gekozenItem != null) {
@@ -162,6 +167,10 @@ public class KamerReview extends Kamer {
                 }
 
                 System.out.println();
+            } else if (antwoord.startsWith("gebruik ")) {
+                String itemNaam = antwoord.substring(8).trim();
+                speler.gebruikItem(itemNaam);
+                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
@@ -169,14 +178,14 @@ public class KamerReview extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help', 'check', 'pak [item]' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(4); // Pas nummer aan per kamer
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override

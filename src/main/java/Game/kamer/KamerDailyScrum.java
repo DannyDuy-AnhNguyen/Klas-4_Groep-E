@@ -104,8 +104,7 @@ public class KamerDailyScrum extends Kamer {
             if(antwoord.equals("ja")){
                 // 👇 Toon een hint
                 hintContext.toonWillekeurigeHint(huidigeVraag);
-            }else
-
+            }
 
             System.out.println("Probeer het opnieuw.\n");
         }
@@ -166,6 +165,10 @@ public class KamerDailyScrum extends Kamer {
                 }
 
                 System.out.println();
+            } else if (antwoord.startsWith("gebruik ")) {
+                String itemNaam = antwoord.substring(8).trim();
+                speler.gebruikItem(itemNaam);
+                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
@@ -173,16 +176,14 @@ public class KamerDailyScrum extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help', 'pak [item]' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        if (!isVoltooid()) {
-            setVoltooid();
-            deur.setOpen(true);
-            speler.voegVoltooideKamerToe(2);
-            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        }
+        setVoltooid();
+        deur.setOpen(true);
+        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override

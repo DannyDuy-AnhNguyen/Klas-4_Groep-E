@@ -16,10 +16,12 @@ public class KamerRetrospective extends Kamer {
     private Status status;
     private final HintContext hintContext = new HintContext();
     private boolean introGetoond = false;
+    private Scanner scanner;
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
+        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }
@@ -87,11 +89,17 @@ public class KamerRetrospective extends Kamer {
             speler.voegMonsterToe("Blame Game");
             System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
 
-            // 👇 Toon een hint
-            hintContext.toonWillekeurigeHint(huidigeVraag);
+            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+
+            if(antwoord.equals("ja")){
+                // 👇 Toon een hint
+                hintContext.toonWillekeurigeHint(huidigeVraag);
+            }
+
+            System.out.println("Probeer het opnieuw.\n");
         }
     }
-
     @Override
     public void betreed(Speler speler) {
         if (!deur.isOpen()) {
@@ -101,8 +109,6 @@ public class KamerRetrospective extends Kamer {
         }
 
         this.status = new Status(speler);
-        Scanner scanner = new Scanner(System.in);
-
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -149,6 +155,10 @@ public class KamerRetrospective extends Kamer {
                 }
 
                 System.out.println();
+            } else if (antwoord.startsWith("gebruik ")) {
+                String itemNaam = antwoord.substring(8).trim();
+                speler.gebruikItem(itemNaam);
+                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
@@ -156,14 +166,14 @@ public class KamerRetrospective extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(3); // Pas aan indien nodig
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override

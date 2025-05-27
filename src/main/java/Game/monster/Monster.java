@@ -2,12 +2,12 @@ package Game.monster;
 
 import Game.core.Item;
 
-public class Monster implements MonsterType {
-    private final String naam;
-    private final String beschrijving;
-    private final String vraag;
-    private final String juistAntwoord;
-    private boolean verslagen;
+public abstract class Monster implements MonsterType {
+    protected final String naam;
+    protected final String beschrijving;
+    protected final String vraag;
+    protected final String juistAntwoord;
+    protected boolean verslagen;
 
     public Monster(String naam, String beschrijving, String vraag, String juistAntwoord) {
         this.naam = naam;

@@ -15,11 +15,13 @@ public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
     private final HintContext hintContext = new HintContext();
-    private boolean introGetoond = false;
+    private Scanner scanner;
+
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board");
         this.antwoordStrategie = antwoordStrategie;
+        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }
@@ -89,8 +91,13 @@ public class KamerScrumBoard extends Kamer {
             speler.voegMonsterToe("Scrum Verwarring");
             System.out.println("Monster 'Scrum Verwarring' verschijnt! Probeer het opnieuw.\n");
 
-            // 👇 Toon een hint
-            hintContext.toonWillekeurigeHint(huidigeVraag);
+            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+
+            if(antwoord.equals("ja")){
+                // 👇 Toon een hint
+                hintContext.toonWillekeurigeHint(huidigeVraag);
+            }
         }
     }
 
@@ -103,8 +110,6 @@ public class KamerScrumBoard extends Kamer {
         }
 
         this.status = new Status(speler);
-        Scanner scanner = new Scanner(System.in);
-
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -141,7 +146,7 @@ public class KamerScrumBoard extends Kamer {
                         continue;
                     }
                 } catch (NumberFormatException e) {
-                    gekozenItem = neemItem(itemInput); // Zorg dat je deze methode correct implementeert
+                    gekozenItem = neemItem(itemInput);
                 }
 
                 if (gekozenItem != null) {
@@ -149,6 +154,11 @@ public class KamerScrumBoard extends Kamer {
                 } else if (!itemInput.matches("\\d+")) {
                     System.out.println("❌ Dat item is niet gevonden in deze kamer.");
                 }
+
+                System.out.println();
+            } else if (antwoord.startsWith("gebruik ")) {
+                String itemNaam = antwoord.substring(8).trim();
+                speler.gebruikItem(itemNaam);
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
@@ -157,14 +167,14 @@ public class KamerScrumBoard extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help', 'check', 'pak [item]' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(2);
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override
