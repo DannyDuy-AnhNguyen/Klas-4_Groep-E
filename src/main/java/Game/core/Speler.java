@@ -185,7 +185,7 @@ public class Speler {
         return inventory.stream().anyMatch(i -> i.getNaam().equalsIgnoreCase(naam));
     }
 
-    public void gebruikItem(String naam) {
+    public boolean gebruikItem(String naam) {
         Item item = inventory.stream()
                 .filter(i -> i.getNaam().equalsIgnoreCase(naam))
                 .findFirst()
@@ -193,7 +193,7 @@ public class Speler {
 
         if (item == null) {
             System.out.println("❌ Je hebt het item '" + naam + "' niet.");
-            return;
+            return false;
         }
 
         System.out.println("🧪 Je gebruikt het item: " + item.getNaam() + " (" + item.getEffect() + ")");
@@ -203,12 +203,15 @@ public class Speler {
             case "kill" -> System.out.println("🗡️ Het Scrum Zwaard is gebruikt! Een monster is verslagen.");
             case "hint" -> System.out.println("💡 Hint Scroll gebruikt! Misschien helpt het je straks.");
             case "nutteloos" -> System.out.println("🪨 Je gebruikt de rots... niets gebeurt.");
+            case "halveer" -> System.out.println("🪓 De Splitter is gebruikt! Minder vragen om te beantwoorden.");
             default -> System.out.println("❓ Geen effect bekend voor dit item.");
         }
 
         inventory.remove(item);
         notifyObservers();
+        return true;
     }
+
 
     // === Observer pattern ===
     public void voegObserverToe(Observer observer) {

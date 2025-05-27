@@ -1,10 +1,18 @@
 package Game;
 
-import Game.core.Spel;
+import Game.core.GameEngine;
+import Game.core.RoomManager;
+import Game.core.Speler;
+import Game.core.UserInterface;
+import Game.kamer.KamerFactory;
 
 public class Main {
     public static void main(String[] args) {
-        Spel spel = new Spel();
-        spel.start();
+        Speler speler = new Speler();
+        UserInterface ui = new UserInterface();
+        RoomManager roomManager = new RoomManager(new KamerFactory());
+        GameEngine engine = new GameEngine(speler, ui, roomManager);
+
+        engine.startGame();
     }
 }

@@ -15,13 +15,11 @@ public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
-    private Scanner scanner;
 
 
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
-        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }

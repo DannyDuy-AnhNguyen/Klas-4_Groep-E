@@ -6,16 +6,19 @@ import Game.core.Speler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public abstract class Kamer {
     protected String naam;
     protected boolean voltooid = false;
     protected Deur deur;
     protected List<Item> items = new ArrayList<>();
+    protected Scanner scanner;
 
     public Kamer(String naam) {
         this.naam = naam;
         this.deur = new Deur();
+        this.scanner = new Scanner(System.in);
         deur.setOpen(true);
     }
 

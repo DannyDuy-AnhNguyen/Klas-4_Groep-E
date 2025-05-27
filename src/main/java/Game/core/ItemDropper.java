@@ -23,8 +23,9 @@ public class ItemDropper {
         // Voeg bruikbare items toe
         List<Item> bruikbareItems = List.of(
                 new Item("Hint Scroll", "hint"),
-                new Item("Scrum Zwaard", "kill")
-                );
+                new Item("Scrum Zwaard", "kill"),
+                new Item("Splitter", "halveer")
+        );
         mogelijkeItems.addAll(bruikbareItems);
 
         // Schud de lijst en selecteer maximaal [totaalAantalItems]

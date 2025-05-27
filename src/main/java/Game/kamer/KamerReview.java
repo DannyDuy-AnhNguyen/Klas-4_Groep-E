@@ -15,13 +15,11 @@ public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
-    private Scanner scanner;
 
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
         deur.setOpen(false);
         this.antwoordStrategie = antwoordStrategie;
-        this.scanner = new Scanner(System.in);
         toonHint();
     }
 

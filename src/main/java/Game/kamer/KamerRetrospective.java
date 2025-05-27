@@ -16,12 +16,10 @@ public class KamerRetrospective extends Kamer {
     private Status status;
     private final HintContext hintContext = new HintContext();
     private boolean introGetoond = false;
-    private Scanner scanner;
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
-        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }

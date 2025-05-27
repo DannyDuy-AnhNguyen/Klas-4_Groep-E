@@ -15,12 +15,10 @@ public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
-    private Scanner scanner;
 
     public KamerFinaleTIA(Antwoord antwoordStrategie) {
         super("Finale TIA Kamer – Waarom Scrum?");
         this.antwoordStrategie = antwoordStrategie;
-        this.scanner = new Scanner(System.in);
         toonHint();
     }
 

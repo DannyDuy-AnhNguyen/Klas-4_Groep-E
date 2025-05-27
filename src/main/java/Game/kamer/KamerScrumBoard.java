@@ -15,13 +15,11 @@ public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
     private final HintContext hintContext = new HintContext();
-    private Scanner scanner;
 
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board");
         this.antwoordStrategie = antwoordStrategie;
-        this.scanner = new Scanner(System.in);
         deur.setOpen(false);
         toonHint();
     }
