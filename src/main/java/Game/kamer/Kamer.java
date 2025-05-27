@@ -44,9 +44,10 @@ public abstract class Kamer {
         return items;
     }
 
-    public void voegItemToe(Item item) {
-        items.add(item);
-    }
+//    public void voegItemToe(Item item) {
+//        System.out.println("Items😏: ");
+//        items.add(item);
+//    }
 
     public Item neemItem(String naam) {
         for (Item i : items) {

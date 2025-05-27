@@ -7,6 +7,7 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.monster.ScrumVerwarring;
 
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
     private final HintContext hintContext = new HintContext();
+    private final ScrumVerwarring scrumVerwarring = new ScrumVerwarring();
 
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
@@ -89,13 +91,16 @@ public class KamerScrumBoard extends Kamer {
             speler.voegMonsterToe("Scrum Verwarring");
             System.out.println("Monster 'Scrum Verwarring' verschijnt! Probeer het opnieuw.\n");
 
-            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
-            String antwoord = scanner.nextLine().trim().toLowerCase();
+            // Start de monster strijd
+            bestrijdMonster(speler, scrumVerwarring);
 
-            if(antwoord.equals("ja")){
-                // 👇 Toon een hint
-                hintContext.toonWillekeurigeHint(huidigeVraag);
-            }
+//            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
+//            String antwoord = scanner.nextLine().trim().toLowerCase();
+//
+//            if(antwoord.equals("ja")){
+//                // 👇 Toon een hint
+//                hintContext.toonWillekeurigeHint(huidigeVraag);
+//            }
         }
     }
 
@@ -188,7 +193,7 @@ public class KamerScrumBoard extends Kamer {
         System.out.println("Gebruik 'check' om de items in de kamer te bekijken.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
-    public void bestrijdMonster(Speler speler) {
+    public void bestrijdMonster(Speler speler, ScrumVerwarring monster) {
         System.out.println("Je bent in gevecht met het monster 'Sprint Confusie'!");
         System.out.println("Typ 'vecht' om het monster te bestrijden of 'vlucht' om terug te keren.");
 

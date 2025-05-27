@@ -7,6 +7,7 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.monster.SprintConfusie;
 
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
+    private final SprintConfusie sprintConfusie = new SprintConfusie();
 
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
@@ -102,7 +104,7 @@ public class KamerReview extends Kamer {
             System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
 
             // Start de monster strijd
-            bestrijdMonster(speler);
+            bestrijdMonster(speler, sprintConfusie);
         }
     }
 
@@ -196,7 +198,7 @@ public class KamerReview extends Kamer {
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
 
-    public void bestrijdMonster(Speler speler) {
+    public void bestrijdMonster(Speler speler, SprintConfusie monster) {
         System.out.println("Je bent in gevecht met het monster 'Sprint Confusie'!");
         System.out.println("Typ 'vecht' om het monster te bestrijden of 'vlucht' om terug te keren.");
 
