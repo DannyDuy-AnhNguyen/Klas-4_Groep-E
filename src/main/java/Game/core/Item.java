@@ -1,8 +1,8 @@
 package Game.core;
 
-public class Item {
-    private String naam;
-    private String effect; // Bijvoorbeeld: "hint", "kill", "nutteloos"
+abstract public class Item {
+    protected String naam;
+    protected String effect; // Bijvoorbeeld: "hint", "kill", "nutteloos"
 
     //Wordt ook in constructor van de sub klasse opgeroepen.
     public Item(String naam, String effect) {
@@ -10,12 +10,10 @@ public class Item {
         this.effect = effect;
     }
 
-    //⚠️MAINTANCE: Abstracte methode voor de sub klasses
-    public String getNaam() {
+    public String getNaam(){
         return naam;
     }
 
-    //⚠️MAINTANCE: Abstracte methode voor de sub klasses
     public String getEffect() {
         return effect;
     }

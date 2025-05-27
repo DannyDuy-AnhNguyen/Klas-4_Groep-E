@@ -19,14 +19,14 @@ public class ItemDropper {
         // Voeg met 40% kans een nutteloze rots toe
         List<Item> mogelijkeItems = new ArrayList<>();
         if (random.nextDouble() < 0.4) {
-            mogelijkeItems.add(new Item("Rots", "nutteloos"));
+            mogelijkeItems.add(new ItemRots("Rots", "nutteloos"));
         }
 
         // Voeg bruikbare items toe
         List<Item> bruikbareItems = List.of(
-                new Item("Hint Scroll", "hint"),
-                new Item("Scrum Zwaard", "kill"),
-                new Item("Splitter", "halveer")
+                new ItemHint("Hint Scroll", "hint"),
+                new ItemWapen("Scrum Zwaard", "kill"),
+                new ItemSplitter("Splitter", "halveer")
         );
         mogelijkeItems.addAll(bruikbareItems);
 
