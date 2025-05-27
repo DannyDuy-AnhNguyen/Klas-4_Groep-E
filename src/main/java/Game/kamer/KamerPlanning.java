@@ -105,25 +105,25 @@ public class KamerPlanning extends Kamer {
             verwerkOpdracht(huidigeVraag);
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            switch (antwoord) {
-                case "help" -> toonHelp();
-                case "status" -> status.update(speler);
-                case "check" -> toonItems();
-                case "naar andere kamer" -> {
-                    System.out.println("Je verlaat deze kamer.\n");
-                    return;
-                }
-                default -> {
-                    if (antwoord.startsWith("pak ")) {
-                        verwerkPak(antwoord.substring(4).trim(), speler);
-                    } else if (antwoord.startsWith("gebruik ")) {
-                        speler.gebruikItem(antwoord.substring(8).trim());
-                    } else if (antwoord.matches("[a-d]")) {
-                        boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                        verwerkResultaat(correct, speler);
-                    } else {
-                        System.out.println("❌ Ongeldige invoer. Probeer opnieuw.");
-                    }
+            if (antwoord.equals("help")) {
+                toonHelp();
+            } else if (antwoord.equals("status")) {
+                status.update(speler);
+            } else if (antwoord.equals("check")) {
+                toonItems();
+            } else if (antwoord.equals("naar andere kamer")) {
+                System.out.println("Je verlaat deze kamer.\n");
+                return;
+            } else {
+                if (antwoord.startsWith("pak ")) {
+                    verwerkPak(antwoord.substring(4).trim(), speler);
+                } else if (antwoord.startsWith("gebruik ")) {
+                    speler.gebruikItem(antwoord.substring(8).trim());
+                } else if (antwoord.matches("[a-d]")) {
+                    boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                    verwerkResultaat(correct, speler);
+                } else {
+                    System.out.println("❌ Ongeldige invoer. Probeer opnieuw.");
                 }
             }
         }

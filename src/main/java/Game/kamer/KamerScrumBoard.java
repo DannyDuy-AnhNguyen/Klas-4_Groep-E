@@ -188,4 +188,28 @@ public class KamerScrumBoard extends Kamer {
         System.out.println("Gebruik 'check' om de items in de kamer te bekijken.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
+    public void bestrijdMonster(Speler speler) {
+        System.out.println("Je bent in gevecht met het monster 'Sprint Confusie'!");
+        System.out.println("Typ 'vecht' om het monster te bestrijden of 'vlucht' om terug te keren.");
+
+        while (true) {
+            String actie = scanner.nextLine().trim().toLowerCase();
+            if (actie.equals("vecht")) {
+                // Simpele kans op succes; je kan hier ook uitgebreidere logica maken
+                boolean gewonnen = Math.random() > 0.5;
+                if (gewonnen) {
+                    System.out.println("Je hebt het monster verslagen!");
+                    speler.verwijderMonster("Sprint Confusie");
+                    break;
+                } else {
+                    System.out.println("Je hebt het monster niet verslagen, probeer het nogmaals!");
+                }
+            } else if (actie.equals("vlucht")) {
+                System.out.println("Je bent gevlucht van het monster, probeer het later opnieuw.");
+                break;
+            } else {
+                System.out.println("Typ 'vecht' of 'vlucht'.");
+            }
+        }
+    }
 }

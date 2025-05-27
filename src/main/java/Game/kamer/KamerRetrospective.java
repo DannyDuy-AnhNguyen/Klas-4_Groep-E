@@ -7,6 +7,7 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.monster.BlameGame;
 
 import java.util.Scanner;
 
@@ -16,6 +17,8 @@ public class KamerRetrospective extends Kamer {
     private Status status;
     private final HintContext hintContext = new HintContext();
     private boolean introGetoond = false;
+    private final Scanner scanner = new Scanner(System.in);
+    private final BlameGame blameGame = new BlameGame();
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
@@ -84,20 +87,60 @@ public class KamerRetrospective extends Kamer {
             huidigeVraag++;
             System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
         } else {
+            System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt!");
             speler.voegMonsterToe("Blame Game");
-            System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
-
-            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-
-            if(antwoord.equals("ja")){
-                // 👇 Toon een hint
-                hintContext.toonWillekeurigeHint(huidigeVraag);
-            }
-
-            System.out.println("Probeer het opnieuw.\n");
+            bestrijdMonster(speler, blameGame);
         }
     }
+
+    public void bestrijdMonster(Speler speler, BlameGame monster) {
+        System.out.println("❗ Monster 'Blame Game' verschijnt! Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
+        System.out.println("Wil je de monster nu bestrijden? (ja/nee)");
+
+        String keuze = scanner.nextLine().trim().toLowerCase();
+        if (keuze.equals("nee")) {
+            System.out.println("De monster blijft je achtervolgen! Je kunt hem later bestrijden met het commando 'bestrijd monster'.");
+            return;
+        }
+
+        int vragenTeBeantwoorden = 4;
+
+        System.out.println("Wil je een item gebruiken om het makkelijker te maken? (ja/nee)");
+        if (scanner.nextLine().trim().equalsIgnoreCase("ja")) {
+            System.out.println("Welk item wil je gebruiken?");
+            String itemNaam = scanner.nextLine().trim();
+            boolean gebruikt = speler.gebruikItem(itemNaam);
+            if (gebruikt) {
+                if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
+                    vragenTeBeantwoorden = 0;
+                    System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
+                } else if (itemNaam.equalsIgnoreCase("Splitter")) {
+                    vragenTeBeantwoorden = 2;
+                    System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
+                }
+            }
+        }
+
+        for (int i = 0; i < vragenTeBeantwoorden; i++) {
+            monster.verwerkOpdracht(i);
+            System.out.print("Jouw antwoord: ");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+            if (!antwoord.equals(monster.getJuisteAntwoord(i).toLowerCase())) {
+                speler.verliesLeven();
+                System.out.println("Fout antwoord! Je verliest een leven. Levens over: " + speler.getLevens());
+                if (speler.getLevens() <= 0) {
+                    System.out.println("Game Over!");
+                    return;
+                }
+            } else {
+                System.out.println("✅ Goed antwoord!");
+            }
+        }
+
+        System.out.println("🎉 Je hebt de monster verslagen!");
+        speler.verwijderMonster("Blame Game");
+    }
+
     @Override
     public void betreed(Speler speler) {
         if (!deur.isOpen()) {
@@ -160,18 +203,18 @@ public class KamerRetrospective extends Kamer {
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.matches("[a-d]")) {
+            } else if (antwoord.matches("[a-c]")) {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(1);
+        speler.voegVoltooideKamerToe(4);
     }
 
     @Override

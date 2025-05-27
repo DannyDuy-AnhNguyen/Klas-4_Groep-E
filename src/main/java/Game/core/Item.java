@@ -4,15 +4,18 @@ public class Item {
     private String naam;
     private String effect; // Bijvoorbeeld: "hint", "kill", "nutteloos"
 
+    //Wordt ook in constructor van de sub klasse opgeroepen.
     public Item(String naam, String effect) {
         this.naam = naam;
         this.effect = effect;
     }
 
+    //⚠️MAINTANCE: Abstracte methode voor de sub klasses
     public String getNaam() {
         return naam;
     }
 
+    //⚠️MAINTANCE: Abstracte methode voor de sub klasses
     public String getEffect() {
         return effect;
     }

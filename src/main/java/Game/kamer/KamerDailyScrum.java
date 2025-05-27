@@ -7,6 +7,8 @@ import Game.core.Status;
 import Game.hint.HintContext;
 import Game.hint.HelpHint;
 import Game.hint.FunnyHint;
+import Game.monster.Misverstand;
+import Game.monster.VerliesVanFocus;
 
 import java.util.Scanner;
 
@@ -14,6 +16,7 @@ public class KamerDailyScrum extends Kamer {
     private final Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
+    private final VerliesVanFocus verlies = new VerliesVanFocus();
     private Status status;
 
 
@@ -25,7 +28,7 @@ public class KamerDailyScrum extends Kamer {
     }
 
     @Override
-    public void toonHint(){
+    public void toonHint() {
         // 🎯 Hints voor vraag 0
         hintContext.voegHintToe(0, new HelpHint("Scrum kent maar een paar officiële rollen."));
         hintContext.voegHintToe(0, new FunnyHint("De projectleider zit waarschijnlijk koffie te drinken ergens."));
@@ -56,7 +59,8 @@ public class KamerDailyScrum extends Kamer {
     public void verwerkFeedback(int vraagIndex) {
         switch (vraagIndex) {
             case 0 -> System.out.println("Een projectleider is geen officiële rol binnen Scrum.");
-            case 1 -> System.out.println("De meeste sprints duren 1 tot 4 weken. Kort genoeg om snel te kunnen bijsturen.");
+            case 1 ->
+                    System.out.println("De meeste sprints duren 1 tot 4 weken. Kort genoeg om snel te kunnen bijsturen.");
         }
     }
 
@@ -84,27 +88,10 @@ public class KamerDailyScrum extends Kamer {
             verwerkFeedback(huidigeVraag);
             huidigeVraag++;
             System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
-
-            if (huidigeVraag == 2) {
-                setVoltooid();
-                deur.setOpen(true);
-                speler.voegVoltooideKamerToe(2);
-                System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-            }
-
         } else {
-            speler.voegMonsterToe("Verlies van Focus");
-            System.out.println("\n❌ Fout! Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
-
-            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-
-            if(antwoord.equals("ja")){
-                // 👇 Toon een hint
-                hintContext.toonWillekeurigeHint(huidigeVraag);
-            }
-
-            System.out.println("Probeer het opnieuw.\n");
+            System.out.println("\n❌ Fout! Monster 'Verlies Van Focus' verschijnt!");
+            speler.voegMonsterToe("VerliesVanFocus");
+            bestrijdMonster(speler, verlies);
         }
     }
 
@@ -201,5 +188,53 @@ public class KamerDailyScrum extends Kamer {
     public void reset() {
         huidigeVraag = 0;
         deur.setOpen(false);
+    }
+
+    public void bestrijdMonster(Speler speler, VerliesVanFocus monster) {
+        System.out.println("❗ Monster 'Misverstand' verschijnt! Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
+        System.out.println("Wil je de monster nu bestrijden? (ja/nee)");
+
+        String keuze = scanner.nextLine().trim().toLowerCase();
+        if (keuze.equals("nee")) {
+            System.out.println("De monster blijft je achtervolgen! Je kunt hem later bestrijden met het commando 'bestrijd monster'.");
+            return;
+        }
+
+        int vragenTeBeantwoorden = 4;
+
+        System.out.println("Wil je een item gebruiken om het makkelijker te maken? (ja/nee)");
+        if (scanner.nextLine().trim().equalsIgnoreCase("ja")) {
+            System.out.println("Welk item wil je gebruiken?");
+            String itemNaam = scanner.nextLine().trim();
+            boolean gebruikt = speler.gebruikItem(itemNaam);
+            if (gebruikt) {
+                if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
+                    vragenTeBeantwoorden = 0;
+                    System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
+                } else if (itemNaam.equalsIgnoreCase("Splitter")) {
+                    vragenTeBeantwoorden = 2;
+                    System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
+                }
+            }
+        }
+
+        for (int i = 0; i < vragenTeBeantwoorden; i++) {
+            monster.verwerkOpdracht(i);
+            System.out.print("Jouw antwoord: ");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+            if (!antwoord.equals(monster.getJuisteAntwoord(i).toLowerCase())) {
+                speler.verliesLeven();
+                System.out.println("Fout antwoord! Je verliest een leven. Levens over: " + speler.getLevens());
+                if (speler.getLevens() <= 0) {
+                    System.out.println("Game Over!");
+                    return;
+                }
+            } else {
+                System.out.println("✅ Goed antwoord!");
+            }
+        }
+
+        System.out.println("🎉 Je hebt de monster verslagen!");
+        speler.verwijderMonster("Misverstand");
     }
 }

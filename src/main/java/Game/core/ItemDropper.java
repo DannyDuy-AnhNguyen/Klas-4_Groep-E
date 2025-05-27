@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+//⚠️MAINTANCE; deze klasse wordt de context klasse voor de subklasses.
+//Hier in kunnen items toegevoegd worden.
 public class ItemDropper {
     private static final Random random = new Random();
 
