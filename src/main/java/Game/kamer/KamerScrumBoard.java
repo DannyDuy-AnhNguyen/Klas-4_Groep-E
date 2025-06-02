@@ -185,12 +185,18 @@ public class KamerScrumBoard extends Kamer {
 
     @Override
     public void toonHelp() {
+        System.out.println();
         System.out.println("Typ het letterantwoord: a, b, c of d");
         System.out.println("Gebruik 'status' om je huidige status te zien.");
+        System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
         System.out.println("Gebruik 'help' om deze hulp te zien.");
-        System.out.println("Gebruik 'check' om de items in de kamer te bekijken.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
+        System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
+        System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
+        System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
+        System.out.println();
     }
+
     public void bestrijdMonster(Speler speler, ScrumVerwarring monster) {
         System.out.println("Je bent in gevecht met het monster 'Sprint Confusie'!");
         System.out.println("Typ 'vecht' om het monster te bestrijden of 'vlucht' om terug te keren.");

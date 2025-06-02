@@ -268,12 +268,15 @@ public class KamerPlanning extends Kamer {
 
     @Override
     public void toonHelp() {
+        System.out.println();
         System.out.println("Typ het letterantwoord: a, b, c of d");
         System.out.println("Gebruik 'status' om je huidige status te zien.");
         System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
-        System.out.println("Gebruik 'pak [item]' om iets te pakken.");
-        System.out.println("Gebruik 'gebruik [item]' om iets te gebruiken.");
-        System.out.println("Gebruik 'help' voor deze uitleg.");
+        System.out.println("Gebruik 'help' om deze hulp te zien.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
+        System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
+        System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
+        System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
+        System.out.println();
     }
 }
