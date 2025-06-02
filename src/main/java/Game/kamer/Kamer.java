@@ -122,20 +122,16 @@ public abstract class Kamer {
 
     // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
     public void initSpeler(Speler speler) {
-//        System.out.println("🃏 Kies je joker: 'hint' of 'key' (je kan alleen de key joker in Daily Scrum en Review gebruiken)");
+        System.out.println("🃏 Kies je joker: 'hint' of 'key'");
         String keuze = scanner.nextLine().trim().toLowerCase();
 
         if (keuze.equals("key")) {
-            KeyJoker keyJoker = new KeyJoker();
-            if (!keyJoker.canBeUsedIn(this)) {
-                System.out.println("❌ KeyJoker kan niet gekozen worden in deze kamer. Je krijgt een HintJoker.");
-                speler.voegJokerToe(new HintJoker());
-            } else {
-                speler.voegJokerToe(keyJoker);
-            }
+            speler.voegJokerToe(new KeyJoker());
+            System.out.println("⚠️De Key joker is alleen inzetbaar in de kamer 'Daily Scrum' en 'Sprint Review'!");
         } else {
             speler.voegJokerToe(new HintJoker());
         }
     }
+
 
 }

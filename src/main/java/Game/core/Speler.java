@@ -14,6 +14,7 @@ public class Speler {
     private int streak = 0;
     private int sleutels = 1;
     private int levens = 3;
+    private static final int MAX_JOKERS = 2;
     private boolean jokerGekozen = false;
 
     private List<Integer> voltooideKamers = new ArrayList<>();
@@ -223,17 +224,19 @@ public class Speler {
     // Zorgt ervoor dat in het spel de jokers kan gebruiken.
 
     //Jokers kan toegevoegd worden met behulp van polymorfisme
-    public void voegJokerToe(Joker joker) {
+    public boolean voegJokerToe(Joker joker) {
+        if (jokers.size() >= MAX_JOKERS) {
+            System.out.println("❌ Je hebt al het maximum aantal jokers (" + MAX_JOKERS + ") bereikt.");
+            return false;
+        }
         jokers.add(joker);
-        System.out.println("🃏 Joker '" + joker.getClass().getSimpleName() + "' toegevoegd aan je inventaris.");
+        return true;
     }
 
-    //Hier wordt een lijst met daarin de toegevoegde jokers meegegeven.
+    //Hier wordt een lijst met daarin de toegevoegde jokers meegegeven welke jokers de speler nu heeft.
     public List<Joker> getJokers() {
         return jokers;
     }
-
-
 
     // === Observer pattern ===
     public void voegObserverToe(Observer observer) {

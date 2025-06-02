@@ -5,6 +5,7 @@ import Game.kamer.Kamer;
 
 public interface Joker {
     boolean isUsed();
-    boolean canBeUsedIn(Kamer kamer);
     void useIn(Kamer kamer, Speler speler);
+    String getNaam();
+
 }

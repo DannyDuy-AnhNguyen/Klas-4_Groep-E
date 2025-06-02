@@ -1,7 +1,7 @@
 package Game.joker;
 
-import java.util.Set;
+import Game.kamer.Kamer;
 
-interface ToegestaandeKamers {
-    public Set<String> getToegestaandeKamers();
+public interface ToegestaandeKamers {
+    boolean canBeUsedIn(Kamer kamer);
 }

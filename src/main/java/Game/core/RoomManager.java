@@ -50,6 +50,12 @@ public class RoomManager {
         if (!gekozenKamer.getDeur().isOpen()) {
             gekozenKamer.getDeur().setOpen(true);
             System.out.println("🔓 De deur naar '" + gekozenKamer.getNaam() + "' is geopend.");
+
+            //Als de deur geopent is, dan pas wordt de joker uitgevoerd
+            if (!speler.isJokerGekozen()) {
+                gekozenKamer.initSpeler(speler);
+                speler.setJokerGekozen(true);
+            }
         }
 
         if (!gekozenKamer.isVoltooid()) {

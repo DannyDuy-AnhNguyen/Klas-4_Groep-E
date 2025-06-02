@@ -7,8 +7,11 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.joker.Joker;
+import Game.joker.ToegestaandeKamers;
 import Game.monster.BlameGame;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class KamerRetrospective extends Kamer {
@@ -173,6 +176,64 @@ public class KamerRetrospective extends Kamer {
                     }
                 }
                 System.out.println();
+            } else if (antwoord.equals("joker")) {
+                List<Joker> jokers = speler.getJokers();
+                if (jokers.isEmpty()) {
+                    System.out.println("❌ Je hebt geen jokers om te gebruiken.");
+                    return;
+                }
+
+                System.out.println("🃏 Beschikbare jokers:");
+                for (Joker joker : jokers) {
+                    String status = joker.isUsed() ? " (gebruikt)" : "";
+                    System.out.println("- " + joker.getNaam() + status);  // suggestie: voeg getNaam() toe in Joker-interface
+                }
+
+                System.out.println("Typ de naam van de joker die je wilt gebruiken (of typ 'annuleer'):");
+                String gekozenJoker = scanner.nextLine().trim().toLowerCase();
+
+                if (gekozenJoker.equals("annuleer")) {
+                    System.out.println("❌ Jokerkeuze geannuleerd.");
+                    return;
+                }
+
+                boolean jokerGebruikt = false;
+
+                for (Joker joker : jokers) {
+                    if (joker.isUsed()) continue;
+
+                    if (joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
+
+                        // 💡 Check of de joker optioneel kamerspecificatie ondersteunt
+                        if (joker instanceof ToegestaandeKamers kamerBeperkingen) {
+                            if (!kamerBeperkingen.canBeUsedIn(this)) {
+                                System.out.println("❌ Deze joker werkt niet in deze kamer.");
+                                break;
+                            }
+                        }
+
+                        System.out.println("Joker wordt gebruikt!: " + joker.getNaam());
+
+                        if (joker.getNaam().equalsIgnoreCase("hint")) {
+                            hintContext.toonWillekeurigeHint(huidigeVraag);
+                        }
+
+                        joker.useIn(this, speler);
+
+                        // ✅ Na gebruik: verwijderen als hij gemarkeerd is als gebruikt
+                        if (joker.isUsed()) {
+                            speler.getJokers().remove(joker);
+                        }
+                        jokerGebruikt = true;
+                        break;
+                    }
+                }
+
+
+                if (!jokerGebruikt) {
+                    System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
+                }
+                System.out.println();
             } else if (antwoord.startsWith("pak ")) {
                 String itemInput = antwoord.substring(4).trim();
                 Item gekozenItem = null;
@@ -201,6 +262,7 @@ public class KamerRetrospective extends Kamer {
                 speler.gebruikItem(itemNaam);
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
+                speler.setJokerGekozen(false);
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-c]")) {
@@ -213,6 +275,7 @@ public class KamerRetrospective extends Kamer {
 
         setVoltooid();
         deur.setOpen(true);
+        speler.setJokerGekozen(false);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
         speler.voegVoltooideKamerToe(4);
     }
@@ -233,6 +296,7 @@ public class KamerRetrospective extends Kamer {
         System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
         System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
         System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
+        System.out.println("Gebruik 'joker' om een joker te gebruiken");
         System.out.println();
     }
 }

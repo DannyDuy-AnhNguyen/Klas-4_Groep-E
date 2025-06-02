@@ -8,8 +8,10 @@ import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
 import Game.joker.Joker;
+import Game.joker.ToegestaandeKamers;
 import Game.monster.Misverstand;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class KamerPlanning extends Kamer {
@@ -99,11 +101,6 @@ public class KamerPlanning extends Kamer {
             return;
         }
 
-        if (!speler.isJokerGekozen()) {
-            initSpeler(speler);
-            speler.setJokerGekozen(true);
-        }
-
         this.status = new Status(speler);
         betreedIntro();
 
@@ -122,38 +119,59 @@ public class KamerPlanning extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.equals("joker")) {
-                System.out.println("🃏 Beschikbare jokers:");
-                for (Joker joker : speler.getJokers()) {
-                    String status = joker.isUsed() ? " (gebruikt)" : "";
-                    System.out.println("- " + joker.getClass().getSimpleName() + status);
+                List<Joker> jokers = speler.getJokers();
+                if (jokers.isEmpty()) {
+                    System.out.println("❌ Je hebt geen jokers om te gebruiken.");
+                    return;
                 }
 
-                System.out.println("Typ de naam van de joker zoals 'hint' of 'key' die je wilt gebruiken (of typ 'annuleer'):");
+                System.out.println("🃏 Beschikbare jokers:");
+                for (Joker joker : jokers) {
+                    String status = joker.isUsed() ? " (gebruikt)" : "";
+                    System.out.println("- " + joker.getNaam() + status);  // suggestie: voeg getNaam() toe in Joker-interface
+                }
+
+                System.out.println("Typ de naam van de joker die je wilt gebruiken (of typ 'annuleer'):");
                 String gekozenJoker = scanner.nextLine().trim().toLowerCase();
 
                 if (gekozenJoker.equals("annuleer")) {
                     System.out.println("❌ Jokerkeuze geannuleerd.");
+                    return;
                 }
 
                 boolean jokerGebruikt = false;
-                for (Joker joker : speler.getJokers()) {
-                    String jokerNaam = joker.getClass().getSimpleName().toLowerCase();
-                    if (jokerNaam.contains(gekozenJoker)) {
-                        if (joker.isUsed()) {
-                            System.out.println("❌ Deze joker is al gebruikt.");
-                        } else if (!joker.canBeUsedIn(this)) {
-                            System.out.println("❌ Deze joker werkt niet in deze kamer.");
-                        } else {
-                            System.out.println("Joker wordt gebruikt!: "+ jokerNaam);
-                            if(jokerNaam.contains("hintjoker")){
-                                hintContext.toonWillekeurigeHint(huidigeVraag);
+
+                for (Joker joker : jokers) {
+                    if (joker.isUsed()) continue;
+
+                    if (joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
+
+                        // 💡 Check of de joker optioneel kamerspecificatie ondersteunt
+                        if (joker instanceof ToegestaandeKamers kamerBeperkingen) {
+                            if (!kamerBeperkingen.canBeUsedIn(this)) {
+                                System.out.println("❌ Deze joker werkt niet in deze kamer.");
+                                break;
                             }
-                            joker.useIn(this, speler);
-                            jokerGebruikt = true;
                         }
+
+                        System.out.println("Joker wordt gebruikt!: " + joker.getNaam());
+
+                        if (joker.getNaam().equalsIgnoreCase("hint")) {
+                            hintContext.toonWillekeurigeHint(huidigeVraag);
+                        }
+
+                        joker.useIn(this, speler);
+
+                        // ✅ Na gebruik: verwijderen als hij gemarkeerd is als gebruikt
+                        if (joker.isUsed()) {
+                            speler.getJokers().remove(joker);
+                        }
+
+                        jokerGebruikt = true;
                         break;
                     }
                 }
+
 
                 if (!jokerGebruikt) {
                     System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
@@ -277,6 +295,7 @@ public class KamerPlanning extends Kamer {
         System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
         System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
         System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
+        System.out.println("Gebruik 'joker' om een joker te gebruiken");
         System.out.println();
     }
 }

@@ -13,16 +13,12 @@ public class GameEngine {
     private final RoomManager roomManager;
     private final Status status;
     private Kamer huidigeKamer;
-    private final Joker hintJoker;
-    private final Joker keyJoker;
 
     public GameEngine(Speler speler, UserInterface ui, RoomManager roomManager) {
         this.speler = speler;
         this.ui = ui;
         this.roomManager = roomManager;
         this.status = new Status(speler);
-        this.hintJoker = new HintJoker();
-        this.keyJoker = new KeyJoker();
     }
 
     public void startGame() {
