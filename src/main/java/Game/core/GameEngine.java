@@ -1,5 +1,8 @@
 package Game.core;
 
+import Game.joker.HintJoker;
+import Game.joker.Joker;
+import Game.joker.KeyJoker;
 import Game.kamer.Kamer;
 
 import java.util.List;
@@ -10,19 +13,23 @@ public class GameEngine {
     private final RoomManager roomManager;
     private final Status status;
     private Kamer huidigeKamer;
+    private final Joker hintJoker;
+    private final Joker keyJoker;
 
     public GameEngine(Speler speler, UserInterface ui, RoomManager roomManager) {
         this.speler = speler;
         this.ui = ui;
         this.roomManager = roomManager;
         this.status = new Status(speler);
+        this.hintJoker = new HintJoker();
+        this.keyJoker = new KeyJoker();
     }
 
     public void startGame() {
         ui.printWelkom();
         speler.setNaam(ui.leesInvoer());
 
-        ui.printCommandoUitleg(speler.getNaam());
+           ui.printCommandoUitleg(speler.getNaam());
 
         while (true) {
             if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
@@ -47,6 +54,7 @@ public class GameEngine {
                 speler.gebruikItem(input.substring(8).trim());
             } else if (input.startsWith("ga naar kamer")) {
                 huidigeKamer = roomManager.verwerkKamerCommando(input, speler);
+
                 if (huidigeKamer != null && huidigeKamer.isVoltooid()) {
                     controleerEnStartFinale();
                     huidigeKamer = null;

@@ -1,15 +1,13 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
-import Game.core.Item;
+import Game.item.Item;
 import Game.core.Speler;
 import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
 import Game.monster.ScrumVerwarring;
-
-import java.util.Scanner;
 
 public class KamerScrumBoard extends Kamer {
     private Antwoord antwoordStrategie;

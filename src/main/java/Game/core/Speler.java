@@ -1,5 +1,8 @@
 package Game.core;
 
+import Game.item.Item;
+import Game.joker.Joker;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,11 +14,14 @@ public class Speler {
     private int streak = 0;
     private int sleutels = 1;
     private int levens = 3;
+    private boolean jokerGekozen = false;
 
     private List<Integer> voltooideKamers = new ArrayList<>();
     private List<String> monsters = new ArrayList<>();
     private List<Item> inventory = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
+    private List<Joker> jokers = new ArrayList<>();
+
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -109,30 +115,28 @@ public class Speler {
         notifyObservers();
     }
 
+    public boolean isJokerGekozen() {
+        return jokerGekozen;
+    }
+
+    public void setJokerGekozen(boolean gekozen) {
+        this.jokerGekozen = gekozen;
+    }
+
     private void gameOver() {
         System.out.println("\n🛑 GAME OVER! Je hebt geen levens meer.");
         System.out.print("Wil je opnieuw beginnen? (ja/nee): ");
         String keuze = scanner.nextLine().trim().toLowerCase();
 
         if (keuze.equals("ja")) {
-            resetSpel();
+            clearConsole();  // console wissen
+            System.out.println("🔄 Het spel wordt opnieuw gestart...");
+            Game.Main.main(null);  // spel herstarten
+            System.exit(0);
         } else {
             System.out.println("👋 Bedankt voor het spelen!");
             System.exit(0);
         }
-    }
-
-    private void resetSpel() {
-        score = 0;
-        streak = 0;
-        sleutels = 1;
-        levens = 3;
-        positie = 0;
-        voltooideKamers.clear();
-        monsters.clear();
-        inventory.clear();
-        System.out.println("🔄 Het spel is opnieuw gestart.");
-        notifyObservers();
     }
 
     // === Voltooide kamers ===
@@ -199,18 +203,36 @@ public class Speler {
         System.out.println("🧪 Je gebruikt het item: " + item.getNaam() + " (" + item.getEffect() + ")");
 
         // ➕ Effect uitvoeren
-        switch (item.getEffect()) {
-            case "kill" -> System.out.println("🗡️ Het Scrum Zwaard is gebruikt! Een monster is verslagen.");
-            case "hint" -> System.out.println("💡 Hint Scroll gebruikt! Misschien helpt het je straks.");
-            case "nutteloos" -> System.out.println("🪨 Je gebruikt de rots... niets gebeurt.");
-            case "halveer" -> System.out.println("🪓 De Splitter is gebruikt! Minder vragen om te beantwoorden.");
-            default -> System.out.println("❓ Geen effect bekend voor dit item.");
+        if (item.getEffect().equals("kill")) {
+            System.out.println("🗡️ Het Scrum Zwaard is gebruikt! Een monster is verslagen.");
+        } else if (item.getEffect().equals("hint")) {
+            System.out.println("💡 Hint Scroll gebruikt! Misschien helpt het je straks.");
+        } else if (item.getEffect().equals("nutteloos")) {
+            System.out.println("🪨 Je gebruikt de rots... niets gebeurt.");
+        } else if (item.getEffect().equals("halveer")) {
+            System.out.println("🪓 De Splitter is gebruikt! Minder vragen om te beantwoorden.");
+        } else {
+            System.out.println("❓ Geen effect bekend voor dit item.");
         }
 
         inventory.remove(item);
         notifyObservers();
         return true;
     }
+
+    // Zorgt ervoor dat in het spel de jokers kan gebruiken.
+
+    //Jokers kan toegevoegd worden met behulp van polymorfisme
+    public void voegJokerToe(Joker joker) {
+        jokers.add(joker);
+        System.out.println("🃏 Joker '" + joker.getClass().getSimpleName() + "' toegevoegd aan je inventaris.");
+    }
+
+    //Hier wordt een lijst met daarin de toegevoegde jokers meegegeven.
+    public List<Joker> getJokers() {
+        return jokers;
+    }
+
 
 
     // === Observer pattern ===
@@ -223,6 +245,20 @@ public class Speler {
     public void notifyObservers() {
         for (Observer observer : observers) {
             observer.update(this);
+        }
+    }
+
+    private void clearConsole() {
+        try {
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Voor Linux/macOS/Unix
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("Kon de console niet wissen.");
         }
     }
 }

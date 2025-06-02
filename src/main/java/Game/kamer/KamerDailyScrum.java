@@ -1,16 +1,16 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
-import Game.core.Item;
+import Game.item.Item;
 import Game.core.Speler;
 import Game.core.Status;
 import Game.hint.HintContext;
 import Game.hint.HelpHint;
 import Game.hint.FunnyHint;
-import Game.monster.Misverstand;
+import Game.joker.HintJoker;
+import Game.joker.Joker;
+import Game.joker.KeyJoker;
 import Game.monster.VerliesVanFocus;
-
-import java.util.Scanner;
 
 public class KamerDailyScrum extends Kamer {
     private final Antwoord antwoordStrategie;
@@ -25,6 +25,7 @@ public class KamerDailyScrum extends Kamer {
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
         toonHint();
+
     }
 
     @Override
@@ -102,8 +103,13 @@ public class KamerDailyScrum extends Kamer {
             deur.toonStatus();
             return;
         }
+        if (!speler.isJokerGekozen()) {
+            initSpeler(speler);
+            speler.setJokerGekozen(true);
+        }
 
         this.status = new Status(speler);
+
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -150,23 +156,66 @@ public class KamerDailyScrum extends Kamer {
                 }
 
                 System.out.println();
-            } else if (antwoord.startsWith("gebruik ")) {
+            } else if (antwoord.equals("joker")) {
+                System.out.println("🃏 Beschikbare jokers:");
+                for (Joker joker : speler.getJokers()) {
+                    String status = joker.isUsed() ? " (gebruikt)" : "";
+                    System.out.println("- " + joker.getClass().getSimpleName() + status);
+                }
+
+                System.out.println("Typ de naam van de joker zoals 'hint' of 'key' die je wilt gebruiken (of typ 'annuleer'):");
+                String gekozenJoker = scanner.nextLine().trim().toLowerCase();
+
+                if (gekozenJoker.equals("annuleer")) {
+                    System.out.println("❌ Jokerkeuze geannuleerd.");
+                }
+
+                boolean jokerGebruikt = false;
+                for (Joker joker : speler.getJokers()) {
+                    String jokerNaam = joker.getClass().getSimpleName().toLowerCase();
+                    if (jokerNaam.contains(gekozenJoker)) {
+                        if (joker.isUsed()) {
+                            System.out.println("❌ Deze joker is al gebruikt.");
+                        } else if (!joker.canBeUsedIn(this)) {
+                            System.out.println("❌ Deze joker werkt niet in deze kamer.");
+                        } else {
+                            System.out.println("Joker wordt gebruikt!: "+ jokerNaam);
+                            if(jokerNaam.contains("hintjoker")){
+                                hintContext.toonWillekeurigeHint(huidigeVraag);
+                            }
+                            joker.useIn(this, speler);
+                            jokerGebruikt = true;
+                        }
+                        break;
+                    }
+                }
+
+                if (!jokerGebruikt) {
+                    System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
+                }
+                System.out.println();
+            }
+
+            else if (antwoord.startsWith("gebruik ")) {
                 String itemNaam = antwoord.substring(8).trim();
                 speler.gebruikItem(itemNaam);
                 System.out.println();
-            } else if (antwoord.equals("naar andere kamer")) {
+            }
+            else if (antwoord.equals("naar andere kamer")) {
+                speler.setJokerGekozen(false);
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help', 'joker' of 'naar andere kamer'.\n");
             }
         }
 
         setVoltooid();
         deur.setOpen(true);
+        speler.setJokerGekozen(false);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
         speler.voegVoltooideKamerToe(1);
     }
@@ -178,11 +227,16 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public void toonHelp() {
+        System.out.println();
         System.out.println("Typ het letterantwoord: a, b, c of d");
         System.out.println("Gebruik 'status' om je huidige status te zien.");
         System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
         System.out.println("Gebruik 'help' om deze hulp te zien.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
+        System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
+        System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
+        System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
+        System.out.println();
     }
 
     public void reset() {

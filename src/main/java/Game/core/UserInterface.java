@@ -1,15 +1,18 @@
 package Game.core;
 
+import Game.item.Item;
 import Game.kamer.Kamer;
 
 import java.util.List;
 import java.util.Scanner;
+import static Game.core.ConsoleKleuren.*;
+
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
 
     public void printWelkom() {
-        System.out.println("Welkom bij de Scrum Escape Game!");
+        regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 200);
         System.out.print("Wat is je naam? ");
     }
 

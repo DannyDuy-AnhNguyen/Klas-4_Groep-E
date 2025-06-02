@@ -1,6 +1,6 @@
 package Game.monster;
 
-import Game.core.Item;
+import Game.item.Item;
 
 public interface MonsterType {
     String getNaam();

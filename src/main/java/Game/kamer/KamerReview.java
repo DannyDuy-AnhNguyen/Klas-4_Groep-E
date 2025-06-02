@@ -1,15 +1,14 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
-import Game.core.Item;
+import Game.item.Item;
 import Game.core.Speler;
 import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.monster.BlameGame;
 import Game.monster.SprintConfusie;
-
-import java.util.Scanner;
 
 public class KamerReview extends Kamer {
     private Antwoord antwoordStrategie;
@@ -199,27 +198,50 @@ public class KamerReview extends Kamer {
     }
 
     public void bestrijdMonster(Speler speler, SprintConfusie monster) {
-        System.out.println("Je bent in gevecht met het monster 'Sprint Confusie'!");
-        System.out.println("Typ 'vecht' om het monster te bestrijden of 'vlucht' om terug te keren.");
+        System.out.println("❗ Monster 'Sprint Confusie' verschijnt! Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
+        System.out.println("Wil je de monster nu bestrijden? (ja/nee)");
 
-        while (true) {
-            String actie = scanner.nextLine().trim().toLowerCase();
-            if (actie.equals("vecht")) {
-                // Simpele kans op succes; je kan hier ook uitgebreidere logica maken
-                boolean gewonnen = Math.random() > 0.5;
-                if (gewonnen) {
-                    System.out.println("Je hebt het monster verslagen!");
-                    speler.verwijderMonster("Sprint Confusie");
-                    break;
-                } else {
-                    System.out.println("Je hebt het monster niet verslagen, probeer het nogmaals!");
+        String keuze = scanner.nextLine().trim().toLowerCase();
+        if (keuze.equals("nee")) {
+            System.out.println("De monster blijft je achtervolgen! Je kunt hem later bestrijden met het commando 'bestrijd monster'.");
+            return;
+        }
+
+        int vragenTeBeantwoorden = 4;
+
+        System.out.println("Wil je een item gebruiken om het makkelijker te maken? (ja/nee)");
+        if (scanner.nextLine().trim().equalsIgnoreCase("ja")) {
+            System.out.println("Welk item wil je gebruiken?");
+            String itemNaam = scanner.nextLine().trim();
+            boolean gebruikt = speler.gebruikItem(itemNaam);
+            if (gebruikt) {
+                if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
+                    vragenTeBeantwoorden = 0;
+                    System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
+                } else if (itemNaam.equalsIgnoreCase("Splitter")) {
+                    vragenTeBeantwoorden = 2;
+                    System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
                 }
-            } else if (actie.equals("vlucht")) {
-                System.out.println("Je bent gevlucht van het monster, probeer het later opnieuw.");
-                break;
-            } else {
-                System.out.println("Typ 'vecht' of 'vlucht'.");
             }
         }
+
+        for (int i = 0; i < vragenTeBeantwoorden; i++) {
+            monster.verwerkOpdracht(i);
+            System.out.print("Jouw antwoord: ");
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+            if (!antwoord.equals(monster.getJuisteAntwoord(i).toLowerCase())) {
+                speler.verliesLeven();
+                System.out.println("Fout antwoord! Je verliest een leven. Levens over: " + speler.getLevens());
+                if (speler.getLevens() <= 0) {
+                    System.out.println("Game Over!");
+                    return;
+                }
+            } else {
+                System.out.println("✅ Goed antwoord!");
+            }
+        }
+
+        System.out.println("🎉 Je hebt de monster verslagen!");
+        speler.verwijderMonster("Sprint Confusie");
     }
 }

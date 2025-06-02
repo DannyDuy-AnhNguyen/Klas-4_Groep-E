@@ -1,6 +1,6 @@
 package Game.monster;
 
-import Game.core.Item;
+import Game.item.Item;
 
 public abstract class Monster implements MonsterType {
     protected final String naam;

@@ -1,4 +1,4 @@
-package Game.core;
+package Game.item;
 
 public class ItemSplitter extends Item{
     public ItemSplitter(String naam, String effect){

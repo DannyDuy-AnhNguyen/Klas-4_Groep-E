@@ -1,6 +1,6 @@
 package Game.monster;
 
-import Game.core.Item;
+import Game.item.Item;
 import Game.core.Speler;
 
 import java.util.Scanner;
@@ -93,7 +93,7 @@ public class SprintConfusie extends Monster {
 
         for (int i = 0; i < aantalVragen && i < juisteAntwoorden.length; i++) {
             verwerkOpdracht(i);
-            System.out.print("Jouw antwoord: ");
+            System.out.println();
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
             if (antwoord.equals(juisteAntwoorden[i])) {

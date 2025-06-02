@@ -1,5 +1,6 @@
 package Game.core;
 
+import Game.item.Item;
 import Game.kamer.Kamer;
 import Game.kamer.KamerFactory;
 

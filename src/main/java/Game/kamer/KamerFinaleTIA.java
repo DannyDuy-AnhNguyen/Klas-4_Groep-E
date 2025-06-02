@@ -1,14 +1,12 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
-import Game.core.Item;
+import Game.item.Item;
 import Game.core.Speler;
 import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
-
-import java.util.Scanner;
 
 public class KamerFinaleTIA extends Kamer {
     private Antwoord antwoordStrategie;

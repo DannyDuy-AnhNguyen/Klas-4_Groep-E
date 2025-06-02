@@ -1,4 +1,4 @@
-package Game.core;
+package Game.item;
 
 abstract public class Item {
     protected String naam;

@@ -1,4 +1,4 @@
-package Game.core;
+package Game.item;
 
 public class ItemWapen extends Item{
     public ItemWapen(String naam, String effect){

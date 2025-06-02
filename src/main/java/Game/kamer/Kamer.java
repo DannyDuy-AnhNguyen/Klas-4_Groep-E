@@ -1,8 +1,10 @@
 package Game.kamer;
 
-import Game.Deur;
-import Game.core.Item;
+import Game.core.Deur;
+import Game.item.Item;
 import Game.core.Speler;
+import Game.joker.HintJoker;
+import Game.joker.KeyJoker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,4 +113,29 @@ public abstract class Kamer {
         }
         System.out.println();
     }
+
+    //De sleutel wordt alleen gebruikt in de Daily Scrum en Review kamer als extra sleutel.
+    public void geefExtraSleutel(Speler speler) {
+        speler.voegSleutelToe(); // Spelerbeheer doet alles goed via Observer
+        System.out.println("🔑 Een extra sleutel is speciaal in de Daily Scrum kamer toegekend!");
+    }
+
+    // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
+    public void initSpeler(Speler speler) {
+//        System.out.println("🃏 Kies je joker: 'hint' of 'key' (je kan alleen de key joker in Daily Scrum en Review gebruiken)");
+        String keuze = scanner.nextLine().trim().toLowerCase();
+
+        if (keuze.equals("key")) {
+            KeyJoker keyJoker = new KeyJoker();
+            if (!keyJoker.canBeUsedIn(this)) {
+                System.out.println("❌ KeyJoker kan niet gekozen worden in deze kamer. Je krijgt een HintJoker.");
+                speler.voegJokerToe(new HintJoker());
+            } else {
+                speler.voegJokerToe(keyJoker);
+            }
+        } else {
+            speler.voegJokerToe(new HintJoker());
+        }
+    }
+
 }
