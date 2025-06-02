@@ -191,11 +191,16 @@ public class KamerPlanning extends Kamer {
             }
         }
 
-        setVoltooid();
-        deur.setOpen(true);
-        speler.voegVoltooideKamerToe(1);
-        speler.setJokerGekozen(false);
-        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        if (!isVoltooid()) {
+            setVoltooid();
+            deur.setOpen(true);
+            speler.voegVoltooideKamerToe(3);
+            speler.setJokerGekozen(false);
+            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+            speler.voegSleutelToe();
+        } else {
+            System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
+        }
     }
 
     private void toonItems() {

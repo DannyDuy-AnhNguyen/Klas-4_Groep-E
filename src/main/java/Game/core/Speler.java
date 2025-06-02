@@ -91,7 +91,6 @@ public class Speler {
             notifyObservers();
             return true;
         } else {
-            System.out.println("❌ Je hebt geen sleutels om deze deur te openen.");
             return false;
         }
     }

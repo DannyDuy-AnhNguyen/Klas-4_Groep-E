@@ -30,7 +30,13 @@ public class RoomManager {
     }
 
     public Kamer verwerkKamerCommando(String input, Speler speler) {
-        String argument = input.substring("ga naar kamer".length()).trim();
+        String prefix = "ga naar kamer";
+        if (input.length() <= prefix.length()) {
+            System.out.println("Ongeldig commando, gebruik: 'ga naar kamer [nummer|naam]'");
+            return null;
+        }
+
+        String argument = input.substring(prefix.length()).trim();
         Kamer gekozenKamer = null;
 
         try {
@@ -48,21 +54,19 @@ public class RoomManager {
         }
 
         if (!gekozenKamer.getDeur().isOpen()) {
-            gekozenKamer.getDeur().setOpen(true);
-            System.out.println("🔓 De deur naar '" + gekozenKamer.getNaam() + "' is geopend.");
+            if (speler.getSleutels() != 0) {
+                speler.gebruikSleutel();
+                gekozenKamer.getDeur().setOpen(true);
+                System.out.println("🔓 De deur naar '" + gekozenKamer.getNaam() + "' is geopend.");
 
-            //Als de deur geopent is, dan pas wordt de joker uitgevoerd
-            if (!speler.isJokerGekozen()) {
-                gekozenKamer.initSpeler(speler);
-                speler.setJokerGekozen(true);
+                if (!speler.isJokerGekozen()) {
+                    gekozenKamer.initSpeler(speler);
+                    speler.setJokerGekozen(true);
+                }
+            } else {
+                System.out.println("❌ Je hebt geen sleutels om deze deur te openen.");
+                return null;  // Kamer niet betreden zonder sleutel
             }
-        }
-
-        if (!gekozenKamer.isVoltooid()) {
-            speler.setPositie(kamers.indexOf(gekozenKamer));
-            gekozenKamer.betreed(speler);
-        } else {
-            System.out.println("Deze kamer is al voltooid.");
         }
 
         return gekozenKamer;
@@ -88,14 +92,23 @@ public class RoomManager {
 
     public Kamer activeerFinaleKamer(Speler speler) {
         Kamer finale = kamerFactory.getKamer("Finale TIA Kamer – Waarom Scrum?");
+        System.out.println("Activeer finale kamer: " + finale.getNaam());
+
+        finale.getDeur().setOpen(true);
+        System.out.println("Deur finale kamer open? " + finale.getDeur().isOpen());
+
+        System.out.println("Check finale kamer😬: " + kamers.contains(finale));
+
         if (!kamers.contains(finale)) {
-            finale.getDeur().setOpen(true);
             kamers.add(finale);
-            System.out.println("🏁 Alle kamers voltooid! De finale kamer is nu beschikbaar.");
+            System.out.println("Finale kamer toegevoegd aan kamers lijst.");
+        } else {
+            System.out.println("Finale kamer zat al in kamers lijst.");
         }
 
         speler.setPositie(kamers.indexOf(finale));
-        System.out.println("➡️ Je gaat automatisch naar de finale kamer!");
+        System.out.println("Speler positie naar finale kamer: " + speler.getPositie());
+
         return finale;
     }
 

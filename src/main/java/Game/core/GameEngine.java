@@ -25,9 +25,10 @@ public class GameEngine {
         ui.printWelkom();
         speler.setNaam(ui.leesInvoer());
 
-           ui.printCommandoUitleg(speler.getNaam());
+        ui.printCommandoUitleg(speler.getNaam());
 
         while (true) {
+//            System.out.println("Sleutels🙂: " + speler.getSleutels());
             if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
                 ui.printKamerOpties(roomManager.getBeschikbareKamers());
             }
@@ -52,14 +53,17 @@ public class GameEngine {
                 huidigeKamer = roomManager.verwerkKamerCommando(input, speler);
 
                 if (huidigeKamer != null && huidigeKamer.isVoltooid()) {
-                    controleerEnStartFinale();
-                    huidigeKamer = null;
-                }
-            } else if (huidigeKamer != null && !huidigeKamer.isVoltooid()) {
-                huidigeKamer.verwerkAntwoord(input, speler);
-                if (huidigeKamer.isVoltooid()) {
                     ui.printKamerVoltooid();
                     controleerEnStartFinale();
+                    huidigeKamer = null;
+                } else if (huidigeKamer != null && !huidigeKamer.isVoltooid()) {
+                    huidigeKamer.betreed(speler);
+
+                    // 👇 Zet dit hier om meteen na afloop te checken
+                    if (huidigeKamer.isVoltooid()) {
+                        controleerEnStartFinale();
+                    }
+
                     huidigeKamer = null;
                 }
             } else {
@@ -67,6 +71,7 @@ public class GameEngine {
             }
         }
     }
+
 
     private void controleerEnStartFinale() {
         if (roomManager.alleNormaleKamersVoltooid() && !roomManager.isFinaleKamerVoltooid()) {

@@ -273,11 +273,16 @@ public class KamerRetrospective extends Kamer {
             }
         }
 
-        setVoltooid();
-        deur.setOpen(true);
-        speler.setJokerGekozen(false);
-        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(4);
+        if (!isVoltooid()) {
+            setVoltooid();
+            deur.setOpen(true);
+            speler.setJokerGekozen(false);
+            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+            speler.voegSleutelToe();
+            speler.voegVoltooideKamerToe(4);
+        } else {
+            System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
+        }
     }
 
     @Override

@@ -242,11 +242,16 @@ public class KamerReview extends Kamer {
             }
         }
 
-        setVoltooid();
-        deur.setOpen(true);
-        speler.setJokerGekozen(false);
-        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(1);
+        if (!isVoltooid()) {
+            setVoltooid();
+            deur.setOpen(true);
+            speler.setJokerGekozen(false);
+            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+            speler.voegSleutelToe();
+            speler.voegVoltooideKamerToe(2);
+        } else {
+            System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
+        }
     }
 
     @Override
