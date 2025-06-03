@@ -7,13 +7,13 @@ import Game.core.Status;
 import Game.hint.HintContext;
 import Game.hint.HelpHint;
 import Game.hint.FunnyHint;
-import Game.joker.HintJoker;
+import Game.item.ItemBoek;
 import Game.joker.Joker;
-import Game.joker.KeyJoker;
 import Game.joker.ToegestaandeKamers;
 import Game.monster.VerliesVanFocus;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class KamerDailyScrum extends Kamer {
     private final Antwoord antwoordStrategie;
@@ -107,9 +107,14 @@ public class KamerDailyScrum extends Kamer {
             return;
         }
 
-        System.out.println("🃏🔑In deze kamer kan je de 'KeyJoker' gebruiken!");
-        this.status = new Status(speler);
+        // ✅ Toon eenmalige introductie via KamerInfo
+        if (!speler.isEersteKamerBetreden()) {
+            ItemBoek info = new ItemBoek();
+            info.toonInfo(true);
+            speler.markeerEersteKamerBetreden();
+        }
 
+        this.status = new Status(speler);
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -133,34 +138,10 @@ public class KamerDailyScrum extends Kamer {
                     }
                 }
                 System.out.println();
-            } else if (antwoord.startsWith("pak ")) {
-                String itemInput = antwoord.substring(4).trim();
-                Item gekozenItem = null;
-
-                try {
-                    int index = Integer.parseInt(itemInput) - 1;
-                    if (index >= 0 && index < items.size()) {
-                        gekozenItem = items.remove(index);
-                    } else {
-                        System.out.println("❌ Ongeldig itemnummer.");
-                        continue;
-                    }
-                } catch (NumberFormatException e) {
-                    gekozenItem = neemItem(itemInput);
-                }
-
-                if (gekozenItem != null) {
-                    speler.voegItemToe(gekozenItem);
-                } else if (!itemInput.matches("\\d+")) {
-                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
-                }
-
-                System.out.println();
             } else if (antwoord.equals("joker")) {
                 List<Joker> jokers = speler.getJokers();
                 if (jokers.isEmpty()) {
                     System.out.println("❌ Je hebt geen jokers om te gebruiken.");
-                    return;
                 }
 
                 System.out.println("🃏 Beschikbare jokers:");
@@ -214,20 +195,46 @@ public class KamerDailyScrum extends Kamer {
                     System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
                 }
                 System.out.println();
+            } else if (antwoord.equals("info")) {
+                // Extra commando om de KamerInfo opnieuw te tonen
+                ItemBoek.toonInfo(false);
+                System.out.println();
+            } else if (antwoord.startsWith("pak ")) {
+                String itemInput = antwoord.substring(4).trim();
+                Item gekozenItem = null;
+
+                try {
+                    int index = Integer.parseInt(itemInput) - 1;
+                    if (index >= 0 && index < items.size()) {
+                        gekozenItem = items.remove(index);
+                    } else {
+                        System.out.println("❌ Ongeldig itemnummer.");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    gekozenItem = neemItem(itemInput);
+                }
+
+                if (gekozenItem != null) {
+                    speler.voegItemToe(gekozenItem);
+                } else if (!itemInput.matches("\\d+")) {
+                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+                }
+
+                System.out.println();
             } else if (antwoord.startsWith("gebruik ")) {
                 String itemNaam = antwoord.substring(8).trim();
                 speler.gebruikItem(itemNaam);
                 System.out.println();
-            }
-            else if (antwoord.equals("naar andere kamer")) {
+            } else if (antwoord.equals("naar andere kamer")) {
                 speler.setJokerGekozen(false);
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.matches("[a-d]")) {
+            } else if (antwoord.matches("[a-c]")) {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help', 'joker' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
             }
         }
 
@@ -237,11 +244,10 @@ public class KamerDailyScrum extends Kamer {
             speler.setJokerGekozen(false);
             System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             speler.voegSleutelToe();
-            speler.voegVoltooideKamerToe(1);
+            speler.voegVoltooideKamerToe(2);
         } else {
             System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
         }
-
     }
 
     @Override

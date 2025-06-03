@@ -59,6 +59,8 @@ public class RoomManager {
                 gekozenKamer.getDeur().setOpen(true);
                 System.out.println("🔓 De deur naar '" + gekozenKamer.getNaam() + "' is geopend.");
 
+                //Bij deze code wordt gekeken of de speler al in die kamer de joker gekozen heeft
+                //Als je de nieuwe kamer betreedt, krijg
                 if (!speler.isJokerGekozen()) {
                     gekozenKamer.initSpeler(speler);
                     speler.setJokerGekozen(true);
@@ -95,9 +97,6 @@ public class RoomManager {
         System.out.println("Activeer finale kamer: " + finale.getNaam());
 
         finale.getDeur().setOpen(true);
-        System.out.println("Deur finale kamer open? " + finale.getDeur().isOpen());
-
-        System.out.println("Check finale kamer😬: " + kamers.contains(finale));
 
         if (!kamers.contains(finale)) {
             kamers.add(finale);

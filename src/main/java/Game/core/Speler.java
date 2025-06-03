@@ -12,10 +12,11 @@ public class Speler {
     private int positie;
     private int score = 0;
     private int streak = 0;
-    private int sleutels = 1;
+    private int sleutels = 5;
     private int levens = 3;
     private static final int MAX_JOKERS = 2;
     private boolean jokerGekozen = false;
+    private boolean eersteKamerBetreden = false;
 
     private List<Integer> voltooideKamers = new ArrayList<>();
     private List<String> monsters = new ArrayList<>();
@@ -248,6 +249,14 @@ public class Speler {
         for (Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    public boolean isEersteKamerBetreden() {
+        return eersteKamerBetreden;
+    }
+
+    public void markeerEersteKamerBetreden() {
+        this.eersteKamerBetreden = true;
     }
 
     private void clearConsole() {

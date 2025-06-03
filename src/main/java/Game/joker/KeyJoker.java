@@ -8,6 +8,7 @@ import java.util.Set;
 //Beschikbaar in 2 specifieke kamers. Daily Scrum en Review
 public class KeyJoker implements Joker, ToegestaandeKamers {
     private boolean used = false;
+    //Deze variabele zorgt ervoor dat alleen de toegevoegde kamers de keys werken op basis van de 'KamerFactory'.
     private static final Set<String> toegestaandeKamers = Set.of("Daily Scrum", "Sprint Review");
 
     @Override
@@ -28,6 +29,10 @@ public class KeyJoker implements Joker, ToegestaandeKamers {
         used = true;
     }
 
+
+    public static Set<String> getToegestaandeKamers() {
+        return toegestaandeKamers;
+    }
 
     @Override
     public boolean isUsed() {

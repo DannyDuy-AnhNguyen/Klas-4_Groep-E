@@ -28,6 +28,7 @@ public class UserInterface {
     }
 
     public void printHelp() {
+        System.out.println();
         System.out.println("🆘 Help:");
         System.out.println("'status' - Bekijk je status.");
         System.out.println("'help' - Toon deze hulptekst.");
@@ -36,6 +37,7 @@ public class UserInterface {
         System.out.println("'pak [item]' - Pak een item uit de kamer.");
         System.out.println("'gebruik [item]' - Gebruik een item uit je inventory.");
         System.out.println("'stop' - Stop het spel.");
+        System.out.println();
     }
 
     public void printKamerOpties(List<Kamer> kamers) {

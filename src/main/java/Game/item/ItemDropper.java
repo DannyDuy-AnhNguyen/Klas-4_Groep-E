@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-//⚠️MAINTANCE; deze klasse wordt de context klasse voor de subklasses.
-//Hier in kunnen items toegevoegd worden.
 public class ItemDropper {
     private static final Random random = new Random();
 
@@ -16,21 +14,22 @@ public class ItemDropper {
         // Bepaal het totaal aantal items (0 t/m 3)
         int totaalAantalItems = random.nextInt(4); // 0, 1, 2 of 3
 
-        // Voeg met 40% kans een nutteloze rots toe
+        // Mogelijke dropopties
         List<Item> mogelijkeItems = new ArrayList<>();
+
+        // 40% kans op nutteloos item
         if (random.nextDouble() < 0.4) {
-            mogelijkeItems.add(new ItemNutteloos("Rots", "nutteloos"));
+            mogelijkeItems.add(new ItemNutteloos("Rots"));
         }
 
         // Voeg bruikbare items toe
         List<Item> bruikbareItems = List.of(
-                new ItemHint("Hint Scroll", "hint"),
-                new ItemWapen("Scrum Zwaard", "kill"),
-                new ItemSplitter("Splitter", "halveer")
+                new ItemWapen("Scrum Zwaard"),
+                new ItemSplitter("Splitter")
         );
         mogelijkeItems.addAll(bruikbareItems);
 
-        // Schud de lijst en selecteer maximaal [totaalAantalItems]
+        // Schud en selecteer random aantal
         Collections.shuffle(mogelijkeItems);
         for (int i = 0; i < Math.min(totaalAantalItems, mogelijkeItems.size()); i++) {
             drops.add(mogelijkeItems.get(i));

@@ -1,20 +1,33 @@
 package Game.hint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class HintContext {
-    private final Map<Integer, List<Hint>> hintMap = new HashMap<>();
+    private final List<Hint> vraag0Hints = new ArrayList<>();
+    private final List<Hint> vraag1Hints = new ArrayList<>();
     private final Random random = new Random();
 
-
-    // Hint toevoegen aan specifieke vraag
     public void voegHintToe(int vraagIndex, Hint hint) {
-        hintMap.computeIfAbsent(vraagIndex, k -> new ArrayList<>()).add(hint);
+        if (vraagIndex == 0) {
+            vraag0Hints.add(hint);
+        } else if (vraagIndex == 1) {
+            vraag1Hints.add(hint);
+        } else {
+            System.out.println("❌ Hint toevoegen voor deze vraag is nog niet ondersteund.");
+        }
     }
 
-    // Willekeurige hint tonen voor een specifieke vraag
     public void toonWillekeurigeHint(int vraagIndex) {
-        List<Hint> hints = hintMap.get(vraagIndex);
+        List<Hint> hints = null;
+
+        if (vraagIndex == 0) {
+            hints = vraag0Hints;
+        } else if (vraagIndex == 1) {
+            hints = vraag1Hints;
+        }
+
         if (hints == null || hints.isEmpty()) {
             System.out.println("💡 Geen hints beschikbaar voor deze vraag.");
             return;
@@ -24,8 +37,8 @@ public class HintContext {
         gekozenHint.toon();
     }
 
-    // Alle hints verwijderen, misschien voor later als we het nodig hebben
     public void wisAlleHints() {
-        hintMap.clear();
+        vraag0Hints.clear();
+        vraag1Hints.clear();
     }
 }

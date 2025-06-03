@@ -9,8 +9,9 @@ import Game.joker.KeyJoker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
-public abstract class Kamer {
+public abstract class Kamer implements KamerInterface {
     protected String naam;
     protected boolean voltooid = false;
     protected Deur deur;
@@ -37,9 +38,9 @@ public abstract class Kamer {
         deur.setOpen(true);
     }
 
-    public Deur getDeur() {
-        return deur;
-    }
+//    public Deur getDeur() {
+//        return deur;
+//    }
 
     // ✅ Item support
     public List<Item> getItems() {
@@ -122,14 +123,31 @@ public abstract class Kamer {
 
     // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
     public void initSpeler(Speler speler) {
-        System.out.println("🃏 Kies je joker: 'hint' of 'key'");
+        KeyJoker keyJoker = new KeyJoker();
+        boolean keyToegestaan = keyJoker.canBeUsedIn(this);
+
+        // Toon alleen keuzes die daadwerkelijk beschikbaar zijn
+        if (keyToegestaan) {
+            System.out.println("🃏 Kies je joker: 'hint' of 'key'");
+        } else {
+            System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
+        }
+
         String keuze = scanner.nextLine().trim().toLowerCase();
 
         if (keuze.equals("key")) {
-            speler.voegJokerToe(new KeyJoker());
-            System.out.println("⚠️De Key joker is alleen inzetbaar in de kamer 'Daily Scrum' en 'Sprint Review'!");
-        } else {
+            if (keyToegestaan) {
+                speler.voegJokerToe(keyJoker);
+                System.out.println("🔐 Je hebt de Key joker gekozen. Succes!");
+            } else {
+                System.out.println("❌ De Key joker is niet beschikbaar in deze kamer.");
+                System.out.println("ℹ️ Alleen beschikbaar in 'Daily Scrum' en 'Sprint Review'.");
+            }
+        } else if (keuze.equals("hint")) {
             speler.voegJokerToe(new HintJoker());
+            System.out.println("💡 Je hebt de Hint joker gekozen.");
+        } else {
+            System.out.println("⚠️ Ongeldige keuze.");
         }
     }
 

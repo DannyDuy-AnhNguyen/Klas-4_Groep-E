@@ -9,7 +9,7 @@ public class HintJoker implements Joker{
 
     @Override
     public void useIn(Kamer kamer, Speler speler){ //speler variabele wordt niet gebruikt, maar schendt ook niet de LSP
-        if (isUsed()) {
+        if (used) {
             System.out.println("❌Deze Hintjoker is al gebruikt🙂‍↔️.");
             return;
         }

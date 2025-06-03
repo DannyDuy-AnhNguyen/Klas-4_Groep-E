@@ -7,6 +7,7 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.item.ItemBoek;
 import Game.joker.Joker;
 import Game.joker.ToegestaandeKamers;
 import Game.monster.BlameGame;
@@ -152,6 +153,13 @@ public class KamerRetrospective extends Kamer {
             return;
         }
 
+        // ✅ Toon eenmalige introductie via KamerInfo
+        if (!speler.isEersteKamerBetreden()) {
+            ItemBoek info = new ItemBoek();
+            info.toonInfo(true);
+            speler.markeerEersteKamerBetreden();
+        }
+
         this.status = new Status(speler);
         betreedIntro();
 
@@ -180,7 +188,6 @@ public class KamerRetrospective extends Kamer {
                 List<Joker> jokers = speler.getJokers();
                 if (jokers.isEmpty()) {
                     System.out.println("❌ Je hebt geen jokers om te gebruiken.");
-                    return;
                 }
 
                 System.out.println("🃏 Beschikbare jokers:");
@@ -233,6 +240,10 @@ public class KamerRetrospective extends Kamer {
                 if (!jokerGebruikt) {
                     System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
                 }
+                System.out.println();
+            } else if (antwoord.equals("info")) {
+                // Extra commando om de KamerInfo opnieuw te tonen
+                ItemBoek.toonInfo(false);
                 System.out.println();
             } else if (antwoord.startsWith("pak ")) {
                 String itemInput = antwoord.substring(4).trim();

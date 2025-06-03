@@ -7,5 +7,4 @@ public interface Joker {
     boolean isUsed();
     void useIn(Kamer kamer, Speler speler);
     String getNaam();
-
 }
