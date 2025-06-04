@@ -1,8 +1,8 @@
 package Game.item;
 
 public class ItemSplitter extends Item implements VerandertAantalVragen {
-    public ItemSplitter(String naam, String effect){
-        super(naam, effect);
+    public ItemSplitter(String naam) {
+        super(naam);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package Game.core;
 
+import Game.item.Gebruikbaar;
+import Game.item.GebruiktVoorMonster;
 import Game.item.Item;
+import Game.item.VerandertAantalVragen;
 import Game.joker.Joker;
 
 import java.util.ArrayList;
@@ -201,25 +204,41 @@ public class Speler {
             return false;
         }
 
-        System.out.println("🧪 Je gebruikt het item: " + item.getNaam() + " (" + item.getEffect() + ")");
+        System.out.println("🧪 Je gebruikt het item: " + item.getNaam());
 
-        // ➕ Effect uitvoeren
-        if (item.getEffect().equals("kill")) {
-            System.out.println("🗡️ Het Scrum Zwaard is gebruikt! Een monster is verslagen.");
-        } else if (item.getEffect().equals("hint")) {
-            System.out.println("💡 Hint Scroll gebruikt! Misschien helpt het je straks.");
-        } else if (item.getEffect().equals("nutteloos")) {
-            System.out.println("🪨 Je gebruikt de rots... niets gebeurt.");
-        } else if (item.getEffect().equals("halveer")) {
-            System.out.println("🪓 De Splitter is gebruikt! Minder vragen om te beantwoorden.");
+        boolean gebruikt = false;
+
+        if (item instanceof GebruiktVoorMonster wapen) {
+            wapen.gebruikTegenMonster();
+            gebruikt = true;
+        } else if (item instanceof VerandertAantalVragen aanpassing) {
+            aanpassing.pasAantalVragenAan(0); // kamer moet echte logica doen
+            gebruikt = true;
+        } else if (item instanceof Gebruikbaar gebruikbaarItem) {
+            gebruikbaarItem.gebruik();
+            gebruikt = true;
         } else {
             System.out.println("❓ Geen effect bekend voor dit item.");
         }
 
-        inventory.remove(item);
-        notifyObservers();
-        return true;
+        if (gebruikt) {
+            inventory.remove(item);
+            notifyObservers();
+        }
+        return gebruikt;
     }
+
+    public void toonInventory() {
+        if (inventory.isEmpty()) {
+            System.out.println("📭 Je hebt geen items in je inventory.");
+        } else {
+            System.out.println("📦 Je inventory bevat:");
+            for (Item item : inventory) {
+                System.out.println("• " + item.getNaam());
+            }
+        }
+    }
+
 
     // Zorgt ervoor dat in het spel de jokers kan gebruiken.
 
