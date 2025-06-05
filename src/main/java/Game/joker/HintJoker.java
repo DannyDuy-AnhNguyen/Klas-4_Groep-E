@@ -4,7 +4,7 @@ import Game.core.Speler;
 import Game.kamer.Kamer;
 
 //Beschikbaar in alle kamers
-public class HintJoker implements Joker{
+public class HintJoker implements Joker, HintJokerInterface{
     private boolean used = false;
 
     @Override
@@ -17,6 +17,18 @@ public class HintJoker implements Joker{
         kamer.toonHint();
         used = true;
     }
+
+    @Override
+    public void useInHint(Kamer kamer){
+        if (used) {
+            System.out.println("❌Deze Hintjoker is al gebruikt🙂‍↔️.");
+            return;
+        }
+
+        kamer.toonHint();
+        used = true;
+    }
+
 
     @Override
     public boolean isUsed() {

@@ -1,32 +1,35 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
-import Game.item.Item;
 import Game.core.Speler;
 import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
-import Game.item.ItemBoek;
-import Game.joker.Joker;
-import Game.joker.ToegestaandeKamers;
 import Game.monster.ScrumVerwarring;
 
-import java.util.List;
-
 public class KamerScrumBoard extends Kamer {
-    private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
     private Status status;
     private final HintContext hintContext = new HintContext();
     private final ScrumVerwarring scrumVerwarring = new ScrumVerwarring();
-
+    private KamerBetreed betreedHandler = new KamerBetreed();
+    private final Antwoord antwoordStrategie;
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
-        super("Scrum Board");
+        super("Scrum Board", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
         toonHint();
+    }
+
+    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
+        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+    }
+
+    @Override
+    public int getHuidigeVraag() {
+        return huidigeVraag;
     }
 
     @Override
@@ -109,150 +112,12 @@ public class KamerScrumBoard extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        if (!deur.isOpen()) {
-            System.out.println("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
-            deur.toonStatus();
-            return;
-        }
+        betreedHandler.betreed(this, speler);
+    }
 
-        // Toon eenmalige introductie via KamerInfo als dit de eerste kamer is die de speler betreedt
-        if (!speler.isEersteKamerBetreden()) {
-            ItemBoek.toonInfo(true);
-            speler.markeerEersteKamerBetreden();
-        }
-
-        System.out.println("🃏🔑In deze kamer kan je de 'KeyJoker' gebruiken!");
-        this.status = new Status(speler);
-
-        betreedIntro();
-
-        while (huidigeVraag < 2) {
-            verwerkOpdracht(huidigeVraag);
-
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-
-            if (antwoord.equals("help")) {
-                toonHelp();
-                System.out.println();
-            } else if (antwoord.equals("status")) {
-                status.update(speler);
-                System.out.println();
-            } else if (antwoord.equals("check")) {
-                if (items.isEmpty()) {
-                    System.out.println("📦 Geen items in deze kamer.");
-                } else {
-                    System.out.println("📦 Items in deze kamer:");
-                    for (int i = 0; i < items.size(); i++) {
-                        System.out.println((i + 1) + ") " + items.get(i));
-                    }
-                }
-                System.out.println();
-            } else if (antwoord.equals("info")) {
-                // Extra commando om de KamerInfo opnieuw te tonen
-                ItemBoek.toonInfo(false);
-                System.out.println();
-            } else if (antwoord.startsWith("pak ")) {
-                String itemInput = antwoord.substring(4).trim();
-                Item gekozenItem = null;
-
-                try {
-                    int index = Integer.parseInt(itemInput) - 1;
-                    if (index >= 0 && index < items.size()) {
-                        gekozenItem = items.remove(index);
-                    } else {
-                        System.out.println("❌ Ongeldig itemnummer.");
-                        continue;
-                    }
-                } catch (NumberFormatException e) {
-                    gekozenItem = neemItem(itemInput);
-                }
-
-                if (gekozenItem != null) {
-                    speler.voegItemToe(gekozenItem);
-                } else if (!itemInput.matches("\\d+")) {
-                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
-                }
-
-                System.out.println();
-            } else if (antwoord.equals("joker")) {
-                List<Joker> jokers = speler.getJokers();
-                if (jokers.isEmpty()) {
-                    System.out.println("❌ Je hebt geen jokers om te gebruiken.");
-                }
-
-                System.out.println("🃏 Beschikbare jokers:");
-                for (Joker joker : jokers) {
-                    String status = joker.isUsed() ? " (gebruikt)" : "";
-                    System.out.println("- " + joker.getNaam() + status);
-                }
-
-                System.out.println("Typ de naam van de joker die je wilt gebruiken (of typ 'annuleer'):");
-                String gekozenJoker = scanner.nextLine().trim().toLowerCase();
-
-                if (gekozenJoker.equals("annuleer")) {
-                    System.out.println("❌ Jokerkeuze geannuleerd.");
-                    return;
-                }
-
-                boolean jokerGebruikt = false;
-
-                for (Joker joker : jokers) {
-                    if (joker.isUsed()) continue;
-
-                    if (joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
-                        if (joker instanceof ToegestaandeKamers kamerBeperkingen) {
-                            if (!kamerBeperkingen.canBeUsedIn(this)) {
-                                System.out.println("❌ Deze joker werkt niet in deze kamer.");
-                                break;
-                            }
-                        }
-
-                        System.out.println("Joker wordt gebruikt!: " + joker.getNaam());
-
-                        if (joker.getNaam().equalsIgnoreCase("hint")) {
-                            hintContext.toonWillekeurigeHint(huidigeVraag);
-                        }
-
-                        joker.useIn(this, speler);
-
-                        if (joker.isUsed()) {
-                            speler.getJokers().remove(joker);
-                        }
-                        jokerGebruikt = true;
-                        break;
-                    }
-                }
-
-                if (!jokerGebruikt) {
-                    System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
-                }
-                System.out.println();
-            } else if (antwoord.startsWith("gebruik ")) {
-                String itemNaam = antwoord.substring(8).trim();
-                speler.gebruikItem(itemNaam);
-                System.out.println();
-            } else if (antwoord.equals("naar andere kamer")) {
-                speler.setJokerGekozen(false);
-                System.out.println("Je verlaat deze kamer.\n");
-                return;
-            } else if (antwoord.matches("[a-d]")) {
-                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                verwerkResultaat(antwoordCorrect, speler);
-            } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'pak [item]', 'gebruik [item]', 'help', 'joker', 'info' of 'naar andere kamer'.\n");
-            }
-        }
-
-        if (!isVoltooid()) {
-            setVoltooid();
-            deur.setOpen(true);
-            speler.setJokerGekozen(false);
-            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-            speler.voegSleutelToe();
-            speler.voegVoltooideKamerToe(1);
-        } else {
-            System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
-        }
+    @Override
+    public int getKamerID() {
+        return 5;
     }
 
     @Override

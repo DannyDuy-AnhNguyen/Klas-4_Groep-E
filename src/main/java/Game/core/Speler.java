@@ -1,9 +1,6 @@
 package Game.core;
 
-import Game.item.Gebruikbaar;
-import Game.item.GebruiktVoorMonster;
 import Game.item.Item;
-import Game.item.VerandertAantalVragen;
 import Game.joker.Joker;
 
 import java.util.ArrayList;
@@ -17,32 +14,39 @@ public class Speler {
     private int streak = 0;
     private int sleutels = 5;
     private int levens = 3;
-    private static final int MAX_JOKERS = 2;
     private boolean jokerGekozen = false;
     private boolean eersteKamerBetreden = false;
 
-    private List<Integer> voltooideKamers = new ArrayList<>();
-    private List<String> monsters = new ArrayList<>();
-    private List<Item> inventory = new ArrayList<>();
-    private List<Observer> observers = new ArrayList<>();
-    private List<Joker> jokers = new ArrayList<>();
+    private final List<Integer> voltooideKamers = new ArrayList<>();
+    private final List<String> monsters = new ArrayList<>();
+    private final List<Item> inventory = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
+    private final List<Joker> jokers = new ArrayList<>();
 
+    private final Scanner scanner = new Scanner(System.in);
 
-    private Scanner scanner = new Scanner(System.in);
+    // Managers
+    private final InventoryManager inventoryManager;
+    private final LevenManager levenManager;
+    private final JokerManager jokerManager;
+    private final MonsterLogboek monsterLogboek;
+    private final VoltooideKamersTracker kamerTracker;
 
-    // === Naam ===
-    public void setNaam(String naam) {
-        this.naam = naam;
-        notifyObservers();
+    public Speler() {
+        this.inventoryManager = new InventoryManager(this);
+        this.levenManager = new LevenManager(this);
+        this.jokerManager = new JokerManager(this);
+        this.monsterLogboek = new MonsterLogboek(this);
+        this.kamerTracker = new VoltooideKamersTracker(this);
     }
 
+    // === Naam & positie ===
     public String getNaam() {
         return naam;
     }
 
-    // === Positie ===
-    public void setPositie(int positie) {
-        this.positie = positie;
+    public void setNaam(String naam) {
+        this.naam = naam;
         notifyObservers();
     }
 
@@ -50,7 +54,12 @@ public class Speler {
         return positie;
     }
 
-    // === Score en streak ===
+    public void setPositie(int positie) {
+        this.positie = positie;
+        notifyObservers();
+    }
+
+    // === Score & streak ===
     public int getScore() {
         return score;
     }
@@ -61,10 +70,7 @@ public class Speler {
     }
 
     public void verlaagScore(int punten) {
-        score -= punten;
-        if (score < 0) {
-            score = 0;
-        }
+        score = Math.max(0, score - punten);
         notifyObservers();
     }
 
@@ -94,31 +100,43 @@ public class Speler {
             System.out.println("🔓 Sleutel gebruikt. Resterende sleutels: " + sleutels);
             notifyObservers();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    // === Levenssysteem ===
+    // === Levenssysteem (via LevenManager) ===
     public int getLevens() {
         return levens;
     }
 
-    public void verliesLeven() {
-        levens--;
-        System.out.println("💔 Je hebt een leven verloren! Resterende levens: " + levens);
-        notifyObservers();
+    public void setLevens(int levens) {
+        this.levens = levens;
+    }
 
-        if (levens <= 0) {
-            gameOver();
-        }
+    public void verliesLeven() {
+        levenManager.verliesLeven();
     }
 
     public void resetLevens() {
-        levens = 3;
-        notifyObservers();
+        levenManager.resetLevens();
     }
 
+    public void gameOver() {
+        System.out.println("\n🛑 GAME OVER! Je hebt geen levens meer.");
+        System.out.print("Wil je opnieuw beginnen? (ja/nee): ");
+        String keuze = scanner.nextLine().trim().toLowerCase();
+
+        if (keuze.equals("ja")) {
+            clearConsole();
+            System.out.println("🔄 Het spel wordt opnieuw gestart...");
+            Game.Main.main(null);
+        } else {
+            System.out.println("👋 Bedankt voor het spelen!");
+            System.exit(0);
+        }
+    }
+
+    // === Joker ===
     public boolean isJokerGekozen() {
         return jokerGekozen;
     }
@@ -127,28 +145,34 @@ public class Speler {
         this.jokerGekozen = gekozen;
     }
 
-    private void gameOver() {
-        System.out.println("\n🛑 GAME OVER! Je hebt geen levens meer.");
-        System.out.print("Wil je opnieuw beginnen? (ja/nee): ");
-        String keuze = scanner.nextLine().trim().toLowerCase();
-
-        if (keuze.equals("ja")) {
-            clearConsole();  // console wissen
-            System.out.println("🔄 Het spel wordt opnieuw gestart...");
-            Game.Main.main(null);  // spel herstarten
-            System.exit(0);
-        } else {
-            System.out.println("👋 Bedankt voor het spelen!");
-            System.exit(0);
-        }
+    public boolean voegJokerToe(Joker joker) {
+        return jokerManager.voegJokerToe(joker);
     }
 
-    // === Voltooide kamers ===
+    public List<Joker> getJokers() {
+        return jokers;
+    }
+
+    // === Inventory ===
+    public void voegItemToe(Item item) {
+        inventoryManager.voegItemToe(item);
+    }
+
+    public boolean gebruikItem(String naam) {
+        return inventoryManager.gebruikItem(naam);
+    }
+
+    public void toonInventory() {
+        inventoryManager.toonInventory();
+    }
+
+    public List<Item> getInventory() {
+        return inventory;
+    }
+
+    // === Kamers ===
     public void voegVoltooideKamerToe(int kamerIndex) {
-        if (!voltooideKamers.contains(kamerIndex)) {
-            voltooideKamers.add(kamerIndex);
-            notifyObservers();
-        }
+        kamerTracker.voegKamerToe(kamerIndex);
     }
 
     public List<Integer> getVoltooideKamers() {
@@ -157,109 +181,20 @@ public class Speler {
 
     // === Monsters ===
     public void voegMonsterToe(String monster) {
-        if (!monsters.contains(monster)) {
-            monsters.add(monster);
-            notifyObservers();
-        }
+        monsterLogboek.voegToe(monster);
     }
 
     public void verwijderMonster(String monster) {
-        monsters.remove(monster);
-        notifyObservers();
+        monsterLogboek.verwijder(monster);
     }
 
     public List<String> getMonsters() {
         return monsters;
     }
 
-    // === Inventory functionaliteit ===
-    public void voegItemToe(Item item) {
-        if (inventory.size() >= 5) {
-            System.out.println("❌ Je inventory zit vol (max 5 items).");
-            return;
-        }
-
-        inventory.add(item);
-        System.out.println("👜 Je hebt het item '" + item.getNaam() + "' opgepakt.");
-        notifyObservers();
-
-        // 🥚 Easter Egg check
-        if (inventory.size() == 5 && inventory.stream().allMatch(i -> i.getNaam().equalsIgnoreCase("Rots"))) {
-            System.out.println("🥚 EASTER EGG: Je inventory zit VOL met nutteloze rotsen. 🤡");
-        }
-    }
-
-    public boolean heeftItem(String naam) {
-        return inventory.stream().anyMatch(i -> i.getNaam().equalsIgnoreCase(naam));
-    }
-
-    public boolean gebruikItem(String naam) {
-        Item item = inventory.stream()
-                .filter(i -> i.getNaam().equalsIgnoreCase(naam))
-                .findFirst()
-                .orElse(null);
-
-        if (item == null) {
-            System.out.println("❌ Je hebt het item '" + naam + "' niet.");
-            return false;
-        }
-
-        System.out.println("🧪 Je gebruikt het item: " + item.getNaam());
-
-        boolean gebruikt = false;
-
-        if (item instanceof GebruiktVoorMonster wapen) {
-            wapen.gebruikTegenMonster();
-            gebruikt = true;
-        } else if (item instanceof VerandertAantalVragen aanpassing) {
-            aanpassing.pasAantalVragenAan(0); // kamer moet echte logica doen
-            gebruikt = true;
-        } else if (item instanceof Gebruikbaar gebruikbaarItem) {
-            gebruikbaarItem.gebruik();
-            gebruikt = true;
-        } else {
-            System.out.println("❓ Geen effect bekend voor dit item.");
-        }
-
-        if (gebruikt) {
-            inventory.remove(item);
-            notifyObservers();
-        }
-        return gebruikt;
-    }
-
-    public void toonInventory() {
-        if (inventory.isEmpty()) {
-            System.out.println("📭 Je hebt geen items in je inventory.");
-        } else {
-            System.out.println("📦 Je inventory bevat:");
-            for (Item item : inventory) {
-                System.out.println("• " + item.getNaam());
-            }
-        }
-    }
-
-
-    // Zorgt ervoor dat in het spel de jokers kan gebruiken.
-
-    //Jokers kan toegevoegd worden met behulp van polymorfisme
-    public boolean voegJokerToe(Joker joker) {
-        if (jokers.size() >= MAX_JOKERS) {
-            System.out.println("❌ Je hebt al het maximum aantal jokers (" + MAX_JOKERS + ") bereikt.");
-            return false;
-        }
-        jokers.add(joker);
-        return true;
-    }
-
-    //Hier wordt een lijst met daarin de toegevoegde jokers meegegeven welke jokers de speler nu heeft.
-    public List<Joker> getJokers() {
-        return jokers;
-    }
-
-    // === Observer pattern ===
+    // === Observer ===
     public void voegObserverToe(Observer observer) {
-        if (observers.isEmpty()) {
+        if (!observers.contains(observer)) {
             observers.add(observer);
         }
     }
@@ -270,6 +205,7 @@ public class Speler {
         }
     }
 
+    // === Eerste kamer tracker ===
     public boolean isEersteKamerBetreden() {
         return eersteKamerBetreden;
     }
@@ -278,12 +214,12 @@ public class Speler {
         this.eersteKamerBetreden = true;
     }
 
+    // === Console clearen ===
     private void clearConsole() {
         try {
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
-                // Voor Linux/macOS/Unix
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }

@@ -62,6 +62,7 @@ public class ConsoleKleuren {
      * @param herhalingen Hoeveel keer de animatie herhaald wordt.
      * @param vertraging  De pauze (ms) tussen frames.
      */
+
     public static void regenboogAnimatie(String tekst, int herhalingen, int vertraging) {
         String[] kleuren = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
         for (int i = 0; i < herhalingen; i++) {

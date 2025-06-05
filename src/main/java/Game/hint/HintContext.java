@@ -15,7 +15,7 @@ public class HintContext {
         } else if (vraagIndex == 1) {
             vraag1Hints.add(hint);
         } else {
-            System.out.println("❌ Hint toevoegen voor deze vraag is nog niet ondersteund.");
+//            System.out.println("❌ Hint toevoegen voor deze vraag is nog niet ondersteund.");
         }
     }
 
@@ -33,6 +33,7 @@ public class HintContext {
             return;
         }
 
+        //De
         Hint gekozenHint = hints.get(random.nextInt(hints.size()));
         gekozenHint.toon();
     }

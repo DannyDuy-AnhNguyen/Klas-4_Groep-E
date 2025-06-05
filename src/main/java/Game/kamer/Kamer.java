@@ -5,21 +5,48 @@ import Game.item.Item;
 import Game.core.Speler;
 import Game.joker.HintJoker;
 import Game.joker.KeyJoker;
+import Game.core.Status;
+import Game.antwoord.Antwoord;
+import Game.hint.HintContext;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-public abstract class Kamer implements KamerInterface {
+public abstract class Kamer {
     protected String naam;
     protected boolean voltooid = false;
     protected Deur deur;
     protected List<Item> items = new ArrayList<>();
     protected Scanner scanner;
+    protected Status status;
+    protected Antwoord antwoordStrategie;
+    protected HintContext hintContext;
 
-    public Kamer(String naam) {
+    public abstract int getKamerID();
+
+    public abstract int getHuidigeVraag();
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Antwoord getAntwoordStrategie() {
+        return antwoordStrategie;
+    }
+
+    public HintContext getHintContext() {
+        return hintContext;
+    }
+
+    public Kamer(String naam, Antwoord antwoordStrategie) {
         this.naam = naam;
+        this.antwoordStrategie = antwoordStrategie;
         this.deur = new Deur();
         this.scanner = new Scanner(System.in);
         deur.setOpen(true);
@@ -38,9 +65,9 @@ public abstract class Kamer implements KamerInterface {
         deur.setOpen(true);
     }
 
-//    public Deur getDeur() {
-//        return deur;
-//    }
+    public Deur getDeur() {
+        return deur;
+    }
 
     // ✅ Item support
     public List<Item> getItems() {
@@ -125,31 +152,30 @@ public abstract class Kamer implements KamerInterface {
     public void initSpeler(Speler speler) {
         KeyJoker keyJoker = new KeyJoker();
         boolean keyToegestaan = keyJoker.canBeUsedIn(this);
+        speler.voegJokerToe(new HintJoker());
 
         // Toon alleen keuzes die daadwerkelijk beschikbaar zijn
         if (keyToegestaan) {
             System.out.println("🃏 Kies je joker: 'hint' of 'key'");
+            String keuze = scanner.nextLine().trim().toLowerCase();
+
+            if (keuze.equals("key")) {
+                if (keyToegestaan) {
+                    speler.voegJokerToe(keyJoker);
+                    System.out.println("🔐 Je hebt de Key joker gekozen. Succes!");
+                } else {
+                    System.out.println("❌ De Key joker is niet beschikbaar in deze kamer.");
+                    System.out.println("ℹ️ Alleen beschikbaar in 'Daily Scrum' en 'Sprint Review'.");
+                }
+            } else if (keuze.equals("hint")) {
+                speler.voegJokerToe(new HintJoker());
+                System.out.println("💡 Je hebt de Hint joker gekozen.");
+            } else {
+                System.out.println("⚠️ Ongeldige keuze.");
+            }
         } else {
             System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
         }
-
-        String keuze = scanner.nextLine().trim().toLowerCase();
-
-        if (keuze.equals("key")) {
-            if (keyToegestaan) {
-                speler.voegJokerToe(keyJoker);
-                System.out.println("🔐 Je hebt de Key joker gekozen. Succes!");
-            } else {
-                System.out.println("❌ De Key joker is niet beschikbaar in deze kamer.");
-                System.out.println("ℹ️ Alleen beschikbaar in 'Daily Scrum' en 'Sprint Review'.");
-            }
-        } else if (keuze.equals("hint")) {
-            speler.voegJokerToe(new HintJoker());
-            System.out.println("💡 Je hebt de Hint joker gekozen.");
-        } else {
-            System.out.println("⚠️ Ongeldige keuze.");
-        }
     }
-
 
 }

@@ -12,9 +12,12 @@ public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
 
     public void printWelkom() {
-        regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 200);
-        System.out.print("Wat is je naam? ");
+      regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 100);
+       System.out.print("Wat is je naam? ");
     }
+
+
+
 
     public String leesInvoer() {
         System.out.print("> ");
@@ -91,5 +94,24 @@ public class UserInterface {
                 　| (￣ヽ＿_ヽ_)__)
                 　＼二つ
                 """);
+
+        regenboogAnimatie("""
+                𝕲𝖊𝖋𝖊𝖑𝖎𝖈𝖎𝖙𝖊𝖊𝖗𝖉! 𝖏𝖊 𝖍𝖊𝖇𝖙 𝖍𝖊𝖙 𝖘𝖕𝖊𝖑 𝖛𝖔𝖑𝖙𝖔𝖔𝖎𝖉!
+                𝕮𝖔𝖓𝖌𝖗𝖆𝖙𝖘! 𝕿𝖎𝖒𝖊 𝖙𝖔 𝖈𝖊𝖑𝖊𝖇𝖗𝖆𝖙𝖊 🎉
+
+                𝕯𝖎𝖙 𝖎𝖘 𝖏𝖊 𝖈𝖗𝖔𝖜𝖓 𝖔𝖋 𝖛𝖎𝖈𝖙𝖔𝖗𝖞!
+                𝕬𝖑𝖑𝖊 𝖕𝖗𝖔𝖌𝖗𝖆𝖒𝖒𝖆 𝖎𝖘 𝖉𝖔𝖓𝖊, 𝖈𝖔𝖉𝖊𝖗.
+
+                　　　　＿＿
+                　　　🌸＞　　フ   I don't want likes I want ham sandwich
+                　　　| 　_　 _ l        (edit: Got ham sandwich)
+                　　　／` ミ_wノ
+                　　 /　　　 　 |
+                　　 /　 ヽ　　 ﾉ
+                　  │　　|　|　|
+                　／￣|　　 |　|　|
+                　| (￣ヽ＿_ヽ_)__)
+                　＼二つ
+                """, 20, 200);
     }
 }
