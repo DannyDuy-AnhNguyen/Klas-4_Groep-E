@@ -1,8 +1,5 @@
 package Game.core;
 
-import Game.joker.HintJoker;
-import Game.joker.Joker;
-import Game.joker.KeyJoker;
 import Game.kamer.Kamer;
 
 import java.util.List;

@@ -1,12 +1,9 @@
 package Game.hint;
 
-public class FunnyHint implements Hint {
-    private final String tekst;
-
+public class FunnyHint extends AbstractHint implements Hint {
     public FunnyHint(String tekst) {
-        this.tekst = tekst;
+        super(tekst);
     }
-
     @Override
     public void toon() {
         System.out.println("😂 FUNNY HINT: " + tekst);

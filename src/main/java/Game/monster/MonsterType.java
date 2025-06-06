@@ -9,4 +9,8 @@ public interface MonsterType {
     boolean beantwoordVraag(String antwoord);
     boolean verslaMetItem(Item item);
     boolean isVerslagen();
+
+    // Nieuw toegevoegd:
+    void verwerkOpdracht(int index);
+    String getJuisteAntwoord(int index);
 }

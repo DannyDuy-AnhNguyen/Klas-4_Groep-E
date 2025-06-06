@@ -74,11 +74,6 @@ public abstract class Kamer {
         return items;
     }
 
-//    public void voegItemToe(Item item) {
-//        System.out.println("Items😏: ");
-//        items.add(item);
-//    }
-
     public Item neemItem(String naam) {
         for (Item i : items) {
             if (i.getNaam().equalsIgnoreCase(naam)) {
@@ -150,9 +145,8 @@ public abstract class Kamer {
 
     // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
     public void initSpeler(Speler speler) {
-        KeyJoker keyJoker = new KeyJoker();
+        KeyJoker keyJoker = new KeyJoker("key");
         boolean keyToegestaan = keyJoker.canBeUsedIn(this);
-        speler.voegJokerToe(new HintJoker());
 
         // Toon alleen keuzes die daadwerkelijk beschikbaar zijn
         if (keyToegestaan) {
@@ -168,14 +162,14 @@ public abstract class Kamer {
                     System.out.println("ℹ️ Alleen beschikbaar in 'Daily Scrum' en 'Sprint Review'.");
                 }
             } else if (keuze.equals("hint")) {
-                speler.voegJokerToe(new HintJoker());
+                speler.voegJokerToe(new HintJoker("hint"));
                 System.out.println("💡 Je hebt de Hint joker gekozen.");
             } else {
                 System.out.println("⚠️ Ongeldige keuze.");
             }
         } else {
             System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
+            speler.voegJokerToe(new HintJoker("hint"));
         }
     }
-
 }

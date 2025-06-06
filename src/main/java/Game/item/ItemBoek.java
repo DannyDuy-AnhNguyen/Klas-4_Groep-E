@@ -2,7 +2,11 @@ package Game.item;
 
 import static Game.core.ConsoleKleuren.*;
 
-public class ItemBoek {
+public class ItemBoek extends Item{
+
+    public ItemBoek(String naam){
+        super(naam);
+    }
 
     private static boolean storylineGetoond = false;
 

@@ -1,10 +1,8 @@
 package Game.hint;
 
-public class HelpHint implements Hint {
-    private final String tekst;
-
+public class HelpHint extends AbstractHint implements Hint {
     public HelpHint(String tekst) {
-        this.tekst = tekst;
+        super(tekst);
     }
 
     @Override

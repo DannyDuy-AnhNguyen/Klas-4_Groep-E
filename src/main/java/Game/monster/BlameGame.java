@@ -59,75 +59,12 @@ public class BlameGame extends Monster {
         }
     }
 
-    public boolean verslaMetExtraVragen() {
-        Scanner scanner = new Scanner(System.in);
-        int correct = 0;
-
-        System.out.println("Je hebt geen geschikt item. Je moet nu extra vragen correct beantwoorden om het monster te verslaan!");
-
-        for (int i = 0; i < juisteAntwoorden.length; i++) {
-            verwerkOpdracht(i);
-            System.out.println();
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-
-            if (antwoord.equals(juisteAntwoorden[i])) {
-                System.out.println("Correct!");
-                correct++;
-            } else {
-                System.out.println("Fout. Het juiste antwoord was: " + juisteAntwoorden[i].toUpperCase());
-            }
-        }
-
-        if (correct == juisteAntwoorden.length) {
-            verslagen = true;
-            System.out.println("Je hebt alle extra vragen correct beantwoord! Het monster is verslagen!");
-            return true;
-        } else {
-            System.out.println("Niet alle antwoorden waren correct. Het monster leeft nog!");
-            return false;
-        }
-    }
-
-    public boolean verslaMetExtraVragen(int aantalVragen, Speler speler) {
-        Scanner scanner = new Scanner(System.in);
-        int fouten = 0;
-
-        System.out.println("Je moet nu " + aantalVragen + " extra vraag(en) goed beantwoorden om het monster te verslaan.");
-
-        for (int i = 0; i < aantalVragen && i < juisteAntwoorden.length; i++) {
-            verwerkOpdracht(i);
-            System.out.print("Jouw antwoord: ");
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-
-            if (antwoord.equals(juisteAntwoorden[i])) {
-                System.out.println("Correct!");
-            } else {
-                fouten++;
-                speler.verliesLeven();
-                System.out.println("Fout! Het juiste antwoord was: " + juisteAntwoorden[i].toUpperCase());
-                System.out.println("Je verliest een leven. Nog " + speler.getLevens() + " over.");
-            }
-        }
-
-        if (fouten == 0) {
-            verslagen = true;
-            System.out.println("Je hebt alle extra vragen goed! Het monster is verslagen.");
-            return true;
-        } else {
-            System.out.println("Je had " + fouten + " fout(en). Het monster is nog niet verslagen.");
-            return false;
-        }
-    }
-
-    public void verliesLeven(Speler speler) {
-        speler.verliesLeven();
-        System.out.println("Je hebt een leven verloren door het monster Blame Game!");
-    }
-
+    @Override
     public String getJuisteAntwoord(int index) {
         if (index >= 0 && index < juisteAntwoorden.length) {
             return juisteAntwoorden[index];
+        } else {
+            return ""; // Of eventueel: throw new IllegalArgumentException("Ongeldig index");
         }
-        return "";
     }
 }

@@ -7,12 +7,13 @@ import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
 import Game.monster.SprintConfusie;
+import Game.monster.MonsterStrijdService;
 
 public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
-    private final SprintConfusie sprintConfusie = new SprintConfusie();
+    private SprintConfusie monster = new SprintConfusie();
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
 
@@ -20,7 +21,6 @@ public class KamerReview extends Kamer {
         super("Sprint Review", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
-        toonHint();
     }
 
     protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
@@ -45,23 +45,13 @@ public class KamerReview extends Kamer {
         // 🎯 Hints voor vraag 2
         hintContext.voegHintToe(2, new HelpHint("Wat is nuttig om bij een review te houden?"));
         hintContext.voegHintToe(2, new FunnyHint("Sprint review geeft jou ook speciale superkracht om 'Transparant' te zijn!"));
+
+        hintContext.toonWillekeurigeHint(getHuidigeVraag());
     }
 
     @Override
     public void betreedIntro() {
-        System.out.println("\nJe bent nu in de kamer: " + naam);
-        deur.toonStatus();
-        System.out.println();
-
-        System.out.println("📦 Items in deze kamer:");
-        if (items.isEmpty()) {
-            System.out.println("- Geen items beschikbaar.");
-        } else {
-            for (int i = 0; i < items.size(); i++) {
-                System.out.println((i + 1) + ") " + items.get(i));
-            }
-        }
-        System.out.println();
+        betreedHandler.betreedIntro(this);
     }
 
     @Override
@@ -111,7 +101,7 @@ public class KamerReview extends Kamer {
             System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
 
             // Start de monster strijd
-            bestrijdMonster(speler, sprintConfusie);
+            bestrijdMonster(speler);
         }
     }
 
@@ -132,64 +122,10 @@ public class KamerReview extends Kamer {
 
     @Override
     public void toonHelp() {
-        System.out.println();
-        System.out.println("Typ het letterantwoord: a, b, c of d");
-        System.out.println("Gebruik 'status' om je huidige status te zien.");
-        System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
-        System.out.println("Gebruik 'help' om deze hulp te zien.");
-        System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
-        System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
-        System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
-        System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
-        System.out.println("Gebruik 'joker' om een joker te gebruiken");
-        System.out.println();
+        betreedHandler.toonHelp();
     }
 
-    public void bestrijdMonster(Speler speler, SprintConfusie monster) {
-        System.out.println("❗ Monster 'Sprint Confusie' verschijnt! Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
-        System.out.println("Wil je de monster nu bestrijden? (ja/nee)");
-
-        String keuze = scanner.nextLine().trim().toLowerCase();
-        if (keuze.equals("nee")) {
-            System.out.println("De monster blijft je achtervolgen! Je kunt hem later bestrijden met het commando 'bestrijd monster'.");
-            return;
-        }
-
-        int vragenTeBeantwoorden = 4;
-
-        System.out.println("Wil je een item gebruiken om het makkelijker te maken? (ja/nee)");
-        if (scanner.nextLine().trim().equalsIgnoreCase("ja")) {
-            System.out.println("Welk item wil je gebruiken?");
-            String itemNaam = scanner.nextLine().trim();
-            boolean gebruikt = speler.gebruikItem(itemNaam);
-            if (gebruikt) {
-                if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
-                    vragenTeBeantwoorden = 0;
-                    System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
-                } else if (itemNaam.equalsIgnoreCase("Splitter")) {
-                    vragenTeBeantwoorden = 2;
-                    System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
-                }
-            }
-        }
-
-        for (int i = 0; i < vragenTeBeantwoorden; i++) {
-            monster.verwerkOpdracht(i);
-            System.out.print("Jouw antwoord: ");
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-            if (!antwoord.equals(monster.getJuisteAntwoord(i).toLowerCase())) {
-                speler.verliesLeven();
-                System.out.println("Fout antwoord! Je verliest een leven. Levens over: " + speler.getLevens());
-                if (speler.getLevens() <= 0) {
-                    System.out.println("Game Over!");
-                    return;
-                }
-            } else {
-                System.out.println("✅ Goed antwoord!");
-            }
-        }
-
-        System.out.println("🎉 Je hebt de monster verslagen!");
-        speler.verwijderMonster("Sprint Confusie");
+    public void bestrijdMonster(Speler speler) {
+        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }

@@ -14,8 +14,6 @@ public class HintContext {
             vraag0Hints.add(hint);
         } else if (vraagIndex == 1) {
             vraag1Hints.add(hint);
-        } else {
-//            System.out.println("❌ Hint toevoegen voor deze vraag is nog niet ondersteund.");
         }
     }
 

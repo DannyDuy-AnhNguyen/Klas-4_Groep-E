@@ -6,6 +6,7 @@ import Game.core.Status;
 import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
+import Game.monster.MonsterStrijdService;
 
 public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
@@ -17,7 +18,6 @@ public class KamerFinaleTIA extends Kamer {
     public KamerFinaleTIA(Antwoord antwoordStrategie) {
         super("Finale TIA Kamer – Waarom Scrum?", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
-        toonHint();
     }
 
     protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
@@ -46,23 +46,13 @@ public class KamerFinaleTIA extends Kamer {
         // 🎯 Hints voor vraag 3
         hintContext.voegHintToe(3, new HelpHint("Sprint 0 wordt vaak gebruikt voor voorbereiding en planning."));
         hintContext.voegHintToe(3, new FunnyHint("3, 2, 1, NUUUULLLLL!!!!"));
+
+        hintContext.toonWillekeurigeHint(getHuidigeVraag());
     }
 
     @Override
     public void betreedIntro() {
-        System.out.println("\nJe bent nu in de kamer: " + naam);
-        deur.toonStatus();
-        System.out.println();
-
-        System.out.println("📦 Items in deze kamer:");
-        if (items.isEmpty()) {
-            System.out.println("- Geen items beschikbaar.");
-        } else {
-            for (int i = 0; i < items.size(); i++) {
-                System.out.println((i + 1) + ") " + items.get(i));
-            }
-        }
-        System.out.println();
+        betreedHandler.toonHelp();
     }
 
     @Override
@@ -80,26 +70,31 @@ public class KamerFinaleTIA extends Kamer {
 
     @Override
     public void verwerkOpdracht(int huidigeVraag){
-        if (huidigeVraag == 0) {
-            System.out.println("1. Wat vind je van Scrum?");
-            System.out.println("a) Uitstekend");
-            System.out.println("b) Neutraal");
-            System.out.println("c) Slecht");
-        } else if (huidigeVraag == 1) {
-            System.out.println("2. Uit welk jaar is Scrum ontstaan?");
-            System.out.println("a) 1993");
-            System.out.println("b) 1995");
-            System.out.println("c) 2001");
-            System.out.println("d) 2010");
-        } else if (huidigeVraag == 2) {
-            System.out.println("3. Is Scrum Scrumario?");
-            System.out.println("a) Ja");
-            System.out.println("b) Ja");
-            System.out.println("c) Ja");
-            System.out.println("d) Ja");
-        } else if (huidigeVraag == 3) {
-            System.out.println("4. Bij welke sprint hoort deze userstory?");
-            System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
+        switch (huidigeVraag) {
+            case 0 -> {
+                System.out.println("1. Wat vind je van Scrum?");
+                System.out.println("a) Uitstekend");
+                System.out.println("b) Neutraal");
+                System.out.println("c) Slecht");
+            }
+            case 1 -> {
+                System.out.println("2. Uit welk jaar is Scrum ontstaan?");
+                System.out.println("a) 1993");
+                System.out.println("b) 1995");
+                System.out.println("c) 2001");
+                System.out.println("d) 2010");
+            }
+            case 2 -> {
+                System.out.println("3. Is Scrum Scrumario?");
+                System.out.println("a) Ja");
+                System.out.println("b) Ja");
+                System.out.println("c) Ja");
+                System.out.println("d) Ja");
+            }
+            case 3 -> {
+                System.out.println("4. Bij welke sprint hoort deze userstory?");
+                System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
+            }
         }
     }
 
@@ -111,14 +106,6 @@ public class KamerFinaleTIA extends Kamer {
             System.out.println("Correct!\n");
         } else {
             System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
-
-            System.out.println("Wil je een hint? Type 'ja' of 'nee'");
-            String antwoord = scanner.nextLine().trim().toLowerCase();
-
-            if(antwoord.equals("ja")){
-                // 👇 Toon een hint
-                hintContext.toonWillekeurigeHint(huidigeVraag);
-            }
         }
     }
 
@@ -145,17 +132,7 @@ public class KamerFinaleTIA extends Kamer {
 
     @Override
     public void toonHelp() {
-        System.out.println();
-        System.out.println("Typ het letterantwoord: a, b, c of d");
-        System.out.println("Gebruik 'status' om je huidige status te zien.");
-        System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
-        System.out.println("Gebruik 'help' om deze hulp te zien.");
-        System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
-        System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
-        System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
-        System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
-        System.out.println("Gebruik 'joker' om een joker te gebruiken");
-        System.out.println();
+        betreedHandler.toonHelp();
     }
 
     public void setStatus(Status status) {

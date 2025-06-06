@@ -128,9 +128,19 @@ public class Speler {
 
         if (keuze.equals("ja")) {
             clearConsole();
-            System.out.println("🔄 Het spel wordt opnieuw gestart...");
+            System.out.println("🔄 Het spel wordt opnieuw gestart...\n");
             Game.Main.main(null);
         } else {
+            System.out.println("""
+        ╔══════════════════════════════╗
+        ║    💀  YOU DIED, RIP...     ║
+        ╚══════════════════════════════╝
+        """);
+            System.out.println();
+            System.out.println();
+            System.out.println("💀 Oei... Zelfs een Scrum Master kon je niet redden.");
+            System.out.println();
+            System.out.println();
             System.out.println("👋 Bedankt voor het spelen!");
             System.exit(0);
         }
@@ -216,15 +226,10 @@ public class Speler {
 
     // === Console clearen ===
     private void clearConsole() {
-        try {
-            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            System.out.println("Kon de console niet wissen.");
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
         }
     }
 }
