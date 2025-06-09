@@ -8,6 +8,7 @@ import Game.joker.KeyJoker;
 import Game.core.Status;
 import Game.antwoord.Antwoord;
 import Game.hint.HintContext;
+import Game.monster.Monster;
 import Game.monster.MonsterStrijdService;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public abstract class Kamer {
     protected Status status;
     protected Antwoord antwoordStrategie;
     protected HintContext hintContext;
+    protected Monster monster;
+
 
     public Kamer(String naam, Antwoord antwoordStrategie) {
         this.naam = naam;
@@ -39,15 +42,17 @@ public abstract class Kamer {
 
     public abstract void verhoogHuidigeVraag();
 
+    //Deze methode controleerd of de kamer wel of geen monster heeft (Alleen KamerFinaleTIA heeft geen monster)🔍
     public boolean heeftMonster() {
-        return false;
+        return monster != null;
     }
 
     // Deze methode zorgt ervoor dat het binnen de kamerBetreed de monsters gebruikt kunt worden.
-    //Zie methode binnen de klasse 'KamerBetreed' > verwerkResultaat
-    //Ik kan deze methode helaas niet abstract maken omdat de KamerFinaleTIA geen gebruik maakt van monsters👾
-    public void bestrijdMonster(Speler speler){
-        if(!heeftMonster()){
+    // Zie methode binnen de klasse 'KamerBetreed' > verwerkResultaat
+    public void bestrijdMonster(Speler speler) {
+        if (heeftMonster()) {
+            MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
+        } else {
             System.out.println("Deze kamer heeft geen monster!");
         }
     }

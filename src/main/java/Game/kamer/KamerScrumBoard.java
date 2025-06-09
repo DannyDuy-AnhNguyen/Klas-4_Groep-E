@@ -13,13 +13,13 @@ public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
     private final HintContext hintContext = new HintContext();
-    private ScrumVerwarring monster = new ScrumVerwarring();
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
+        this.monster = new ScrumVerwarring();
         deur.setOpen(false);
     }
 
@@ -106,14 +106,5 @@ public class KamerScrumBoard extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
-    }
-
-    @Override
-    public boolean heeftMonster() {
-        return true;
-    }
-
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }

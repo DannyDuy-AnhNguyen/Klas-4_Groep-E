@@ -17,13 +17,13 @@ public class KamerRetrospective extends Kamer {
     private final HintContext hintContext = new HintContext();
     private boolean introGetoond = false;
     private final Scanner scanner = new Scanner(System.in);
-    private BlameGame monster = new BlameGame();
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Kamer Retrospective", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
+        this.monster = new BlameGame();
         deur.setOpen(false);
     }
 
@@ -120,14 +120,5 @@ public class KamerRetrospective extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
-    }
-
-    @Override
-    public boolean heeftMonster() {
-        return true;
-    }
-
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }

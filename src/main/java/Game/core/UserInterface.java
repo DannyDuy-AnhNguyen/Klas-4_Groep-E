@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Scanner;
 import static Game.core.ConsoleKleuren.*;
 
-
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
 
     public void printWelkom() {
       regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 100);
-       System.out.print("Wat is je naam? ");
+      System.out.print("Wat is je naam? ");
+      GeluidSpeler.speelGeluid("geluid/David.wav");
     }
 
 

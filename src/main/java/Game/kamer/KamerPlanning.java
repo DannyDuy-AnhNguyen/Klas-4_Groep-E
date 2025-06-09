@@ -19,11 +19,11 @@ public class KamerPlanning extends Kamer {
     private final Scanner scanner = new Scanner(System.in);
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
-    private Misverstand monster = new Misverstand();
 
     public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
+        this.monster = new Misverstand();
         deur.setOpen(false);
     }
 
@@ -131,14 +131,5 @@ public class KamerPlanning extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
-    }
-
-    @Override
-    public boolean heeftMonster() {
-        return true;
-    }
-
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }

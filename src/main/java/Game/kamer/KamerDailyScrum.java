@@ -13,7 +13,6 @@ import Game.monster.MonsterStrijdService;
 public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
-    private VerliesVanFocus monster = new VerliesVanFocus();
     private Status status;
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
@@ -21,6 +20,7 @@ public class KamerDailyScrum extends Kamer {
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
+        this.monster = new VerliesVanFocus();
         deur.setOpen(false);
     }
 
@@ -110,12 +110,4 @@ public class KamerDailyScrum extends Kamer {
         betreedHandler.toonHelp();
     }
 
-    @Override
-    public boolean heeftMonster() {
-        return true;
-    }
-
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
-    }
 }

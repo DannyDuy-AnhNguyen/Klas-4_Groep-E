@@ -13,13 +13,13 @@ public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
     private Status status;
-    private SprintConfusie monster = new SprintConfusie();
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
 
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
+        this.monster = new SprintConfusie();
         deur.setOpen(false);
     }
 
@@ -117,14 +117,5 @@ public class KamerReview extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
-    }
-
-    @Override
-    public boolean heeftMonster() {
-        return true;
-    }
-
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }
