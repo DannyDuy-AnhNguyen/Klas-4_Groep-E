@@ -275,7 +275,7 @@ public class KamerBetreed {
                 kamer.bestrijdMonster(speler);
             } else {
                 System.out.println("Deur blijft gesloten, maar er verschijnt geen monster in de finale kamer.\n");
-                speler.verliesLeven(); // optioneel: eventueel straf toepassen
+                speler.verliesLeven();
             }
         }
     }
