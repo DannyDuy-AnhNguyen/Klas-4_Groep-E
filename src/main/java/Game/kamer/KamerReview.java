@@ -28,6 +28,11 @@ public class KamerReview extends Kamer {
     }
 
     @Override
+    public void verhoogHuidigeVraag(){
+        huidigeVraag++;
+    }
+
+    @Override
     public int getHuidigeVraag() {
         return huidigeVraag;
     }
@@ -91,18 +96,7 @@ public class KamerReview extends Kamer {
 
     @Override
     public void verwerkResultaat(boolean correct, Speler speler) {
-        if (correct) {
-            speler.verhoogScore(10);
-            verwerkFeedback(huidigeVraag);
-            huidigeVraag++;
-            System.out.println("Correct!\n");
-        } else {
-            speler.voegMonsterToe("Sprint Confusie");
-            System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
-
-            // Start de monster strijd
-            bestrijdMonster(speler);
-        }
+        betreedHandler.verwerkResultaat(correct, speler, this);
     }
 
     @Override
@@ -123,6 +117,11 @@ public class KamerReview extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
+    }
+
+    @Override
+    public boolean heeftMonster() {
+        return true;
     }
 
     public void bestrijdMonster(Speler speler) {

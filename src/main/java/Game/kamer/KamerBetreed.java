@@ -7,9 +7,11 @@ import Game.joker.KeyJokerInterface;
 import Game.item.Item;
 import Game.core.Status;
 import Game.item.ItemBoek;
+import Game.assistent.Assistent;
 
 import java.util.List;
 import java.util.Scanner;
+
 
 public class KamerBetreed {
 
@@ -53,12 +55,13 @@ public class KamerBetreed {
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
             switch (antwoord) {
+            // maakt gebruik van de commando's waar de methode opgeroepen wordt.
                 case "help":
                     kamer.toonHelp();
                     System.out.println();
                     break;
                 case "status":
-                    kamer.getStatus().update(speler);
+                    kamer.getStatus().toonStatus();
                     System.out.println();
                     break;
                 case "check":
@@ -73,6 +76,17 @@ public class KamerBetreed {
                     break;
                 case "info":
                     ItemBoek.toonInfo(false);
+                    System.out.println();
+                    break;
+                case "assistent":
+                    Assistent assistent = Assistent.maakVoorKamer(kamer.getKamerID());
+                    if (assistent != null) {
+                        System.out.println();
+                        assistent.activeer();
+                    } else {
+                        System.out.println();
+                        System.out.println("❌ Er is geen assistent beschikbaar in deze kamer.");
+                    }
                     System.out.println();
                     break;
                 default:
@@ -128,6 +142,8 @@ public class KamerBetreed {
             System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             speler.voegSleutelToe();
             speler.voegVoltooideKamerToe(kamer.getKamerID());
+            kamer.getStatus().toonStatus();
+            System.out.println();
         } else {
             System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
         }
@@ -212,5 +228,55 @@ public class KamerBetreed {
         System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
         System.out.println("Gebruik 'joker' om een joker te gebruiken");
         System.out.println();
+    }
+
+
+    //Monster type test
+    public String monsterType(int kamerID){
+        switch (kamerID){
+            case 1 -> {
+                return "Misverstand";
+            }
+            case 2 -> {
+                return "Sprint Confusie";
+            }
+            case 3 -> {
+                return "VerliesVanFocus";
+            }
+            case 4 -> {
+                return "Blame Game";
+            }
+            case 5 -> {
+                return "Scrum Verwarring";
+            }
+            default -> {
+                return "Speler verliest leven";
+            }
+        }
+    }
+
+    //Verwerk resultaat van elke kamer
+    public void verwerkResultaat(boolean correct, Speler speler, Kamer kamer){
+        if (correct) {
+            System.out.println("\n✅ Correct!");
+            speler.verhoogScore(10);
+
+            int huidigeVraag = kamer.getHuidigeVraag(); // eerst ophalen
+            kamer.verwerkFeedback(huidigeVraag);
+            kamer.verhoogHuidigeVraag();
+            System.out.println();
+        } else {
+
+            // ❗️Geen monsters in de finale kamer
+            if (kamer.getKamerID() != 6) {
+                System.out.println("\n❌ Fout, probeer opnieuw.");
+                speler.voegMonsterToe(monsterType(kamer.getKamerID()));
+                System.out.println("Monster '" + monsterType(kamer.getKamerID()) + "' verschijnt! Probeer het opnieuw.\n");
+                kamer.bestrijdMonster(speler);
+            } else {
+                System.out.println("Deur blijft gesloten, maar er verschijnt geen monster in de finale kamer.\n");
+                speler.verliesLeven(); // optioneel: eventueel straf toepassen
+            }
+        }
     }
 }

@@ -32,6 +32,11 @@ public class KamerRetrospective extends Kamer {
     }
 
     @Override
+    public void verhoogHuidigeVraag(){
+        huidigeVraag++;
+    }
+
+    @Override
     public int getHuidigeVraag() {
         return huidigeVraag;
     }
@@ -82,21 +87,20 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public void verwerkResultaat(boolean correct, Speler speler) {
-        if (correct) {
-            speler.verhoogScore(10);
-            verwerkFeedback(huidigeVraag);
-            huidigeVraag++;
-            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
-        } else {
-            System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt!");
-            speler.voegMonsterToe("Blame Game");
-            bestrijdMonster(speler);
-        }
+        betreedHandler.verwerkResultaat(correct, speler, this);
     }
-
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
-    }
+//    public void verwerkResultaat(boolean correct, Speler speler) {
+//        if (correct) {
+//            speler.verhoogScore(10);
+//            verwerkFeedback(huidigeVraag);
+//            huidigeVraag++;
+//            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
+//        } else {
+//            System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt!");
+//            speler.voegMonsterToe("Blame Game");
+//            bestrijdMonster(speler);
+//        }
+//    }
 
     @Override
     public void betreed(Speler speler) {
@@ -116,5 +120,14 @@ public class KamerRetrospective extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
+    }
+
+    @Override
+    public boolean heeftMonster() {
+        return true;
+    }
+
+    public void bestrijdMonster(Speler speler) {
+        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }

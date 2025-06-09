@@ -2,8 +2,6 @@ package Game.core;
 
 import Game.kamer.Kamer;
 
-import java.util.List;
-
 public class GameEngine {
     private final Speler speler;
     private final UserInterface ui;
@@ -15,7 +13,7 @@ public class GameEngine {
         this.speler = speler;
         this.ui = ui;
         this.roomManager = roomManager;
-        this.status = new Status(speler);
+        this.status = new Status(speler); // Registreer als observer
     }
 
     public void startGame() {
@@ -25,57 +23,67 @@ public class GameEngine {
         ui.printCommandoUitleg(speler.getNaam());
 
         while (true) {
-//            System.out.println("Sleutels🙂: " + speler.getSleutels());
             if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
                 ui.printKamerOpties(roomManager.getBeschikbareKamers());
             }
 
-            String input = ui.leesInvoer();
+            String input = ui.leesInvoer().trim().toLowerCase();
+            verwerkCommando(input);
+        }
+    }
 
-            if (input.equals("stop")) {
+    private void verwerkCommando(String input) {
+        switch (input) {
+            case "stop" -> {
                 ui.printAfscheid();
-                return;
-            } else if (input.equals("status")) {
-                status.update(speler);
-            } else if (input.equals("help")) {
-                ui.printHelp();
-            } else if (input.equals("check")) {
+                System.exit(0);
+            }
+            case "status" -> status.update(speler);
+            case "help" -> ui.printHelp();
+            case "check" -> {
                 Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
                 ui.printItems(kamer.getItems());
-            } else if (input.startsWith("pak ")) {
-                roomManager.verwerkPak(input, speler);
-            } else if (input.startsWith("gebruik ")) {
-                speler.gebruikItem(input.substring(8).trim());
-            } else if (input.startsWith("ga naar kamer")) {
-                huidigeKamer = roomManager.verwerkKamerCommando(input, speler);
-
-                if (huidigeKamer != null && huidigeKamer.isVoltooid()) {
-                    ui.printKamerVoltooid();
-                    controleerEnStartFinale();
-                    huidigeKamer = null;
-                } else if (huidigeKamer != null && !huidigeKamer.isVoltooid()) {
-                    huidigeKamer.betreed(speler);
-
-                    // 👇 Zet dit hier om meteen na afloop te checken
-                    if (huidigeKamer.isVoltooid()) {
-                        controleerEnStartFinale();
-                    }
-
-                    huidigeKamer = null;
+            }
+            default -> {
+                if (input.startsWith("pak ")) {
+                    roomManager.verwerkPak(input, speler);
+                } else if (input.startsWith("gebruik ")) {
+                    speler.gebruikItem(input.substring(8).trim());
+                } else if (input.startsWith("ga naar kamer")) {
+                    verwerkKamerNavigatie(input);
+                } else {
+                    ui.printOnbekendCommando();
                 }
-            } else {
-                ui.printOnbekendCommando();
             }
         }
     }
 
+    private void verwerkKamerNavigatie(String input) {
+        huidigeKamer = roomManager.verwerkKamerCommando(input, speler);
+
+        if (huidigeKamer != null) {
+            if (huidigeKamer.isVoltooid()) {
+                ui.printKamerVoltooid();
+                controleerEnStartFinale();
+                huidigeKamer = null;
+            } else {
+                huidigeKamer.betreed(speler);
+
+                if (huidigeKamer.isVoltooid()) {
+                    controleerEnStartFinale();
+                }
+
+                huidigeKamer = null;
+            }
+        }
+    }
 
     private void controleerEnStartFinale() {
         if (roomManager.alleNormaleKamersVoltooid() && !roomManager.isFinaleKamerVoltooid()) {
             Kamer finale = roomManager.activeerFinaleKamer(speler);
             if (finale != null) {
                 finale.betreed(speler);
-                status.update(speler);
+                status.update(speler); // Toon status na finale
                 if (finale.isVoltooid()) {
                     ui.printGefeliciteerdArt();
                     System.exit(0);

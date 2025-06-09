@@ -10,6 +10,11 @@ public class Status implements Observer {
 
     @Override
     public void update(Speler speler) {
+        // eventueel logica voor status bijwerken, maar GEEN print
+        // deze methode wordt stil uitgevoerd op wijzigingen
+    }
+
+    public void toonStatus() {
         System.out.println("\n=== STATUS ===");
         System.out.println("Speler: " + speler.getNaam());
         System.out.println("Score: " + speler.getScore());

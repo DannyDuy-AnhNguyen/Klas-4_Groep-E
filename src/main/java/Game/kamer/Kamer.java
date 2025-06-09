@@ -8,6 +8,7 @@ import Game.joker.KeyJoker;
 import Game.core.Status;
 import Game.antwoord.Antwoord;
 import Game.hint.HintContext;
+import Game.monster.MonsterStrijdService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,32 @@ public abstract class Kamer {
     protected Antwoord antwoordStrategie;
     protected HintContext hintContext;
 
+    public Kamer(String naam, Antwoord antwoordStrategie) {
+        this.naam = naam;
+        this.antwoordStrategie = antwoordStrategie;
+        this.deur = new Deur();
+        this.scanner = new Scanner(System.in);
+        deur.setOpen(true);
+    }
+
     public abstract int getKamerID();
 
     public abstract int getHuidigeVraag();
+
+    public abstract void verhoogHuidigeVraag();
+
+    public boolean heeftMonster() {
+        return false;
+    }
+
+    // Deze methode zorgt ervoor dat het binnen de kamerBetreed de monsters gebruikt kunt worden.
+    //Zie methode binnen de klasse 'KamerBetreed' > verwerkResultaat
+    //Ik kan deze methode helaas niet abstract maken omdat de KamerFinaleTIA geen gebruik maakt van monsters👾
+    public void bestrijdMonster(Speler speler){
+        if(!heeftMonster()){
+            System.out.println("Deze kamer heeft geen monster!");
+        }
+    }
 
     public Status getStatus() {
         return status;
@@ -44,13 +68,6 @@ public abstract class Kamer {
         return hintContext;
     }
 
-    public Kamer(String naam, Antwoord antwoordStrategie) {
-        this.naam = naam;
-        this.antwoordStrategie = antwoordStrategie;
-        this.deur = new Deur();
-        this.scanner = new Scanner(System.in);
-        deur.setOpen(true);
-    }
 
     public String getNaam() {
         return naam;

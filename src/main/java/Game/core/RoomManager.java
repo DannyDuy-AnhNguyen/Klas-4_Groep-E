@@ -10,9 +10,13 @@ import java.util.List;
 public class RoomManager {
     private final List<Kamer> kamers = new ArrayList<>();
     private final KamerFactory kamerFactory;
+    private final ToegangsManager toegangsManager;
+    private final InventoryManager inventoryManager;
 
-    public RoomManager(KamerFactory kamerFactory) {
+    public RoomManager(KamerFactory kamerFactory, Speler speler) {
         this.kamerFactory = kamerFactory;
+        this.toegangsManager = new ToegangsManager();
+        this.inventoryManager = new InventoryManager(speler);
 
         for (String key : kamerFactory.getKamerKeys()) {
             Kamer kamer = kamerFactory.getKamer(key);
@@ -37,59 +41,47 @@ public class RoomManager {
         }
 
         String argument = input.substring(prefix.length()).trim();
-        Kamer gekozenKamer = null;
-
-        try {
-            int nummer = Integer.parseInt(argument) - 1;
-            if (nummer >= 0 && nummer < kamers.size()) {
-                gekozenKamer = kamers.get(nummer);
-            }
-        } catch (NumberFormatException e) {
-            gekozenKamer = kamerFactory.getKamer(argument.replaceAll("\\s+", "").toLowerCase());
-        }
+        Kamer gekozenKamer = parseerKamer(argument);
 
         if (gekozenKamer == null) {
             System.out.println("Onbekende kamer: " + argument);
             return null;
         }
 
-        if (!gekozenKamer.getDeur().isOpen()) {
-            if (speler.getSleutels() != 0) {
-                speler.gebruikSleutel();
-                gekozenKamer.getDeur().setOpen(true);
-                System.out.println("🔓 De deur naar '" + gekozenKamer.getNaam() + "' is geopend.");
+        if (!toegangsManager.openDeurAlsMogelijk(speler, gekozenKamer)) {
+            return null;
+        }
 
-                //Bij deze code wordt gekeken of de speler al in die kamer de joker gekozen heeft
-                //Als je de nieuwe kamer betreedt, krijg
-                if (!speler.isJokerGekozen()) {
-                    gekozenKamer.initSpeler(speler);
-                    speler.setJokerGekozen(true);
-                }
-            } else {
-                System.out.println("❌ Je hebt geen sleutels om deze deur te openen.");
-                return null;  // Kamer niet betreden zonder sleutel
-            }
+        if (!speler.isJokerGekozen()) {
+            gekozenKamer.initSpeler(speler);
+            speler.setJokerGekozen(true);
         }
 
         return gekozenKamer;
     }
 
-    public boolean alleNormaleKamersVoltooid() {
-        for (Kamer kamer : kamers) {
-            if (!kamer.getNaam().toLowerCase().contains("finale") && !kamer.isVoltooid()) {
-                return false;
+    private Kamer parseerKamer(String argument) {
+        try {
+            int nummer = Integer.parseInt(argument) - 1;
+            if (nummer >= 0 && nummer < kamers.size()) {
+                return kamers.get(nummer);
             }
+        } catch (NumberFormatException e) {
+            return kamerFactory.getKamer(argument.replaceAll("\\s+", "").toLowerCase());
         }
-        return true;
+        return null;
+    }
+
+    public boolean alleNormaleKamersVoltooid() {
+        return kamers.stream()
+                .filter(k -> !k.getNaam().toLowerCase().contains("finale"))
+                .allMatch(Kamer::isVoltooid);
     }
 
     public boolean isFinaleKamerVoltooid() {
-        for (Kamer kamer : kamers) {
-            if (kamer.getNaam().toLowerCase().contains("finale") && kamer.isVoltooid()) {
-                return true;
-            }
-        }
-        return false;
+        return kamers.stream()
+                .filter(k -> k.getNaam().toLowerCase().contains("finale"))
+                .anyMatch(Kamer::isVoltooid);
     }
 
     public Kamer activeerFinaleKamer(Speler speler) {
@@ -101,8 +93,6 @@ public class RoomManager {
         if (!kamers.contains(finale)) {
             kamers.add(finale);
             System.out.println("Finale kamer toegevoegd aan kamers lijst.");
-        } else {
-            System.out.println("Finale kamer zat al in kamers lijst.");
         }
 
         speler.setPositie(kamers.indexOf(finale));
@@ -130,7 +120,7 @@ public class RoomManager {
         }
 
         if (gekozenItem != null) {
-            speler.voegItemToe(gekozenItem);
+            inventoryManager.voegItemToe(gekozenItem);
         } else if (!itemInput.matches("\\d+")) {
             System.out.println("❌ Dat item is niet gevonden in deze kamer.");
         }

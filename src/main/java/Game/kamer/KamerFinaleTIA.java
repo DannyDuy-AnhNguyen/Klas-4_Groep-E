@@ -25,6 +25,11 @@ public class KamerFinaleTIA extends Kamer {
     }
 
     @Override
+    public void verhoogHuidigeVraag(){
+        huidigeVraag++;
+    }
+
+    @Override
     public int getHuidigeVraag() {
         return huidigeVraag;
     }
@@ -100,13 +105,7 @@ public class KamerFinaleTIA extends Kamer {
 
     @Override
     public void verwerkResultaat(boolean correct, Speler speler){
-        if (correct) {
-            verwerkFeedback(huidigeVraag);
-            huidigeVraag++;
-            System.out.println("Correct!\n");
-        } else {
-            System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
-        }
+        betreedHandler.verwerkResultaat(correct, speler, this);
     }
 
     @Override

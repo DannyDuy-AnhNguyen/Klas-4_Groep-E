@@ -29,6 +29,11 @@ public class KamerDailyScrum extends Kamer {
     }
 
     @Override
+    public void verhoogHuidigeVraag(){
+        huidigeVraag++;
+    }
+
+    @Override
     public int getHuidigeVraag() {
         return huidigeVraag;
     }
@@ -82,16 +87,7 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public void verwerkResultaat(boolean correct, Speler speler) {
-        if (correct) {
-            speler.verhoogScore(10);
-            verwerkFeedback(huidigeVraag);
-            huidigeVraag++;
-            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
-        } else {
-            System.out.println("\n❌ Fout! Monster 'Verlies Van Focus' verschijnt!");
-            speler.voegMonsterToe("VerliesVanFocus");
-            bestrijdMonster(speler);
-        }
+        betreedHandler.verwerkResultaat(correct, speler, this);
     }
 
     @Override
@@ -112,6 +108,11 @@ public class KamerDailyScrum extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
+    }
+
+    @Override
+    public boolean heeftMonster() {
+        return true;
     }
 
     public void bestrijdMonster(Speler speler) {

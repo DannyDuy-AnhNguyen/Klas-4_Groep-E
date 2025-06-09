@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Speler speler = new Speler();
         UserInterface ui = new UserInterface();
-        RoomManager roomManager = new RoomManager(new KamerFactory());
+        RoomManager roomManager = new RoomManager(new KamerFactory(), speler);
         GameEngine engine = new GameEngine(speler, ui, roomManager);
 
         engine.startGame();

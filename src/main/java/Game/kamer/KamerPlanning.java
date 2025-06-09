@@ -32,6 +32,11 @@ public class KamerPlanning extends Kamer {
     }
 
     @Override
+    public void verhoogHuidigeVraag(){
+        huidigeVraag++;
+    }
+
+    @Override
     public int getHuidigeVraag() {
         return huidigeVraag;
     }
@@ -83,16 +88,7 @@ public class KamerPlanning extends Kamer {
 
     @Override
     public void verwerkResultaat(boolean correct, Speler speler) {
-        if (correct) {
-            speler.verhoogScore(10);
-            verwerkFeedback(huidigeVraag);
-            huidigeVraag++;
-            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
-        } else {
-            System.out.println("\n❌ Fout! Monster 'Misverstand' verschijnt!");
-            speler.voegMonsterToe("Misverstand");
-            bestrijdMonster(speler);
-        }
+        betreedHandler.verwerkResultaat(correct, speler, this);
     }
 
     @Override
@@ -127,10 +123,6 @@ public class KamerPlanning extends Kamer {
         }
     }
 
-    public void bestrijdMonster(Speler speler) {
-        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
-    }
-
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
         return false;
@@ -139,5 +131,14 @@ public class KamerPlanning extends Kamer {
     @Override
     public void toonHelp() {
         betreedHandler.toonHelp();
+    }
+
+    @Override
+    public boolean heeftMonster() {
+        return true;
+    }
+
+    public void bestrijdMonster(Speler speler) {
+        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 }
