@@ -5,7 +5,6 @@ import Game.kamer.Kamer;
 
 //Beschikbaar in alle kamers
 public class HintJoker extends AbstractJoker implements HintJokerInterface{
-
     public HintJoker(String naam){
         super(naam);
     }
@@ -20,4 +19,5 @@ public class HintJoker extends AbstractJoker implements HintJokerInterface{
         kamer.toonHint();
         used = true;
     }
+
 }

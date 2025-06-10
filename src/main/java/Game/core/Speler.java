@@ -163,6 +163,8 @@ public class Speler {
         return jokers;
     }
 
+
+
     // === Inventory ===
     public void voegItemToe(Item item) {
         inventoryManager.voegItemToe(item);

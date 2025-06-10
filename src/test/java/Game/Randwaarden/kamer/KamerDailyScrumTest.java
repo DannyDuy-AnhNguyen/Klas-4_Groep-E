@@ -1,4 +1,4 @@
-//package Game.kamer;
+//package Game.Randwaarden.kamer;
 //
 //import junit.framework.TestCase;
 //

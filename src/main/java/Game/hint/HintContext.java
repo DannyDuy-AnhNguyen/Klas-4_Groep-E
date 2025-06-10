@@ -36,7 +36,7 @@ public class HintContext {
         gekozenHint.toon();
     }
 
-    public void wisAlleHints() {
+     public void wisAlleHints() {
         vraag0Hints.clear();
         vraag1Hints.clear();
     }
