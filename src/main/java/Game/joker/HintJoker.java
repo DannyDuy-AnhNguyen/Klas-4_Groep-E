@@ -11,7 +11,6 @@ public class HintJoker extends AbstractJoker implements HintJokerInterface{
 
     @Override
     public void useInHint(Kamer kamer){
-        System.out.println("Zit in Hint Methode🙂:");
         if (used) {
             System.out.println("❌Deze Hintjoker is al gebruikt🙂‍↔️.");
             return;

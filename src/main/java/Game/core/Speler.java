@@ -16,6 +16,10 @@ public class Speler {
     private int levens = 3;
     private boolean jokerGekozen = false;
     private boolean eersteKamerBetreden = false;
+    private int hintCounter = 0;
+    // Deze variabele zorgt voor overzicht hoeveel hints de speler nog kan gebruiken.
+    // Van deze variabele wordt bijgehouden hoe vaak de speler nog hints kunt gebruiken.
+    private int hintsLeft = 4;
 
     private final List<Integer> voltooideKamers = new ArrayList<>();
     private final List<String> monsters = new ArrayList<>();
@@ -163,6 +167,38 @@ public class Speler {
         return jokers;
     }
 
+
+    // === hintJoker waar de hint gebruikt wordt ===
+    // Van deze 2 onderstaande methodes wordt bijgehouden hoeveel hints de speler de hints gebruikt heeft.
+    public void verhoogHintCounter() {
+        hintCounter++;
+    }
+
+    public int getHintCounter() {
+        return hintCounter;
+    }
+
+    // == Toont hoeveel hints de speler nog kunt gebruiken ==
+    // Van deze 3 onderstaande methodes wordt bijgehouden hoe vaak de speler nog hints kunt gebruiken.
+    public void verlaagHintCounter(){
+        hintsLeft--;
+    }
+
+
+    public boolean gebruikHint() {
+        if (hintsLeft > 0) {
+            verlaagHintCounter();
+            verhoogHintCounter();
+            System.out.println("U heeft zoveel hints nog over📘: " + hintsLeft);;
+            return true;
+        }
+        return false;
+    }
+
+
+    public int getHintsLeft(){
+        return hintsLeft;
+    }
 
 
     // === Inventory ===

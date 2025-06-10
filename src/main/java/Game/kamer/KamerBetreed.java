@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class KamerBetreed {
 
     private Scanner scanner = new Scanner(System.in);
+    private int hintCounter = 0;
 
     public void betreedIntro(Kamer kamer) {
         System.out.println("\nJe bent nu in de kamer: " + kamer.getNaam());
@@ -162,7 +163,8 @@ public class KamerBetreed {
         System.out.println();
     }
 
-    private void verwerkJoker(Kamer kamer, Speler speler) {
+    //Voor de Randwaard test maak Danny de methode 'public'
+    public void verwerkJoker(Kamer kamer, Speler speler) {
         List<Joker> jokers = speler.getJokers();
         if (jokers.isEmpty()) {
             System.out.println("❌ Je hebt geen jokers om te gebruiken.");
@@ -199,8 +201,13 @@ public class KamerBetreed {
                     keyJoker.useInKey(kamer, speler);
                     jokerGebruikt = true;
                 } else if(joker instanceof HintJokerInterface hintJoker){
-                    hintJoker.useInHint(kamer);
-                    jokerGebruikt = true;
+                    if(validateMaxedUsedTotalHints(speler)){
+                        hintJoker.useInHint(kamer);
+                        jokerGebruikt = true;
+                    } else {
+                        System.out.println("❌ Je hebt al het maximum aantal hints gebruikt.");
+                        return;
+                    }
                 }
 
                 if (jokerGebruikt && joker.isUsed()) {
@@ -214,6 +221,11 @@ public class KamerBetreed {
             System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
         }
         System.out.println();
+    }
+
+    // Deze methode zorgt ervoor dat de gebruiker maximaal aantal hints kunt gebruiken.
+    private boolean validateMaxedUsedTotalHints(Speler speler){
+        return speler.gebruikHint();
     }
 
     public void toonHelp() {
