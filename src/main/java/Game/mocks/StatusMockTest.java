@@ -14,9 +14,9 @@ public class StatusMockTest {
         speler.verhoogScore(10);  // Zou de observer moeten triggeren
 
         if (mock.isBijgewerkt) {
-            System.out.println("✅ Observer werd aangeroepen");
+            System.out.println("Observer werd aangeroepen");
         } else {
-            System.out.println("❌ Observer werd NIET aangeroepen");
+            System.out.println("Observer werd NIET aangeroepen");
         }
     }
 }
