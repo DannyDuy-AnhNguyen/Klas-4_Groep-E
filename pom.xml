@@ -64,7 +64,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>Game.DatabaseTest</mainClass>
+                    <mainClass>Game.database.DatabaseTest</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,6 +1,7 @@
 package Game.kamer;
 
 import Game.core.Speler;
+import Game.database.DatabaseVoortgang;
 import Game.joker.HintJokerInterface;
 import Game.joker.Joker;
 import Game.joker.KeyJokerInterface;
@@ -143,6 +144,7 @@ public class KamerBetreed {
             System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             speler.voegSleutelToe();
             speler.voegVoltooideKamerToe(kamer.getKamerID());
+            DatabaseVoortgang.slaOp(speler, kamer.getKamerID());
             kamer.getStatus().toonStatus();
             System.out.println();
         } else {

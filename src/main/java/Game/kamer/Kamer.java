@@ -195,4 +195,5 @@ public abstract class Kamer {
             speler.voegJokerToe(new HintJoker("hint"));
         }
     }
+
 }

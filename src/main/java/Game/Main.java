@@ -16,3 +16,13 @@ public class Main {
         engine.startGame();
     }
 }
+
+//public class Main {
+//    public static void main(String[] args) {
+//        UserInterface ui = new UserInterface();
+//        RoomManager roomManager = new RoomManager(new KamerFactory()); // zonder speler
+//        GameEngine engine = new GameEngine(ui, roomManager);
+//        engine.startGame();
+//    }
+//}
+

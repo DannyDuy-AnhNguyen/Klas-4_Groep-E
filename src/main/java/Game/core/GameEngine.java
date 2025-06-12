@@ -6,10 +6,10 @@ import Game.item.ItemBoek;
 import Game.kamer.KamerBetreed;
 
 public class GameEngine {
-    private final Speler speler;
+    private Speler speler;
     private final UserInterface ui;
     private final RoomManager roomManager;
-    private final Status status;
+    private Status status;
     private Kamer huidigeKamer;
 
     public GameEngine(Speler speler, UserInterface ui, RoomManager roomManager) {
@@ -20,8 +20,10 @@ public class GameEngine {
     }
 
     public void startGame() {
-        ui.printWelkom();
-        speler.setNaam(ui.leesInvoer());
+
+        speler = ui.leesSpeler();
+
+        status = new Status(speler);
 
         ui.printCommandoUitleg(speler.getNaam());
 
@@ -29,7 +31,6 @@ public class GameEngine {
             if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
                 ui.printKamerOpties(roomManager.getBeschikbareKamers());
             }
-
             String input = ui.leesInvoer().trim().toLowerCase();
             verwerkCommando(input);
         }

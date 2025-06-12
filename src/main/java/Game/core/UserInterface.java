@@ -1,5 +1,6 @@
 package Game.core;
 
+import Game.database.DatabaseVoortgang;
 import Game.item.Item;
 import Game.kamer.Kamer;
 
@@ -12,14 +13,39 @@ import static Game.core.ConsoleKleuren.*;
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void printWelkom() {
-      regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 100);
-      System.out.print("Wat is je naam? ");
-        GeluidSpeler.speelGeluid("geluid/DavidGoggins.wav");
+    public Speler leesSpeler() {
+        regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 100);
+        System.out.print("Wat is je naam? ");
+        String naam = scanner.nextLine().trim();
+
+        Speler speler;
+
+        if (DatabaseVoortgang.spelerBestaat(naam)) {
+            System.out.print("🧠 Speler '" + naam + "' bestaat al. Wil je doorgaan met je voortgang? (ja/nee): ");
+            String keuze = scanner.nextLine().trim().toLowerCase();
+
+            if (keuze.equals("ja")) {
+                speler = DatabaseVoortgang.laadtSpeler(naam);
+                if (speler != null) {
+                    System.out.println("✅ Voortgang geladen.");
+                } else {
+                    System.out.println("⚠️ Fout bij laden. Nieuwe speler gestart.");
+                    speler = new Speler();
+                    speler.setNaam(naam);
+                }
+            } else {
+                System.out.println("🔄 Nieuw spel gestart. Oude data wordt overschreven bij opslaan.");
+                speler = new Speler();
+                speler.setNaam(naam);
+            }
+        } else {
+            System.out.println("🆕 Nieuwe speler wordt aangemaakt.");
+            speler = new Speler();
+            speler.setNaam(naam);
+        }
+
+        return speler;
     }
-
-
-
 
     public String leesInvoer() {
         System.out.print("> ");
