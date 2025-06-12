@@ -26,6 +26,7 @@ public abstract class Kamer {
     protected Antwoord antwoordStrategie;
     protected HintContext hintContext;
     protected Monster monster;
+    private MonsterStrijdService monsterStrijdService;
 
 
     public Kamer(String naam, Antwoord antwoordStrategie) {
@@ -33,6 +34,7 @@ public abstract class Kamer {
         this.antwoordStrategie = antwoordStrategie;
         this.deur = new Deur();
         this.scanner = new Scanner(System.in);
+        this.monsterStrijdService = new MonsterStrijdService();
         deur.setOpen(true);
     }
 
@@ -51,7 +53,7 @@ public abstract class Kamer {
     // Zie methode binnen de klasse 'KamerBetreed' > verwerkResultaat
     public void bestrijdMonster(Speler speler) {
         if (heeftMonster()) {
-            MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
+            monsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
         } else {
             System.out.println("Deze kamer heeft geen monster!");
         }

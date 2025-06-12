@@ -1,20 +1,24 @@
 package Game.core;
 
 import javax.sound.sampled.*;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class GeluidSpeler {
+    public static void speelGeluid(String resourcePad) {
+        System.out.println("🔍 Probeer geluid te laden van: " + resourcePad);
 
-    public static void speelGeluid(String pad) {
-        try (InputStream inputStream = GeluidSpeler.class.getClassLoader().getResourceAsStream(pad)) {
-            if (inputStream == null) {
-                System.err.println("❌ Geluidsbestand niet gevonden: " + pad);
+        try (InputStream input = GeluidSpeler.class.getClassLoader().getResourceAsStream(resourcePad)) {
+            if (input == null) {
+                System.err.println("❌ Bestand niet gevonden in resources: " + resourcePad);
                 return;
             }
 
-            AudioInputStream origineleStream = AudioSystem.getAudioInputStream(inputStream);
-            AudioFormat baseFormat = origineleStream.getFormat();
+            System.out.println("✅ Bestand gevonden. Probeer te decoderen...");
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(input);
+            AudioFormat baseFormat = audioStream.getFormat();
+
+            System.out.println("🎼 Origineel formaat: " + baseFormat);
 
             AudioFormat decodedFormat = new AudioFormat(
                     AudioFormat.Encoding.PCM_SIGNED,
@@ -26,7 +30,9 @@ public class GeluidSpeler {
                     false
             );
 
-            AudioInputStream decodedStream = AudioSystem.getAudioInputStream(decodedFormat, origineleStream);
+            AudioInputStream decodedStream = AudioSystem.getAudioInputStream(decodedFormat, audioStream);
+
+            System.out.println("🔊 Geluid afspelen...");
 
             Clip clip = AudioSystem.getClip();
             clip.open(decodedStream);
@@ -37,7 +43,9 @@ public class GeluidSpeler {
             }
 
             clip.close();
+            System.out.println("✅ Geluid klaar.");
         } catch (Exception e) {
+            System.err.println("❌ Fout tijdens afspelen:");
             e.printStackTrace();
         }
     }

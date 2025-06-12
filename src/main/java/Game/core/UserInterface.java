@@ -5,6 +5,8 @@ import Game.kamer.Kamer;
 
 import java.util.List;
 import java.util.Scanner;
+import Game.core.GeluidSpeler;
+
 import static Game.core.ConsoleKleuren.*;
 
 public class UserInterface {
@@ -13,7 +15,7 @@ public class UserInterface {
     public void printWelkom() {
       regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 100);
       System.out.print("Wat is je naam? ");
-      GeluidSpeler.speelGeluid("geluid/David.wav");
+        GeluidSpeler.speelGeluid("geluid/DavidGoggins.wav");
     }
 
 

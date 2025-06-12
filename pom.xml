@@ -15,27 +15,43 @@
     </properties>
 
     <dependencies>
+        <!-- MySQL connector -->
         <dependency>
-            <groupId>com.mysql</groupId> <!-- ✅ correct groupId -->
+            <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
+
+        <!-- ✅ JUnit 4 dependency -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- ✅ (optioneel) Hamcrest matchers voor geavanceerde asserts -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.8.1</version>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- ✅ JUnit 4 werkt met deze surefire-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
+
+            <!-- (optioneel) exec plugin om Main-class te draaien -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -48,7 +64,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>Game.DatabaseTest</mainClass> <!-- ⚠️ pas dit aan als je Main.java wil runnen -->
+                    <mainClass>Game.DatabaseTest</mainClass>
                 </configuration>
             </plugin>
         </plugins>

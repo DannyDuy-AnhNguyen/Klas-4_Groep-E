@@ -24,6 +24,7 @@ public class Status implements Observer {
         } else {
             System.out.println("Geen actieve monsters.");
         }
+        System.out.println("Aantal gebruikte hints: " + speler.getHintCounter());
         System.out.println("==================\n");
     }
 }
