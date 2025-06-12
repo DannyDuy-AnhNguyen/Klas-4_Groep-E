@@ -16,7 +16,6 @@ public class KeyJoker extends AbstractJoker implements KeyJokerInterface {
 
     @Override
     public void useInKey(Kamer kamer, Speler speler) {
-        System.out.println("Zit in Key Methode🙂:");
         if (used) {
             System.out.println("❌ Deze KeyJoker is al gebruikt.");
             return;

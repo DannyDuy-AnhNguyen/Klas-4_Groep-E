@@ -83,11 +83,18 @@ public class UserInterface {
 
     public void printKamerOpties(List<Kamer> kamers, Speler speler) {
         System.out.println("📍 Beschikbare kamers:");
+        //Kijkt in de kamer lijst welke kamers beschikbaar zijn.
         for (Kamer kamer : kamers) {
             boolean voltooid = speler.getVoltooideKamers().contains(kamer.getKamerID());
             boolean deurOpen = kamer.getDeur().isOpen();
 
-            if (deurOpen && !voltooid) {
+            //In de if zijn de deuren van de kamers gesloten en en de kamers zijn natuurlijk nog niet voltooid als je een nieuw spel begint.
+            if (!deurOpen && !voltooid) {
+                System.out.println(kamer.getKamerID() + ". " + kamer.getNaam());
+            }
+            //In de else if is voor het geval als de speler binnen een kamer bijvoorbeeld 'Daily Scrum' zit
+            // die de commando 'naar andere kamer' meegeeft zodat je nog de kamer kunt zien die je nog niet voltooid hebt.
+            else if(deurOpen && !voltooid) {
                 System.out.println(kamer.getKamerID() + ". " + kamer.getNaam());
             }
         }

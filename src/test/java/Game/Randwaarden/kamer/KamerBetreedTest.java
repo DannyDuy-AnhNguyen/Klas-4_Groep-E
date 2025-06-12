@@ -40,9 +40,10 @@ public class KamerBetreedTest {
         assertEquals("Na 4 hints zijn er geen hints meer beschikbaar", 0, speler.getHintsLeft());
     }
 
-    //IN deze test is de minimale hint minimaal 0.
+    //IN deze test is de minimale hint minimaal 0. Ook mag de minimale of maximale waarde omloog of omhoog gaan zodra de gebruiker 'annuleer' als input geeft
+    // Als de gebruiker al binnen een kamer 'joker' als input gegeven heeft.
     @Test
-    public void checkSpelerGebruiktGeenHintWanneerGeenGeldigeInvoer() {
+    public void checkMinimaleWaardeOfHetNietOmhoogOfOmlaagGaat() {
         Antwoord antwoord = new AntwoordDailyScrum();
         Kamer kamer = new KamerDailyScrum(antwoord);
 

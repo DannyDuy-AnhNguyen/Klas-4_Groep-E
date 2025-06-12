@@ -32,6 +32,12 @@ public class RoomManager {
         this.kamerFactory = kamerFactory;
         this.toegangsManager = new ToegangsManager();
         this.inventoryManager = null;
+
+        for (String key : kamerFactory.getKamerKeys()) {
+            Kamer kamer = kamerFactory.getKamer(key);
+            kamer.getDeur().setOpen(false);
+            kamers.add(kamer);
+        }
     }
 
     public void setSpeler(Speler speler) {
