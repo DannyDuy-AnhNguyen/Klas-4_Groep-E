@@ -4,6 +4,7 @@ import Game.item.Item;
 import Game.core.Speler;
 
 import java.util.Scanner;
+import Game.core.TextPrinter;
 
 public class ScrumVerwarring extends Monster {
     private final String[] juisteAntwoorden = {
@@ -29,36 +30,36 @@ public class ScrumVerwarring extends Monster {
 
     public void verwerkOpdracht(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("(Monster) Vraag 3: Wat zorgt het Scrumboard voor?");
-            System.out.println("a) Voor klanten/stakeholders om de voortgang te volgen.");
-            System.out.println("b) Voor overzicht en duidelijkheid.");
-            System.out.println("c) Voor wat, wie en waar iemand van het Development team mee bezig is.");
-            System.out.println("d) Alle bovenstaande vragen");
+            TextPrinter.print("(Monster) Vraag 3: Wat zorgt het Scrumboard voor?");
+            TextPrinter.print("a) Voor klanten/stakeholders om de voortgang te volgen.");
+            TextPrinter.print("b) Voor overzicht en duidelijkheid.");
+            TextPrinter.print("c) Voor wat, wie en waar iemand van het Development team mee bezig is.");
+            TextPrinter.print("d) Alle bovenstaande vragen");
         } else if (huidigeVraag == 1) {
-            System.out.println("(Monster) Vraag 4: Welke antwoord is onjuist in “Hoe werk je samen in een team met een Scrumboard?”");
-            System.out.println("a) Bij het bord userstories toevoegen.");
-            System.out.println("b) De userstories de taken eraan koppelen.");
-            System.out.println("c) Bij het bord wordt ook epics toegevoegd als kaart.");
-            System.out.println("d) Het bord up to date houden waar iedereen is.");
+            TextPrinter.print("(Monster) Vraag 4: Welke antwoord is onjuist in “Hoe werk je samen in een team met een Scrumboard?”");
+            TextPrinter.print("a) Bij het bord userstories toevoegen.");
+            TextPrinter.print("b) De userstories de taken eraan koppelen.");
+            TextPrinter.print("c) Bij het bord wordt ook epics toegevoegd als kaart.");
+            TextPrinter.print("d) Het bord up to date houden waar iedereen is.");
         } else if (huidigeVraag == 2) {
-            System.out.println("(Monster) Vraag 5: Wie is verantwoordelijk voor het up-to-date houden van het Scrumboard?");
-            System.out.println("a) Minder communicatie nodig");
-            System.out.println("b) Duidelijkheid over wie waaraan werkt");
-            System.out.println("c) Niemand hoeft iets te plannen");
+            TextPrinter.print("(Monster) Vraag 5: Wie is verantwoordelijk voor het up-to-date houden van het Scrumboard?");
+            TextPrinter.print("a) Minder communicatie nodig");
+            TextPrinter.print("b) Duidelijkheid over wie waaraan werkt");
+            TextPrinter.print("c) Niemand hoeft iets te plannen");
         } else if (huidigeVraag == 3) {
-            System.out.println("(Monster) Vraag 6: Wat is een nadeel van een goed bijgehouden Scrumboard?");
-            System.out.println("a) Transparantie over voortgang");
-            System.out.println("b) Minder meetings nodig");
-            System.out.println("c) Meer bureaucratie regels");
-            System.out.println("d) Sneller kunnen reageren op blokkades");
+            TextPrinter.print("(Monster) Vraag 6: Wat is een nadeel van een goed bijgehouden Scrumboard?");
+            TextPrinter.print("a) Transparantie over voortgang");
+            TextPrinter.print("b) Minder meetings nodig");
+            TextPrinter.print("c) Meer bureaucratie regels");
+            TextPrinter.print("d) Sneller kunnen reageren op blokkades");
         } else {
-            System.out.println("Er is geen vraag beschikbaar voor dit nummer.");
+            TextPrinter.print("Er is geen vraag beschikbaar voor dit nummer.");
         }
     }
 
     public void verliesLeven(Speler speler) {
         speler.verliesLeven();
-        System.out.println("Je hebt een leven verloren door het monster Scrum Verwarring!");
+        TextPrinter.print("Je hebt een leven verloren door het monster Scrum Verwarring!");
     }
 
     @Override

@@ -9,6 +9,7 @@ import Game.item.Item;
 import Game.core.Status;
 import Game.item.ItemBoek;
 import Game.assistent.Assistent;
+import Game.core.TextPrinter;
 
 import java.util.List;
 import java.util.Scanner;
@@ -22,9 +23,9 @@ public class KamerBetreed {
     public void betreedIntro(Kamer kamer) {
         System.out.println("\nJe bent nu in de kamer: " + kamer.getNaam());
         kamer.getDeur().toonStatus();
-        System.out.println("📦 Items in deze kamer:");
+        TextPrinter.print("📦 Items in deze kamer:");
         if (kamer.getItems().isEmpty()) {
-            System.out.println("- Geen items beschikbaar.");
+            TextPrinter.print("- Geen items beschikbaar.");
         } else {
             for (int i = 0; i < kamer.getItems().size(); i++) {
                 System.out.println((i + 1) + ") " + kamer.getItems().get(i));
@@ -35,7 +36,7 @@ public class KamerBetreed {
 
     public void betreed(Kamer kamer, Speler speler) {
         if (!kamer.getDeur().isOpen()) {
-            System.out.println("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
+            TextPrinter.print("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
             kamer.getDeur().toonStatus();
             return;
         }
@@ -87,7 +88,7 @@ public class KamerBetreed {
                         assistent.activeer();
                     } else {
                         System.out.println();
-                        System.out.println("❌ Er is geen assistent beschikbaar in deze kamer.");
+                        TextPrinter.print("❌ Er is geen assistent beschikbaar in deze kamer.");
                     }
                     System.out.println();
                     break;
@@ -102,7 +103,7 @@ public class KamerBetreed {
                             if (index >= 0 && index < kamerItems.size()) {
                                 gekozenItem = kamerItems.remove(index);
                             } else {
-                                System.out.println("❌ Ongeldig itemnummer.");
+                                TextPrinter.print("❌ Ongeldig itemnummer.");
                                 continue;
                             }
                         } catch (NumberFormatException e) {
@@ -113,7 +114,7 @@ public class KamerBetreed {
                             speler.voegItemToe(gekozenItem);
                             toonItemsInKamer(kamer); // herhaal check
                         } else if (!itemInput.matches("\\d+")) {
-                            System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+                            TextPrinter.print("❌ Dat item is niet gevonden in deze kamer.");
                         }
                         System.out.println();
                     } else if (antwoord.startsWith("gebruik ")) {
@@ -122,7 +123,7 @@ public class KamerBetreed {
                         System.out.println();
                     } else if (antwoord.equals("naar andere kamer")) {
                         speler.setJokerGekozen(false);
-                        System.out.println("Je verlaat deze kamer.\n");
+                        TextPrinter.print("Je verlaat deze kamer.\n");
                         return;
                     } else if (antwoord.matches("[a-d]")) {
                         boolean antwoordCorrect = kamer.getAntwoordStrategie().verwerkAntwoord(antwoord, huidigeVraag);
@@ -132,7 +133,7 @@ public class KamerBetreed {
                             huidigeVraag++;
                         }
                     } else {
-                        System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'check', 'inventory', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
+                        TextPrinter.print("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'check', 'inventory', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
                     }
             }
         }
@@ -141,23 +142,23 @@ public class KamerBetreed {
             kamer.setVoltooid();
             kamer.getDeur().setOpen(true);
             speler.setJokerGekozen(false);
-            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+            TextPrinter.print("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             speler.voegSleutelToe();
             speler.voegVoltooideKamerToe(kamer.getKamerID());
             DatabaseVoortgang.slaOp(speler, kamer.getKamerID());
             kamer.getStatus().toonStatus();
             System.out.println();
         } else {
-            System.out.println("✅ Kamer was al voltooid. Geen extra beloning.");
+            TextPrinter.print("✅ Kamer was al voltooid. Geen extra beloning.");
         }
     }
 
     private void toonItemsInKamer(Kamer kamer) {
         List<Item> items = kamer.getItems();
         if (items.isEmpty()) {
-            System.out.println("📦 Geen items in deze kamer.");
+            TextPrinter.print("📦 Geen items in deze kamer.");
         } else {
-            System.out.println("📦 Items in deze kamer:");
+            TextPrinter.print("📦 Items in deze kamer:");
             for (int i = 0; i < items.size(); i++) {
                 System.out.println((i + 1) + ") " + items.get(i).getNaam());
             }
@@ -169,23 +170,23 @@ public class KamerBetreed {
     public void verwerkJoker(Kamer kamer, Speler speler) {
         List<Joker> jokers = speler.getJokers();
         if (jokers.isEmpty()) {
-            System.out.println("❌ Je hebt geen jokers om te gebruiken.");
+            TextPrinter.print("❌ Je hebt geen jokers om te gebruiken.");
             return;
         }
 
         //Deze methode moet de joker's polymorfisme veranderen
-        System.out.println("🃏 Beschikbare jokers:");
+        TextPrinter.print("🃏 Beschikbare jokers:");
         for (Joker joker : jokers) {
             String status = joker.isUsed() ? " (gebruikt)" : "";
             System.out.println("- " + joker.getNaam() + status);
         }
 
-        System.out.println("Typ de naam van de joker die je wilt gebruiken, type 'info' als je wilt weten hoe de jokers werkt (of typ 'annuleer':)");
+        TextPrinter.print("Typ de naam van de joker die je wilt gebruiken, type 'info' als je wilt weten hoe de jokers werkt (of typ 'annuleer':)");
         String gekozenJoker = scanner.nextLine().trim().toLowerCase();
         System.out.println();
 
         if (gekozenJoker.equals("info")) {
-            System.out.println("Bij welke joker wil je meer informatie weten? 'hint', 'key' of 'beide'");
+            TextPrinter.print("Bij welke joker wil je meer informatie weten? 'hint', 'key' of 'beide'");
             if(gekozenJoker.equals("hint")){
                 System.out.println("");
             } else if(gekozenJoker.equals("key")){
@@ -197,7 +198,7 @@ public class KamerBetreed {
         }
 
         if (gekozenJoker.equals("annuleer")) {
-            System.out.println("❌ Jokerkeuze geannuleerd.");
+            TextPrinter.print("❌ Jokerkeuze geannuleerd.");
             return;
         }
 
@@ -210,7 +211,7 @@ public class KamerBetreed {
 
                 if (joker instanceof KeyJokerInterface keyJoker) {
                     if (!keyJoker.canBeUsedIn(kamer)) {
-                        System.out.println("❌ Deze joker werkt niet in deze kamer.");
+                        TextPrinter.print("❌ Deze joker werkt niet in deze kamer.");
                         break;
                     }
                     keyJoker.useInKey(kamer, speler);
@@ -220,7 +221,7 @@ public class KamerBetreed {
                         hintJoker.useInHint(kamer);
                         jokerGebruikt = true;
                     } else {
-                        System.out.println("❌ Je hebt al het maximum aantal hints gebruikt.");
+                        TextPrinter.print("❌ Je hebt al het maximum aantal hints gebruikt.");
                         return;
                     }
                 }
@@ -233,7 +234,7 @@ public class KamerBetreed {
         }
 
         if (!jokerGebruikt) {
-            System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
+            TextPrinter.print("❌ Geen geldige joker gevonden of reeds gebruikt.");
         }
         System.out.println();
     }
@@ -245,16 +246,16 @@ public class KamerBetreed {
 
     public void toonHelp() {
         System.out.println();
-        System.out.println("Typ het letterantwoord: a, b, c of d");
-        System.out.println("Gebruik 'status' om je huidige status te zien.");
-        System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
-        System.out.println("Gebruik 'help' om deze hulp te zien.");
-        System.out.println("Gebruik 'assistent' als je algemene hulp nodig hebt bij een kamer (note: je kan niet in elke kamer deze commando gebruiken!) ");
-        System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
-        System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
-        System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
-        System.out.println("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
-        System.out.println("Gebruik 'joker' om een joker te gebruiken");
+        TextPrinter.print("Typ het letterantwoord: a, b, c of d");
+        TextPrinter.print("Gebruik 'status' om je huidige status te zien.");
+        TextPrinter.print("Gebruik 'check' om items in deze kamer te bekijken.");
+        TextPrinter.print("Gebruik 'help' om deze hulp te zien.");
+        TextPrinter.print("Gebruik 'assistent' als je algemene hulp nodig hebt bij een kamer (note: je kan niet in elke kamer deze commando gebruiken!) ");
+        TextPrinter.print("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
+        TextPrinter.print("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
+        TextPrinter.print("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");
+        TextPrinter.print("Gebruik 'gebruik [itemnaam/itemnummer]' om een item te gebruiken");
+        TextPrinter.print("Gebruik 'joker' om een joker te gebruiken");
         System.out.println();
     }
 
@@ -286,7 +287,7 @@ public class KamerBetreed {
     //Verwerk resultaat van elke kamer
     public void verwerkResultaat(boolean correct, Speler speler, Kamer kamer){
         if (correct) {
-            System.out.println("\n✅ Correct!");
+            TextPrinter.print("\n✅ Correct!");
             speler.verhoogScore(10);
 
             int huidigeVraag = kamer.getHuidigeVraag(); // eerst ophalen
@@ -297,12 +298,12 @@ public class KamerBetreed {
 
             // ❗️Geen monsters in de finale kamer
             if (kamer.getKamerID() != 6) {
-                System.out.println("\n❌ Fout, probeer opnieuw.");
+                TextPrinter.print("\n❌ Fout, probeer opnieuw.");
                 speler.voegMonsterToe(monsterType(kamer.getKamerID()));
-                System.out.println("Monster '" + monsterType(kamer.getKamerID()) + "' verschijnt! Probeer het opnieuw.\n");
+                TextPrinter.print("Monster '" + monsterType(kamer.getKamerID()) + "' verschijnt! Probeer het opnieuw.\n");
                 kamer.bestrijdMonster(speler);
             } else {
-                System.out.println("Deur blijft gesloten, maar er verschijnt geen monster in de finale kamer.\n");
+                TextPrinter.print("Deur blijft gesloten, maar er verschijnt geen monster in de finale kamer.\n");
                 speler.verliesLeven();
             }
         }

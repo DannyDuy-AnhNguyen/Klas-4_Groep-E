@@ -15,7 +15,7 @@ public class JokerManager {
         List<Joker> jokers = speler.getJokers();
 
         if (jokers.size() >= MAX_JOKERS) {
-            System.out.println("❌ Je hebt al het maximum aantal jokers (" + MAX_JOKERS + ") bereikt.");
+            TextPrinter.print("❌ Je hebt al het maximum aantal jokers (" + MAX_JOKERS + ") bereikt.");
             System.out.println();
             return false;
         }

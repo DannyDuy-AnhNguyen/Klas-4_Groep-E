@@ -3,6 +3,7 @@ package Game.hint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import Game.core.TextPrinter;
 
 public class HintContext {
     private final List<Hint> vraag0Hints = new ArrayList<>();
@@ -27,7 +28,7 @@ public class HintContext {
         }
 
         if (hints == null || hints.isEmpty()) {
-            System.out.println("💡 Geen hints beschikbaar voor deze vraag.");
+            TextPrinter.print("💡 Geen hints beschikbaar voor deze vraag.");
             return;
         }
 

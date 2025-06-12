@@ -4,6 +4,7 @@ import Game.item.Item;
 import Game.core.Speler;
 
 import java.util.Scanner;
+import Game.core.TextPrinter;
 
 public class BlameGame extends Monster {
     private final String[] juisteAntwoorden = {
@@ -30,32 +31,32 @@ public class BlameGame extends Monster {
     public void verwerkOpdracht(int huidigeVraag) {
         switch (huidigeVraag) {
             case 0 -> {
-                System.out.println("(Monster) Vraag 3: Wie neemt er deel aan de Sprint Retrospective?");
-                System.out.println("a) Alleen de Scrum Master");
-                System.out.println("b) De Product Owner en Stakeholders");
-                System.out.println("c) Het hele Scrum Team (Scrum Master, Product Owner en Development Team)");
+                TextPrinter.print("(Monster) Vraag 3: Wie neemt er deel aan de Sprint Retrospective?");
+                TextPrinter.print("a) Alleen de Scrum Master");
+                TextPrinter.print("b) De Product Owner en Stakeholders");
+                TextPrinter.print("c) Het hele Scrum Team (Scrum Master, Product Owner en Development Team)");
             }
             case 1 -> {
-                System.out.println("(Monster) Vraag 4: Wat wordt besproken tijdens de Sprint Retrospective?");
-                System.out.println("a) Wat er goed ging");
-                System.out.println("b) Wat elk teamlid vindt wat er beter kan.");
-                System.out.println("c) Wat er beter kon");
-                System.out.println("d) Hoe het wordt verbeterd");
-                System.out.println("e) Elk antwoord is juist");
+                TextPrinter.print("(Monster) Vraag 4: Wat wordt besproken tijdens de Sprint Retrospective?");
+                TextPrinter.print("a) Wat er goed ging");
+                TextPrinter.print("b) Wat elk teamlid vindt wat er beter kan.");
+                TextPrinter.print("c) Wat er beter kon");
+                TextPrinter.print("d) Hoe het wordt verbeterd");
+                TextPrinter.print("e) Elk antwoord is juist");
             }
             case 2 -> {
-                System.out.println("(Monster) Vraag 5: Bij een Sprint Retrospective wordt een code review gehouden?");
-                System.out.println("a) Juist");
-                System.out.println("b) Onjuist");
+                TextPrinter.print("(Monster) Vraag 5: Bij een Sprint Retrospective wordt een code review gehouden?");
+                TextPrinter.print("a) Juist");
+                TextPrinter.print("b) Onjuist");
             }
             case 3 -> {
-                System.out.println("(Monster) Vraag 6: Wat is geen geschikt onderwerp voor de Sprint Retrospective?");
-                System.out.println("a) Samenwerking binnen het team");
-                System.out.println("b) Technieken die goed of slecht werken");
-                System.out.println("c) Voortgang van individuele user stories");
-                System.out.println("d) Communicatieproblemen of successen");
+                TextPrinter.print("(Monster) Vraag 6: Wat is geen geschikt onderwerp voor de Sprint Retrospective?");
+                TextPrinter.print("a) Samenwerking binnen het team");
+                TextPrinter.print("b) Technieken die goed of slecht werken");
+                TextPrinter.print("c) Voortgang van individuele user stories");
+                TextPrinter.print("d) Communicatieproblemen of successen");
             }
-            default -> System.out.println("Er is geen vraag beschikbaar voor dit nummer.");
+            default -> TextPrinter.print("Er is geen vraag beschikbaar voor dit nummer.");
         }
     }
 

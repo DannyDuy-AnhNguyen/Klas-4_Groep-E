@@ -12,6 +12,6 @@ public class StatusStubTest {
 
         status.toonStatus();
 
-        System.out.println("Stub test uitgevoerd zonder fouten. Ik ga dit vieren met en goed stukje appelkruimeltaart");
+        TextPrinter.print("Stub test uitgevoerd zonder fouten. Ik ga dit vieren met en goed stukje appelkruimeltaart");
     }
 }

@@ -19,18 +19,18 @@ public class InventoryManager {
         List<Item> inventory = speler.getInventory();
 
         if (inventory.size() >= 5) {
-            System.out.println("❌ Je inventory zit vol (max 5 items).");
+            TextPrinter.print("❌ Je inventory zit vol (max 5 items).");
             System.out.println();
             return;
         }
 
         inventory.add(item);
-        System.out.println("👜 Je hebt het item '" + item.getNaam() + "' opgepakt.");
+        TextPrinter.print("👜 Je hebt het item '" + item.getNaam() + "' opgepakt.");
         System.out.println();
         speler.notifyObservers();
 
         if (inventory.size() == 5 && inventory.stream().allMatch(i -> i.getNaam().equalsIgnoreCase("Rots"))) {
-            System.out.println("🥚 EASTER EGG: Je inventory zit VOL met nutteloze rotsen. 🤡");
+            TextPrinter.print("🥚 EASTER EGG: Je inventory zit VOL met nutteloze rotsen. 🤡");
         }
     }
 
@@ -41,7 +41,7 @@ public class InventoryManager {
                 .orElse(null);
 
         if (item == null) {
-            System.out.println("❌ Je hebt het item '" + naam + "' niet.");
+            TextPrinter.print("❌ Je hebt het item '" + naam + "' niet.");
             System.out.println();
             return false;
         }
@@ -61,7 +61,7 @@ public class InventoryManager {
             gebruikbaarItem.gebruik();
             gebruikt = true;
         } else {
-            System.out.println("❓ Geen effect bekend voor dit item.");
+            TextPrinter.print("❓ Geen effect bekend voor dit item.");
             System.out.println();
         }
 
@@ -75,10 +75,10 @@ public class InventoryManager {
 
     public void toonInventory() {
         if (speler.getInventory().isEmpty()) {
-            System.out.println("📭 Je hebt geen items in je inventory.");
+            TextPrinter.print("📭 Je hebt geen items in je inventory.");
             System.out.println();
         } else {
-            System.out.println("📦 Je inventory bevat:");
+            TextPrinter.print("📦 Je inventory bevat:");
             for (Item item : speler.getInventory()) {
                 System.out.println("• " + item.getNaam());
             }

@@ -10,6 +10,7 @@ import Game.monster.BlameGame;
 import Game.monster.MonsterStrijdService;
 
 import java.util.Scanner;
+import Game.core.TextPrinter;
 
 public class KamerRetrospective extends Kamer {
     private int huidigeVraag = 0;
@@ -61,9 +62,9 @@ public class KamerRetrospective extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("RetroSpective zorgt ervoor dat de teamleden weten wat er goed gaat, beter kan en hoe ze het kunnen verbeteren.");
+            TextPrinter.print("RetroSpective zorgt ervoor dat de teamleden weten wat er goed gaat, beter kan en hoe ze het kunnen verbeteren.");
         } else if (huidigeVraag == 1) {
-            System.out.println("Om te weten hoe de samenwerking daadwerkelijk gaat, is het verstandig om daar 1 tot 2 weken te geven of het beste na elke sprint.");
+            TextPrinter.print("Om te weten hoe de samenwerking daadwerkelijk gaat, is het verstandig om daar 1 tot 2 weken te geven of het beste na elke sprint.");
         }
     }
 
@@ -71,16 +72,16 @@ public class KamerRetrospective extends Kamer {
     public void verwerkOpdracht(int huidigeVraag) {
         switch (huidigeVraag) {
             case 0 -> {
-                System.out.println("Wat is het hoofddoel van de Sprint Retrospective?");
-                System.out.println("a) De resultaten van het product demonstreren aan de klant.");
-                System.out.println("b) De product backlog aanpassen.");
-                System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
+                TextPrinter.print("Wat is het hoofddoel van de Sprint Retrospective?");
+                TextPrinter.print("a) De resultaten van het product demonstreren aan de klant.");
+                TextPrinter.print("b) De product backlog aanpassen.");
+                TextPrinter.print("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
             }
             case 1 -> {
-                System.out.println("Wanneer vindt de Sprint Retrospective plaats?");
-                System.out.println("a) Aan het begin van de sprint");
-                System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
-                System.out.println("c) Halverwege de Sprint");
+                TextPrinter.print("Wanneer vindt de Sprint Retrospective plaats?");
+                TextPrinter.print("a) Aan het begin van de sprint");
+                TextPrinter.print("b) Direct na de Sprint Review, aan het einde van de sprint");
+                TextPrinter.print("c) Halverwege de Sprint");
             }
         }
     }
@@ -94,9 +95,9 @@ public class KamerRetrospective extends Kamer {
 //            speler.verhoogScore(10);
 //            verwerkFeedback(huidigeVraag);
 //            huidigeVraag++;
-//            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
+//            TextPrinter.print("\n✅ Correct! Je krijgt 10 punten.\n");
 //        } else {
-//            System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt!");
+//            TextPrinter.print("\n❌ Fout! Monster 'Blame Game' verschijnt!");
 //            speler.voegMonsterToe("Blame Game");
 //            bestrijdMonster(speler);
 //        }

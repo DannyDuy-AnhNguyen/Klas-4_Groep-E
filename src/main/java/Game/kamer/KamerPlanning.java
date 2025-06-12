@@ -11,6 +11,7 @@ import Game.monster.Misverstand;
 import Game.monster.MonsterStrijdService;
 
 import java.util.Scanner;
+import Game.core.TextPrinter;
 
 public class KamerPlanning extends Kamer {
     private int huidigeVraag = 0;
@@ -59,10 +60,10 @@ public class KamerPlanning extends Kamer {
     @Override
     public void verwerkFeedback(int vraag) {
         if (vraag == 0) {
-            System.out.println("Bij de sprintplanning nemen alle betrokkenen deel aan wat er gepland gaat worden.");
+            TextPrinter.print("Bij de sprintplanning nemen alle betrokkenen deel aan wat er gepland gaat worden.");
         } else if (vraag == 1) {
-            System.out.println("Tijdens de sprintplanning wordt vastgesteld wat het doel van de sprint is en welke backlog-items worden opgepakt.");
-            System.out.println("Het team bepaalt ook de moeilijkheidsgraad van user stories met behulp van Sprint Poker.");
+            TextPrinter.print("Tijdens de sprintplanning wordt vastgesteld wat het doel van de sprint is en welke backlog-items worden opgepakt.");
+            TextPrinter.print("Het team bepaalt ook de moeilijkheidsgraad van user stories met behulp van Sprint Poker.");
         }
     }
 
@@ -70,18 +71,18 @@ public class KamerPlanning extends Kamer {
     public void verwerkOpdracht(int vraag) {
         switch (vraag) {
             case 0 -> {
-                System.out.println("Vraag 1: Wie neemt deel aan de Sprint Planning?");
-                System.out.println("a) Alleen de Scrum Master");
-                System.out.println("b) Product Owner en Scrum Master");
-                System.out.println("c) Product Owner, Scum Master en het hele Development Team");
-                System.out.println("d) Product Owner, Scrum Master en het hele Development Team");
+                TextPrinter.print("Vraag 1: Wie neemt deel aan de Sprint Planning?");
+                TextPrinter.print("a) Alleen de Scrum Master");
+                TextPrinter.print("b) Product Owner en Scrum Master");
+                TextPrinter.print("c) Product Owner, Scum Master en het hele Development Team");
+                TextPrinter.print("d) Product Owner, Scrum Master en het hele Development Team");
             }
             case 1 -> {
-                System.out.println("Vraag 2: Wat wordt er tijdens de Sprint Planning vastgesteld?");
-                System.out.println("a) Welke teamleden vakantie hebben");
-                System.out.println("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
-                System.out.println("c) Hoe de vorige sprint geëvalueerd is");
-                System.out.println("d) Wat de vastgestelde items van de backlog zijn als de product owner tevreden is met het product");
+                TextPrinter.print("Vraag 2: Wat wordt er tijdens de Sprint Planning vastgesteld?");
+                TextPrinter.print("a) Welke teamleden vakantie hebben");
+                TextPrinter.print("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
+                TextPrinter.print("c) Hoe de vorige sprint geëvalueerd is");
+                TextPrinter.print("d) Wat de vastgestelde items van de backlog zijn als de product owner tevreden is met het product");
             }
         }
     }
@@ -109,7 +110,7 @@ public class KamerPlanning extends Kamer {
             if (index >= 0 && index < items.size()) {
                 gekozenItem = items.remove(index);
             } else {
-                System.out.println("❌ Ongeldig itemnummer.");
+                TextPrinter.print("❌ Ongeldig itemnummer.");
                 return;
             }
         } catch (NumberFormatException e) {
@@ -119,7 +120,7 @@ public class KamerPlanning extends Kamer {
         if (gekozenItem != null) {
             speler.voegItemToe(gekozenItem);
         } else if (!input.matches("\\d+")) {
-            System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+            TextPrinter.print("❌ Dat item is niet gevonden in deze kamer.");
         }
     }
 

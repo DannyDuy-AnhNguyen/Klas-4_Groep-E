@@ -1,5 +1,7 @@
 package Game.item;
 
+import Game.core.TextPrinter;
+
 public abstract class Item {
     protected String naam;
 

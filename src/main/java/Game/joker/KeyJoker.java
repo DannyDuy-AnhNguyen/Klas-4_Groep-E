@@ -2,6 +2,7 @@ package Game.joker;
 
 import Game.core.Speler;
 import Game.kamer.Kamer;
+import Game.core.TextPrinter;
 
 import java.util.Set;
 
@@ -16,9 +17,9 @@ public class KeyJoker extends AbstractJoker implements KeyJokerInterface {
 
     @Override
     public void useInKey(Kamer kamer, Speler speler) {
-        System.out.println("Zit in Key Methode🙂:");
+        TextPrinter.print("Zit in Key Methode🙂:");
         if (used) {
-            System.out.println("❌ Deze KeyJoker is al gebruikt.");
+            TextPrinter.print("❌ Deze KeyJoker is al gebruikt.");
             return;
         }
 
@@ -27,7 +28,7 @@ public class KeyJoker extends AbstractJoker implements KeyJokerInterface {
             kamer.geefExtraSleutel(speler);
             System.out.println("🔐 KeyJoker gebruikt in kamer: " + kamer.getNaam());
         } else {
-            System.out.println("ℹ️ De KeyJoker heeft hier geen effect.");
+            TextPrinter.print("ℹ️ De KeyJoker heeft hier geen effect.");
         }
 
         used = true;

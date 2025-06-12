@@ -9,6 +9,7 @@ import Game.hint.FunnyHint;
 import Game.monster.Misverstand;
 import Game.monster.VerliesVanFocus;
 import Game.monster.MonsterStrijdService;
+import Game.core.TextPrinter;
 
 public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
@@ -59,9 +60,9 @@ public class KamerDailyScrum extends Kamer {
     @Override
     public void verwerkFeedback(int vraagIndex) {
         switch (vraagIndex) {
-            case 0 -> System.out.println("Een projectleider is geen officiële rol binnen Scrum.");
+            case 0 -> TextPrinter.print("Een projectleider is geen officiële rol binnen Scrum.");
             case 1 ->
-                    System.out.println("De meeste sprints duren 1 tot 4 weken. Kort genoeg om snel te kunnen bijsturen.");
+                    TextPrinter.print("De meeste sprints duren 1 tot 4 weken. Kort genoeg om snel te kunnen bijsturen.");
         }
     }
 
@@ -69,18 +70,18 @@ public class KamerDailyScrum extends Kamer {
     public void verwerkOpdracht(int vraagIndex) {
         switch (vraagIndex) {
             case 0 -> {
-                System.out.println("Vraag 1: Welke van de volgende rollen bestaat niet binnen Scrum?");
-                System.out.println("a) Projectleider");
-                System.out.println("b) Scrum Master");
-                System.out.println("c) Development Team");
-                System.out.println("d) Product Owner");
+                TextPrinter.print("Vraag 1: Welke van de volgende rollen bestaat niet binnen Scrum?");
+                TextPrinter.print("a) Projectleider");
+                TextPrinter.print("b) Scrum Master");
+                TextPrinter.print("c) Development Team");
+                TextPrinter.print("d) Product Owner");
             }
             case 1 -> {
-                System.out.println("Vraag 2: Hoelang duurt een standaard sprint meestal?");
-                System.out.println("a) 1 tot 4 weken");
-                System.out.println("b) 1 tot 4 maanden");
-                System.out.println("c) 1 tot 4 dagen");
-                System.out.println("d) 1 tot 4 jaren");
+                TextPrinter.print("Vraag 2: Hoelang duurt een standaard sprint meestal?");
+                TextPrinter.print("a) 1 tot 4 weken");
+                TextPrinter.print("b) 1 tot 4 maanden");
+                TextPrinter.print("c) 1 tot 4 dagen");
+                TextPrinter.print("d) 1 tot 4 jaren");
             }
         }
     }

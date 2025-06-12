@@ -12,11 +12,11 @@ public class ToegangsManager {
         if (speler.getSleutels() > 0) {
             speler.gebruikSleutel();
             kamer.getDeur().setOpen(true);
-            System.out.println("🔓 De deur naar '" + kamer.getNaam() + "' is geopend.");
+            TextPrinter.print("🔓 De deur naar '" + kamer.getNaam() + "' is geopend.");
             System.out.println();
             return true;
         } else {
-            System.out.println("❌ Je hebt geen sleutels om deze deur te openen.");
+            TextPrinter.print("❌ Je hebt geen sleutels om deze deur te openen.");
             System.out.println();
             return false;
         }

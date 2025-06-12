@@ -8,6 +8,7 @@ import Game.hint.HelpHint;
 import Game.hint.HintContext;
 import Game.monster.SprintConfusie;
 import Game.monster.MonsterStrijdService;
+import Game.core.TextPrinter;
 
 public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
@@ -62,9 +63,9 @@ public class KamerReview extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         switch (huidigeVraag) {
-            case 0 -> System.out.println("Sprintreview wordt met je product owner gehouden om te kijken waar de scrumteam tot nu toe uitgevoerd heeft en of het voldaan is.");
-            case 1 -> System.out.println("Sprint Review zorgt ervoor dat de scrumteam de feedback verzameld en wat de Product Owner nu van het product vindt.");
-            case 2 -> System.out.println("Dankzij Sprint Review weten beide kanten zowel de product owner als scrumteam wat er gedaan kan worden en wat er verwacht wordt.");
+            case 0 -> TextPrinter.print("Sprintreview wordt met je product owner gehouden om te kijken waar de scrumteam tot nu toe uitgevoerd heeft en of het voldaan is.");
+            case 1 -> TextPrinter.print("Sprint Review zorgt ervoor dat de scrumteam de feedback verzameld en wat de Product Owner nu van het product vindt.");
+            case 2 -> TextPrinter.print("Dankzij Sprint Review weten beide kanten zowel de product owner als scrumteam wat er gedaan kan worden en wat er verwacht wordt.");
         }
     }
 
@@ -72,24 +73,24 @@ public class KamerReview extends Kamer {
     public void verwerkOpdracht(int huidigeVraag){
         switch (huidigeVraag) {
             case 0 -> {
-                System.out.println("Wanneer wordt er een sprintreview gehouden?");
-                System.out.println("a) Aan het begin van de sprint");
-                System.out.println("b) Tijdens de sprint");
-                System.out.println("c) Aan het einde van de sprint");
+                TextPrinter.print("Wanneer wordt er een sprintreview gehouden?");
+                TextPrinter.print("a) Aan het begin van de sprint");
+                TextPrinter.print("b) Tijdens de sprint");
+                TextPrinter.print("c) Aan het einde van de sprint");
             }
             case 1 -> {
-                System.out.println("Wat is het belangrijkste doel van de Sprint Review?");
-                System.out.println("a) De Scrum Master evalueren");
-                System.out.println("b) Het increment inspecteren en feedback verzamelen");
-                System.out.println("c) De volgende sprint alvast plannen");
-                System.out.println("d) Vorige sprint doornemen");
+                TextPrinter.print("Wat is het belangrijkste doel van de Sprint Review?");
+                TextPrinter.print("a) De Scrum Master evalueren");
+                TextPrinter.print("b) Het increment inspecteren en feedback verzamelen");
+                TextPrinter.print("c) De volgende sprint alvast plannen");
+                TextPrinter.print("d) Vorige sprint doornemen");
             }
             case 2 -> {
-                System.out.println("De voordelen van een Sprint Review zijn...?");
-                System.out.println("a) Meer vergaderingen = meer productiviteit");
-                System.out.println("b) Transparantie, snelle feedback, alignment met stakeholders");
-                System.out.println("c) Langer werken zonder pauzes");
-                System.out.println("d) De product owner tevreden houden");
+                TextPrinter.print("De voordelen van een Sprint Review zijn...?");
+                TextPrinter.print("a) Meer vergaderingen = meer productiviteit");
+                TextPrinter.print("b) Transparantie, snelle feedback, alignment met stakeholders");
+                TextPrinter.print("c) Langer werken zonder pauzes");
+                TextPrinter.print("d) De product owner tevreden houden");
             }
         }
     }

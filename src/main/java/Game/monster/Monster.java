@@ -1,6 +1,7 @@
 package Game.monster;
 
 import Game.item.Item;
+import Game.core.TextPrinter;
 
 public abstract class Monster implements MonsterType {
     protected final String naam;
@@ -36,10 +37,10 @@ public abstract class Monster implements MonsterType {
     public boolean beantwoordVraag(String antwoord) {
         if (antwoord.equalsIgnoreCase(juistAntwoord)) {
             verslagen = true;
-            System.out.println("Je hebt het monster verslagen door de vraag correct te beantwoorden!");
+            TextPrinter.print("Je hebt het monster verslagen door de vraag correct te beantwoorden!");
             return true;
         } else {
-            System.out.println("Fout antwoord. Het monster leeft nog!");
+            TextPrinter.print("Fout antwoord. Het monster leeft nog!");
             return false;
         }
     }
@@ -48,10 +49,10 @@ public abstract class Monster implements MonsterType {
     public boolean verslaMetItem(Item item) {
         if (item.getNaam().equalsIgnoreCase("zwaard")) {
             verslagen = true;
-            System.out.println("Je hebt het monster direct verslagen met een zwaard!");
+            TextPrinter.print("Je hebt het monster direct verslagen met een zwaard!");
             return true;
         } else {
-            System.out.println("Dit item heeft geen effect op het monster.");
+            TextPrinter.print("Dit item heeft geen effect op het monster.");
             return false;
         }
     }

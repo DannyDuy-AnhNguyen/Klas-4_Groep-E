@@ -8,6 +8,7 @@ import Game.hint.HelpHint;
 import Game.hint.HintContext;
 import Game.monster.ScrumVerwarring;
 import Game.monster.MonsterStrijdService;
+import Game.core.TextPrinter;
 
 public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
@@ -58,7 +59,7 @@ public class KamerScrumBoard extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("Epic is de deelonderdeel van een project onderwerp, Userstory de deel van je Epic en Taken de deel van de je userstory");
+            TextPrinter.print("Epic is de deelonderdeel van een project onderwerp, Userstory de deel van je Epic en Taken de deel van de je userstory");
         } else if (huidigeVraag == 1) {
             System.out.println("Product backlog is waar alles userstories staan die nog gedaan moet worden,\nSprint backlog de userstories voor de sprint die je in deze sprint wilt maken,\n" +
                     "To Do wat er vandaag gedaan moet worden,\nDoing welke teamlid aan het uitvoeren is\nTesting wat nog getest moet worden\nDone wat er al gedaan is.");
@@ -69,16 +70,16 @@ public class KamerScrumBoard extends Kamer {
     public void verwerkOpdracht(int huidigeVraag) {
         switch (huidigeVraag) {
             case 0 -> {
-                System.out.println("1. Wat is de volgorde om een Scrum-proces te maken?");
-                System.out.println("a) Epics > Userstories > Taken");
-                System.out.println("b) Epics > Taken > Userstories");
-                System.out.println("c) Userstories > Epics > Taken");
+                TextPrinter.print("1. Wat is de volgorde om een Scrum-proces te maken?");
+                TextPrinter.print("a) Epics > Userstories > Taken");
+                TextPrinter.print("b) Epics > Taken > Userstories");
+                TextPrinter.print("c) Userstories > Epics > Taken");
             }
             case 1 -> {
-                System.out.println("2. Welke borden gebruik je in het Scrumboard?");
-                System.out.println("a) Product Backlog > Sprint Backlog > Doing > Testing > Done");
-                System.out.println("b) Product Backlog > Sprint Backlog > To Do > Doing > Testing > Done");
-                System.out.println("c) Sprint Backlog > To Do > Doing > Testing > Done");
+                TextPrinter.print("2. Welke borden gebruik je in het Scrumboard?");
+                TextPrinter.print("a) Product Backlog > Sprint Backlog > Doing > Testing > Done");
+                TextPrinter.print("b) Product Backlog > Sprint Backlog > To Do > Doing > Testing > Done");
+                TextPrinter.print("c) Sprint Backlog > To Do > Doing > Testing > Done");
             }
         }
     }

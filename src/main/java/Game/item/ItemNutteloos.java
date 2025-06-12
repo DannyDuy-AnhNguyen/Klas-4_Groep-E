@@ -1,5 +1,7 @@
 package Game.item;
 
+import Game.core.TextPrinter;
+
 public class ItemNutteloos extends Item implements Gebruikbaar {
     public ItemNutteloos(String naam) {
         super(naam);
@@ -7,6 +9,6 @@ public class ItemNutteloos extends Item implements Gebruikbaar {
 
     @Override
     public void gebruik() {
-        System.out.println("🪨 Je inspecteert de rots... hij doet niets.");
+        TextPrinter.print("🪨 Je inspecteert de rots... hij doet niets.");
     }
 }
