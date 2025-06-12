@@ -19,6 +19,17 @@ public class KamerBetreed {
     private Scanner scanner = new Scanner(System.in);
     private int hintCounter = 0;
 
+    //Ik heb hier 2 constructors toegevoegd voor de randwaardentest hoeveel hints die kan gebruiken
+    // Default constructor
+    public KamerBetreed() {
+        this(new Scanner(System.in));
+    }
+
+    // Constructor met eigen scanner (voor testen) \\ hintJoker
+    public KamerBetreed(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     public void betreedIntro(Kamer kamer) {
         System.out.println("\nJe bent nu in de kamer: " + kamer.getNaam());
         kamer.getDeur().toonStatus();

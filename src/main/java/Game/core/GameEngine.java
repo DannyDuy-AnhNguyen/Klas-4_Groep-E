@@ -4,6 +4,7 @@ import Game.kamer.Kamer;
 import Game.assistent.Assistent;
 import Game.item.ItemBoek;
 import Game.kamer.KamerBetreed;
+import Game.database.DatabaseVoortgang;
 
 public class GameEngine {
     private Speler speler;
@@ -12,16 +13,15 @@ public class GameEngine {
     private Status status;
     private Kamer huidigeKamer;
 
-    public GameEngine(Speler speler, UserInterface ui, RoomManager roomManager) {
-        this.speler = speler;
+    public GameEngine(UserInterface ui, RoomManager roomManager) {
         this.ui = ui;
         this.roomManager = roomManager;
-        this.status = new Status(speler); // Registreer als observer
     }
 
     public void startGame() {
 
         speler = ui.leesSpeler();
+        roomManager.setSpeler(speler);
 
         status = new Status(speler);
 
@@ -64,7 +64,7 @@ public class GameEngine {
             }
             default -> {
                 if (input.startsWith("pak ")) {
-                    roomManager.verwerkPak(input, speler);
+                    roomManager.verwerkPak(input);
                 } else if (input.startsWith("gebruik ")) {
                     speler.gebruikItem(input.substring(8).trim());
                 } else if (input.startsWith("ga naar kamer")) {
@@ -77,17 +77,19 @@ public class GameEngine {
     }
 
     private void verwerkKamerNavigatie(String input) {
-        huidigeKamer = roomManager.verwerkKamerCommando(input, speler);
+        huidigeKamer = roomManager.verwerkKamerCommando(input);
 
         if (huidigeKamer != null) {
             if (huidigeKamer.isVoltooid()) {
                 ui.printKamerVoltooid();
+                DatabaseVoortgang.slaOp(speler, huidigeKamer.getKamerID());
                 controleerEnStartFinale();
                 huidigeKamer = null;
             } else {
                 huidigeKamer.betreed(speler);
 
                 if (huidigeKamer.isVoltooid()) {
+                    DatabaseVoortgang.slaOp(speler, huidigeKamer.getKamerID());
                     controleerEnStartFinale();
                 }
 

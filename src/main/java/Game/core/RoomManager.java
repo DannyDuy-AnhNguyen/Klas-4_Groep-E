@@ -11,12 +11,25 @@ public class RoomManager {
     private final List<Kamer> kamers = new ArrayList<>();
     private final KamerFactory kamerFactory;
     private final ToegangsManager toegangsManager;
-    private final InventoryManager inventoryManager;
+    private InventoryManager inventoryManager;
+    private Speler speler;
 
-    public RoomManager(KamerFactory kamerFactory, Speler speler) {
+//    public RoomManager(KamerFactory kamerFactory, Speler speler) {
+//        this.kamerFactory = kamerFactory;
+//        this.toegangsManager = new ToegangsManager();
+//        this.inventoryManager = new InventoryManager(speler);
+//
+//        for (String key : kamerFactory.getKamerKeys()) {
+//            Kamer kamer = kamerFactory.getKamer(key);
+//            kamer.getDeur().setOpen(false);
+//            kamers.add(kamer);
+//        }
+//    }
+
+    public RoomManager(KamerFactory kamerFactory) {
         this.kamerFactory = kamerFactory;
         this.toegangsManager = new ToegangsManager();
-        this.inventoryManager = new InventoryManager(speler);
+        this.inventoryManager = null; // tijdelijk, want speler nog niet bekend
 
         for (String key : kamerFactory.getKamerKeys()) {
             Kamer kamer = kamerFactory.getKamer(key);
@@ -24,6 +37,13 @@ public class RoomManager {
             kamers.add(kamer);
         }
     }
+
+    public void setSpeler(Speler speler) {
+        this.speler = speler;
+        this.inventoryManager = new InventoryManager(speler); // pas hier maken
+    }
+
+
 
     public List<Kamer> getBeschikbareKamers() {
         return kamers;
@@ -33,7 +53,7 @@ public class RoomManager {
         return kamers.get(positie);
     }
 
-    public Kamer verwerkKamerCommando(String input, Speler speler) {
+    public Kamer verwerkKamerCommando(String input) {
         String prefix = "ga naar kamer";
         if (input.length() <= prefix.length()) {
             System.out.println("Ongeldig commando, gebruik: 'ga naar kamer [nummer|naam]'");
@@ -106,7 +126,7 @@ public class RoomManager {
         return finale;
     }
 
-    public void verwerkPak(String input, Speler speler) {
+    public void verwerkPak(String input) {
         String itemInput = input.substring(4).trim();
         Kamer kamer = getKamerOpPositie(speler.getPositie());
         List<Item> kamerItems = kamer.getItems();

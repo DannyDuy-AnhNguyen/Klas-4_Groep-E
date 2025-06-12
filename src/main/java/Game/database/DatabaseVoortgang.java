@@ -17,7 +17,9 @@ public class DatabaseVoortgang {
 
     public static void slaOp(Speler speler, int kamerId) {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
+            maakGebruikerAanAlsNietBestaat(conn, speler.getNaam()); // <== FIX TOEGEVOEGD
             int gebruikerId = getGebruikerId(conn, speler.getNaam());
+
             if (gebruikerId == -1) {
                 System.out.println("❌ Gebruiker niet gevonden: " + speler.getNaam());
                 return;
@@ -34,6 +36,17 @@ public class DatabaseVoortgang {
             e.printStackTrace();
         }
     }
+
+    private static void maakGebruikerAanAlsNietBestaat(Connection conn, String naam) throws SQLException {
+        String sql = "INSERT IGNORE INTO gebruikers (gebruikersnaam) VALUES (?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, naam);
+            stmt.executeUpdate();
+            System.out.println("🆕 Gebruiker toegevoegd aan database: " + naam);
+        }
+    }
+
+
 
     private static int getGebruikerId(Connection conn, String gebruikersnaam) throws SQLException {
         String sql = "SELECT id FROM gebruikers WHERE gebruikersnaam = ?";

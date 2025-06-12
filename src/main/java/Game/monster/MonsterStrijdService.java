@@ -22,17 +22,30 @@ public class MonsterStrijdService {
         int vragenTeBeantwoorden = 4;
 
         System.out.println("Wil je een item gebruiken om het makkelijker te maken? (ja/nee)");
-        if (scanner.nextLine().trim().equalsIgnoreCase("ja")) {
-            System.out.println("Welk item wil je gebruiken?");
-            String itemNaam = scanner.nextLine().trim();
-            boolean gebruikt = speler.gebruikItem(itemNaam);
-            if (gebruikt) {
-                if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
-                    vragenTeBeantwoorden = 0;
-                    System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
-                } else if (itemNaam.equalsIgnoreCase("Splitter")) {
-                    vragenTeBeantwoorden = 2;
-                    System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
+        String gebruikItemKeuze = scanner.nextLine().trim().toLowerCase();
+
+        if (gebruikItemKeuze.equals("ja")) {
+            while (true) {
+                System.out.println("Welk item wil je gebruiken? (Typ 'stop' om geen item te gebruiken)");
+                String itemNaam = scanner.nextLine().trim();
+
+                if (itemNaam.equalsIgnoreCase("stop")) {
+                    System.out.println("Je hebt gekozen om geen item te gebruiken.");
+                    break;
+                }
+
+                boolean gebruikt = speler.gebruikItem(itemNaam);
+                if (gebruikt) {
+                    if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
+                        vragenTeBeantwoorden = 0;
+                        System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
+                    } else if (itemNaam.equalsIgnoreCase("Splitter")) {
+                        vragenTeBeantwoorden = 2;
+                        System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
+                    }
+                    break; // geldige invoer, uit de loop
+                } else {
+                    System.out.println("Je hebt dit item niet in je inventory of het item bestaat niet. Probeer opnieuw.");
                 }
             }
         }
