@@ -13,24 +13,26 @@ public class GameEngine {
     private Status status;
     private Kamer huidigeKamer;
 
-    public GameEngine(UserInterface ui, RoomManager roomManager) {
+    public GameEngine(Speler speler,UserInterface ui, RoomManager roomManager) {
+        this.speler = speler;
         this.ui = ui;
         this.roomManager = roomManager;
     }
 
     public void startGame() {
-
-        speler = ui.leesSpeler();
         roomManager.setSpeler(speler);
-
+        roomManager.syncVoltooideKamersMetSpeler();
         status = new Status(speler);
 
         ui.printCommandoUitleg(speler.getNaam());
 
         while (true) {
+            controleerEnStartFinale();
+
             if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
                 ui.printKamerOpties(roomManager.getBeschikbareKamers(), speler);
             }
+
             String input = ui.leesInvoer().trim().toLowerCase();
             verwerkCommando(input);
         }
@@ -98,12 +100,37 @@ public class GameEngine {
         }
     }
 
+//    private void controleerEnStartFinale() {
+//        if (roomManager.alleNormaleKamersVoltooid() && !roomManager.isFinaleKamerVoltooid()) {
+//            Kamer finale = roomManager.activeerFinaleKamer(speler);
+//            if (finale != null) {
+//                finale.betreed(speler);
+//                status.update(speler); // Toon status na finale
+//                if (finale.isVoltooid()) {
+//                    ui.printGefeliciteerdArt();
+//                    System.exit(0);
+//                }
+//            }
+//        }
+//    }
+
     private void controleerEnStartFinale() {
+        roomManager.getBeschikbareKamers().stream()
+                .filter(k -> !k.getNaam().toLowerCase().contains("finale"))
+                .forEach(k -> System.out.println("🧩 " + k.getNaam() + " (ID: " + k.getKamerID() + ") → isVoltooid(): " + k.isVoltooid()));
+        System.out.println("📦 Voltooide kamerIDs van speler: " + speler.getVoltooideKamers());
+
+
+        System.out.println("➡️ Check finale voorwaarden...");
+        System.out.println("Normale kamers voltooid? " + roomManager.alleNormaleKamersVoltooid());
+        System.out.println("Finale al voltooid? " + roomManager.isFinaleKamerVoltooid());
+
         if (roomManager.alleNormaleKamersVoltooid() && !roomManager.isFinaleKamerVoltooid()) {
             Kamer finale = roomManager.activeerFinaleKamer(speler);
             if (finale != null) {
+                finale.setStatus(status); // <-- Zet status eerst
                 finale.betreed(speler);
-                status.update(speler); // Toon status na finale
+                status.update(speler);
                 if (finale.isVoltooid()) {
                     ui.printGefeliciteerdArt();
                     System.exit(0);

@@ -11,7 +11,7 @@ import Game.monster.MonsterStrijdService;
 public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
     private final HintContext hintContext = new HintContext();
-    private Status status;
+//    private Status status;
     private KamerBetreed betreedHandler = new KamerBetreed();
     private final Antwoord antwoordStrategie;
 
@@ -134,7 +134,7 @@ public class KamerFinaleTIA extends Kamer {
         betreedHandler.toonHelp();
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+//    public void setStatus(Status status) {
+//        this.status = status;
+//    }
 }

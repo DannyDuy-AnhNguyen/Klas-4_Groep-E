@@ -62,6 +62,11 @@ public class RoomManager {
             return null;
         }
 
+        if (speler.getVoltooideKamers().contains(gekozenKamer.getKamerID())) {
+            System.out.println("Deze kamer is al voltooid. Kies een andere.");
+            return null;
+        }
+
         if (!toegangsManager.openDeurAlsMogelijk(speler, gekozenKamer)) {
             return null;
         }
@@ -76,15 +81,18 @@ public class RoomManager {
 
     private Kamer parseerKamer(String argument) {
         try {
-            int nummer = Integer.parseInt(argument) - 1;
-            if (nummer >= 0 && nummer < kamers.size()) {
-                return kamers.get(nummer);
+            int nummer = Integer.parseInt(argument);
+            for (Kamer kamer : kamers) {
+                if (kamer.getKamerID() == nummer) {
+                    return kamer;
+                }
             }
         } catch (NumberFormatException e) {
             return kamerFactory.getKamer(argument.replaceAll("\\s+", "").toLowerCase());
         }
         return null;
     }
+
 
     public boolean alleNormaleKamersVoltooid() {
         return kamers.stream()
@@ -139,4 +147,13 @@ public class RoomManager {
             System.out.println("❌ Dat item is niet gevonden in deze kamer.");
         }
     }
+
+    public void syncVoltooideKamersMetSpeler() {
+        for (Kamer kamer : kamers) {
+            if (speler.getVoltooideKamers().contains(kamer.getKamerID())) {
+                kamer.setVoltooid();
+            }
+        }
+    }
+
 }
