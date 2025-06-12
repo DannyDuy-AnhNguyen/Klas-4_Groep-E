@@ -29,7 +29,7 @@ public class GameEngine {
 
         while (true) {
             if (huidigeKamer == null || huidigeKamer.isVoltooid()) {
-                ui.printKamerOpties(roomManager.getBeschikbareKamers());
+                ui.printKamerOpties(roomManager.getBeschikbareKamers(), speler);
             }
             String input = ui.leesInvoer().trim().toLowerCase();
             verwerkCommando(input);

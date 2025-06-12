@@ -71,11 +71,21 @@ public class UserInterface {
         System.out.println();
     }
 
-    public void printKamerOpties(List<Kamer> kamers) {
+//    public void printKamerOpties(List<Kamer> kamers) {
+//        System.out.println("📍 Beschikbare kamers:");
+//        for (int i = 0; i < kamers.size(); i++) {
+//            if (!kamers.get(i).isVoltooid()) {
+//                System.out.println((i + 1) + ". " + kamers.get(i).getNaam());
+//            }
+//        }
+//    }
+
+
+    public void printKamerOpties(List<Kamer> kamers, Speler speler) {
         System.out.println("📍 Beschikbare kamers:");
-        for (int i = 0; i < kamers.size(); i++) {
-            if (!kamers.get(i).isVoltooid()) {
-                System.out.println((i + 1) + ". " + kamers.get(i).getNaam());
+        for (Kamer kamer : kamers) {
+            if (!speler.getVoltooideKamers().contains(kamer.getKamerID())) {
+                System.out.println(kamer.getKamerID() + ". " + kamer.getNaam());
             }
         }
     }
