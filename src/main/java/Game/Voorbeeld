@@ -19,7 +19,7 @@ public class ScrumPuzzel {
         Collections.shuffle(doorElkaar);
 
         // Print de termen met nummers
-        System.out.println("Orden de volgende termen door het juiste nummer in te voeren:");
+        TextPrinter.print("Orden de volgende termen door het juiste nummer in te voeren:");
         for (int i = 0; i < doorElkaar.size(); i++) {
             System.out.printf("%d: %s%n", i + 1, doorElkaar.get(i));
         }
@@ -28,7 +28,7 @@ public class ScrumPuzzel {
         List<String> antwoordVolgorde = new ArrayList<>();
 
         // Vraag gebruiker om juiste volgorde in te voeren
-        System.out.println("\nVoer de nummers in de juiste volgorde in, gescheiden door spaties:");
+        TextPrinter.print("\nVoer de nummers in de juiste volgorde in, gescheiden door spaties:");
         String line = scanner.nextLine();
         String[] inputs = line.trim().split("\\s+");
 
@@ -42,17 +42,17 @@ public class ScrumPuzzel {
                     return;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Voer alleen nummers in.");
+                TextPrinter.print("Voer alleen nummers in.");
                 return;
             }
         }
 
         // Check of de volgorde klopt
         if (antwoordVolgorde.equals(juisteVolgorde)) {
-            System.out.println("Goed gedaan! De volgorde is correct.");
+            TextPrinter.print("Goed gedaan! De volgorde is correct.");
         } else {
-            System.out.println("Helaas, de volgorde is niet correct.");
-            System.out.println("Juiste volgorde is:");
+            TextPrinter.print("Helaas, de volgorde is niet correct.");
+            TextPrinter.print("Juiste volgorde is:");
             for (String stap : juisteVolgorde) {
                 System.out.println(stap);
             }

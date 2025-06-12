@@ -4,6 +4,7 @@ import Game.item.Item;
 import Game.core.Speler;
 
 import java.util.Scanner;
+import Game.core.TextPrinter;
 
 public class VerliesVanFocus extends Monster {
     private final String[] juisteAntwoorden = {
@@ -29,28 +30,28 @@ public class VerliesVanFocus extends Monster {
 
     public void verwerkOpdracht(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("(Monster) Vraag 3: Welke drie rollen zijn er in Scrum?");
-            System.out.println("a) Manager, Ontwikkelaar, Tester");
-            System.out.println("b) Klant, Projectleider, Ontwerper");
-            System.out.println("c) Product Owner, Scrum Master, Development Team");
+            TextPrinter.print("(Monster) Vraag 3: Welke drie rollen zijn er in Scrum?");
+            TextPrinter.print("a) Manager, Ontwikkelaar, Tester");
+            TextPrinter.print("b) Klant, Projectleider, Ontwerper");
+            TextPrinter.print("c) Product Owner, Scrum Master, Development Team");
         } else if (huidigeVraag == 1) {
-            System.out.println("(Monster) Vraag 4: Wat is een kenmerk van werken met Scrum?");
-            System.out.println("a) Alles wordt vooraf volledig gepland");
-            System.out.println("b) Er wordt gewerkt in korte iteraties, genaamd sprints");
-            System.out.println("c) Alleen de Scrum Master beslist wat er gedaan wordt");
+            TextPrinter.print("(Monster) Vraag 4: Wat is een kenmerk van werken met Scrum?");
+            TextPrinter.print("a) Alles wordt vooraf volledig gepland");
+            TextPrinter.print("b) Er wordt gewerkt in korte iteraties, genaamd sprints");
+            TextPrinter.print("c) Alleen de Scrum Master beslist wat er gedaan wordt");
         } else if (huidigeVraag == 2) {
-            System.out.println("(Monster) Vraag 5: Wat gebeurt er aan het einde van elke sprint?");
-            System.out.println("a) Het team gaat op vakantie.");
-            System.out.println("b) De sprint wordt geëvalueerd en het product wordt mogelijk opgeleverd.");
-            System.out.println("c) De product backlog wordt verwijderd.");
+            TextPrinter.print("(Monster) Vraag 5: Wat gebeurt er aan het einde van elke sprint?");
+            TextPrinter.print("a) Het team gaat op vakantie.");
+            TextPrinter.print("b) De sprint wordt geëvalueerd en het product wordt mogelijk opgeleverd.");
+            TextPrinter.print("c) De product backlog wordt verwijderd.");
         } else if (huidigeVraag == 3) {
-            System.out.println("(Monster) Vraag 6: Wat gebeurt er tijdens een goede Daily Scrum?");
-            System.out.println("a) De Scrum Master controleert of iedereen hard genoeg werkt");
-            System.out.println("b) Teamleden rapporteren aan de Product Owner");
-            System.out.println("c) Teamleden stemmen het werk op elkaar af richting het sprintdoel");
-            System.out.println("d) Het team plant de hele sprint opnieuw");
+            TextPrinter.print("(Monster) Vraag 6: Wat gebeurt er tijdens een goede Daily Scrum?");
+            TextPrinter.print("a) De Scrum Master controleert of iedereen hard genoeg werkt");
+            TextPrinter.print("b) Teamleden rapporteren aan de Product Owner");
+            TextPrinter.print("c) Teamleden stemmen het werk op elkaar af richting het sprintdoel");
+            TextPrinter.print("d) Het team plant de hele sprint opnieuw");
         } else {
-            System.out.println("Er is geen vraag beschikbaar voor dit nummer.");
+            TextPrinter.print("Er is geen vraag beschikbaar voor dit nummer.");
         }
     }
 

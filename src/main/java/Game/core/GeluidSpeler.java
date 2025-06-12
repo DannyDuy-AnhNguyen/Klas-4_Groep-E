@@ -13,7 +13,7 @@ public class GeluidSpeler {
                 return;
             }
 
-            System.out.println("✅ Bestand gevonden. Probeer te decoderen...");
+            TextPrinter.print("✅ Bestand gevonden. Probeer te decoderen...");
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(input);
             AudioFormat baseFormat = audioStream.getFormat();
@@ -32,7 +32,7 @@ public class GeluidSpeler {
 
             AudioInputStream decodedStream = AudioSystem.getAudioInputStream(decodedFormat, audioStream);
 
-            System.out.println("🔊 Geluid afspelen...");
+            TextPrinter.print("🔊 Geluid afspelen...");
 
             Clip clip = AudioSystem.getClip();
             clip.open(decodedStream);
@@ -43,7 +43,7 @@ public class GeluidSpeler {
             }
 
             clip.close();
-            System.out.println("✅ Geluid klaar.");
+            TextPrinter.print("✅ Geluid klaar.");
         } catch (Exception e) {
             System.err.println("❌ Fout tijdens afspelen:");
             e.printStackTrace();

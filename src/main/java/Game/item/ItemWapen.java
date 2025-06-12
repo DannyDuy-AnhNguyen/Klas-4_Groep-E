@@ -1,5 +1,7 @@
 package Game.item;
 
+import Game.core.TextPrinter;
+
 public class ItemWapen extends Item implements GebruiktVoorMonster {
     public ItemWapen(String naam) {
         super(naam);
@@ -7,6 +9,6 @@ public class ItemWapen extends Item implements GebruiktVoorMonster {
 
     @Override
     public void gebruikTegenMonster() {
-        System.out.println("🗡️ Het zwaard verslaat het monster direct!");
+        TextPrinter.print("🗡️ Het zwaard verslaat het monster direct!");
     }
 }

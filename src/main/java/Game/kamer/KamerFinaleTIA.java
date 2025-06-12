@@ -7,6 +7,7 @@ import Game.hint.FunnyHint;
 import Game.hint.HelpHint;
 import Game.hint.HintContext;
 import Game.monster.MonsterStrijdService;
+import Game.core.TextPrinter;
 
 public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
@@ -63,13 +64,13 @@ public class KamerFinaleTIA extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("Het is iemand die niet in de scrum werkt");
+            TextPrinter.print("Het is iemand die niet in de scrum werkt");
         } else if (huidigeVraag == 1) {
-            System.out.println("Scrum is officieel ontstaan in 1995.");
+            TextPrinter.print("Scrum is officieel ontstaan in 1995.");
         } else if (huidigeVraag == 2) {
-            System.out.println("Deze vraag is grappig bedoeld, maar Scrum is serieus.");
+            TextPrinter.print("Deze vraag is grappig bedoeld, maar Scrum is serieus.");
         } else if (huidigeVraag == 3) {
-            System.out.println("Sprint 0 wordt vaak gebruikt voor voorbereiding en planning.");
+            TextPrinter.print("Sprint 0 wordt vaak gebruikt voor voorbereiding en planning.");
         }
     }
 
@@ -77,28 +78,28 @@ public class KamerFinaleTIA extends Kamer {
     public void verwerkOpdracht(int huidigeVraag){
         switch (huidigeVraag) {
             case 0 -> {
-                System.out.println("1. Wat vind je van Scrum?");
-                System.out.println("a) Uitstekend");
-                System.out.println("b) Neutraal");
-                System.out.println("c) Slecht");
+                TextPrinter.print("1. Wat vind je van Scrum?");
+                TextPrinter.print("a) Uitstekend");
+                TextPrinter.print("b) Neutraal");
+                TextPrinter.print("c) Slecht");
             }
             case 1 -> {
-                System.out.println("2. Uit welk jaar is Scrum ontstaan?");
-                System.out.println("a) 1993");
-                System.out.println("b) 1995");
-                System.out.println("c) 2001");
-                System.out.println("d) 2010");
+                TextPrinter.print("2. Uit welk jaar is Scrum ontstaan?");
+                TextPrinter.print("a) 1993");
+                TextPrinter.print("b) 1995");
+                TextPrinter.print("c) 2001");
+                TextPrinter.print("d) 2010");
             }
             case 2 -> {
-                System.out.println("3. Is Scrum Scrumario?");
-                System.out.println("a) Ja");
-                System.out.println("b) Ja");
-                System.out.println("c) Ja");
-                System.out.println("d) Ja");
+                TextPrinter.print("3. Is Scrum Scrumario?");
+                TextPrinter.print("a) Ja");
+                TextPrinter.print("b) Ja");
+                TextPrinter.print("c) Ja");
+                TextPrinter.print("d) Ja");
             }
             case 3 -> {
-                System.out.println("4. Bij welke sprint hoort deze userstory?");
-                System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
+                TextPrinter.print("4. Bij welke sprint hoort deze userstory?");
+                TextPrinter.print("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
             }
         }
     }

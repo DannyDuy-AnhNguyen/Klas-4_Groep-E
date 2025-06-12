@@ -10,6 +10,7 @@ import Game.antwoord.Antwoord;
 import Game.hint.HintContext;
 import Game.monster.Monster;
 import Game.monster.MonsterStrijdService;
+import Game.core.TextPrinter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public abstract class Kamer {
         if (heeftMonster()) {
             monsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
         } else {
-            System.out.println("Deze kamer heeft geen monster!");
+            TextPrinter.print("Deze kamer heeft geen monster!");
         }
     }
 
@@ -124,11 +125,11 @@ public abstract class Kamer {
             speler.setStreak(speler.getStreak() + 1);
             int bonus = speler.getStreak() * 10;
             speler.verhoogScore(bonus);
-            System.out.println("Goed gedaan! Je krijgt " + bonus + " punten. (Streak: " + speler.getStreak() + ")");
+            TextPrinter.print("Goed gedaan! Je krijgt " + bonus + " punten. (Streak: " + speler.getStreak() + ")");
         } else {
             speler.verlaagScore(10);
             speler.setStreak(0);
-            System.out.println("Fout antwoord! Je verliest 10 punten en je streak is gereset.");
+            TextPrinter.print("Fout antwoord! Je verliest 10 punten en je streak is gereset.");
         }
     }
 
@@ -164,7 +165,7 @@ public abstract class Kamer {
     //De sleutel wordt alleen gebruikt in de Daily Scrum en Review kamer als extra sleutel.
     public void geefExtraSleutel(Speler speler) {
         speler.voegSleutelToe(); // Spelerbeheer doet alles goed via Observer
-        System.out.println("🔑 Een extra sleutel is speciaal in de Daily Scrum kamer toegekend!");
+        TextPrinter.print("🔑 Een extra sleutel is speciaal in de Daily Scrum kamer toegekend!");
     }
 
     // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
@@ -174,24 +175,24 @@ public abstract class Kamer {
 
         // Toon alleen keuzes die daadwerkelijk beschikbaar zijn
         if (keyToegestaan) {
-            System.out.println("🃏 Kies je joker: 'hint' of 'key'");
+            TextPrinter.print("🃏 Kies je joker: 'hint' of 'key'");
             String keuze = scanner.nextLine().trim().toLowerCase();
             if (keuze.equals("key")) {
                 if (keyToegestaan) {
                     speler.voegJokerToe(keyJoker);
-                    System.out.println("🔐 Je hebt de Key joker gekozen. Succes!");
+                    TextPrinter.print("🔐 Je hebt de Key joker gekozen. Succes!");
                 } else {
-                    System.out.println("❌ De Key joker is niet beschikbaar in deze kamer.");
-                    System.out.println("ℹ️ Alleen beschikbaar in 'Daily Scrum' en 'Sprint Review'.");
+                    TextPrinter.print("❌ De Key joker is niet beschikbaar in deze kamer.");
+                    TextPrinter.print("ℹ️ Alleen beschikbaar in 'Daily Scrum' en 'Sprint Review'.");
                 }
             } else if (keuze.equals("hint")) {
                 speler.voegJokerToe(new HintJoker("hint"));
-                System.out.println("💡 Je hebt de Hint joker gekozen.");
+                TextPrinter.print("💡 Je hebt de Hint joker gekozen.");
             } else {
-                System.out.println("⚠️ Ongeldige keuze.");
+                TextPrinter.print("⚠️ Ongeldige keuze.");
             }
         } else {
-            System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
+            TextPrinter.print("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
             speler.voegJokerToe(new HintJoker("hint"));
         }
     }

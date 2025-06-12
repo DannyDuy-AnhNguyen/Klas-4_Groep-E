@@ -126,13 +126,13 @@ public class Speler {
     }
 
     public void gameOver() {
-        System.out.println("\n🛑 GAME OVER! Je hebt geen levens meer.");
+        TextPrinter.print("\n🛑 GAME OVER! Je hebt geen levens meer.");
         System.out.print("Wil je opnieuw beginnen? (ja/nee): ");
         String keuze = scanner.nextLine().trim().toLowerCase();
 
         if (keuze.equals("ja")) {
             clearConsole();
-            System.out.println("🔄 Het spel wordt opnieuw gestart...\n");
+            TextPrinter.print("🔄 Het spel wordt opnieuw gestart...\n");
             Game.Main.main(null);
         } else {
             System.out.println("""
@@ -142,10 +142,10 @@ public class Speler {
         """);
             System.out.println();
             System.out.println();
-            System.out.println("💀 Oei... Zelfs een Scrum Master kon je niet redden.");
+            TextPrinter.print("💀 Oei... Zelfs een Scrum Master kon je niet redden.");
             System.out.println();
             System.out.println();
-            System.out.println("👋 Bedankt voor het spelen!");
+            TextPrinter.print("👋 Bedankt voor het spelen!");
             System.exit(0);
         }
     }

@@ -36,7 +36,7 @@ public class RoomManager {
     public Kamer verwerkKamerCommando(String input, Speler speler) {
         String prefix = "ga naar kamer";
         if (input.length() <= prefix.length()) {
-            System.out.println("Ongeldig commando, gebruik: 'ga naar kamer [nummer|naam]'");
+            TextPrinter.print("Ongeldig commando, gebruik: 'ga naar kamer [nummer|naam]'");
             System.out.println();
             return null;
         }
@@ -95,7 +95,7 @@ public class RoomManager {
 
         if (!kamers.contains(finale)) {
             kamers.add(finale);
-            System.out.println("Finale kamer toegevoegd aan kamers lijst.");
+            TextPrinter.print("Finale kamer toegevoegd aan kamers lijst.");
             System.out.println();
         }
 
@@ -117,7 +117,7 @@ public class RoomManager {
             if (index >= 0 && index < kamerItems.size()) {
                 gekozenItem = kamerItems.remove(index);
             } else {
-                System.out.println("❌ Ongeldig itemnummer.");
+                TextPrinter.print("❌ Ongeldig itemnummer.");
                 System.out.println();
                 return;
             }
@@ -128,7 +128,7 @@ public class RoomManager {
         if (gekozenItem != null) {
             inventoryManager.voegItemToe(gekozenItem);
         } else if (!itemInput.matches("\\d+")) {
-            System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+            TextPrinter.print("❌ Dat item is niet gevonden in deze kamer.");
             System.out.println();
         }
     }

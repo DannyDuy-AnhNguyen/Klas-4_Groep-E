@@ -7,6 +7,7 @@ import Game.kamer.Kamer;
 import java.util.List;
 import java.util.Scanner;
 import Game.core.GeluidSpeler;
+import Game.core.TextPrinter;
 
 import static Game.core.ConsoleKleuren.*;
 
@@ -15,31 +16,31 @@ public class UserInterface {
 
     public Speler leesSpeler() {
         regenboogAnimatie("Welkom bij de Scrum Escape Game!", 20, 100);
-        System.out.print("Wat is je naam? ");
+        TextPrinter.print("Wat is je naam? ");
         String naam = scanner.nextLine().trim();
 
         Speler speler;
 
         if (DatabaseVoortgang.spelerBestaat(naam)) {
-            System.out.print("🧠 Speler '" + naam + "' bestaat al. Wil je doorgaan met je voortgang? (ja/nee): ");
+            TextPrinter.print("🧠 Speler '" + naam + "' bestaat al. Wil je doorgaan met je voortgang? (ja/nee): ");
             String keuze = scanner.nextLine().trim().toLowerCase();
 
             if (keuze.equals("ja")) {
                 speler = DatabaseVoortgang.laadtSpeler(naam);
                 if (speler != null) {
-                    System.out.println("✅ Voortgang geladen.");
+                    TextPrinter.print("✅ Voortgang geladen.");
                 } else {
-                    System.out.println("⚠️ Fout bij laden. Nieuwe speler gestart.");
+                    TextPrinter.print("⚠️ Fout bij laden. Nieuwe speler gestart.");
                     speler = new Speler();
                     speler.setNaam(naam);
                 }
             } else {
-                System.out.println("🔄 Nieuw spel gestart. Oude data wordt overschreven bij opslaan.");
+                TextPrinter.print("🔄 Nieuw spel gestart. Oude data wordt overschreven bij opslaan.");
                 speler = new Speler();
                 speler.setNaam(naam);
             }
         } else {
-            System.out.println("🆕 Nieuwe speler wordt aangemaakt.");
+            TextPrinter.print("🆕 Nieuwe speler wordt aangemaakt.");
             speler = new Speler();
             speler.setNaam(naam);
         }
@@ -53,26 +54,26 @@ public class UserInterface {
     }
 
     public void printCommandoUitleg(String naam) {
-        System.out.println("Welkom, " + naam + "! Deze commando's kan je op elk moment gebruiken:");
-        System.out.println("'status', 'help', 'ga naar kamer X', 'check', 'pak [item]', 'gebruik [item]' of 'stop'.");
+        TextPrinter.print("Welkom, " + naam + "! Deze commando's kan je op elk moment gebruiken:");
+        TextPrinter.print("'status', 'help', 'ga naar kamer X', 'check', 'pak [item]', 'gebruik [item]' of 'stop'.");
         System.out.println();
     }
 
     public void printHelp() {
         System.out.println();
-        System.out.println("🆘 Help:");
-        System.out.println("'status' - Bekijk je status.");
-        System.out.println("'help' - Toon deze hulptekst.");
-        System.out.println("'ga naar kamer X' - Ga naar een kamer.");
-        System.out.println("'check' - Bekijk items in de kamer.");
-        System.out.println("'pak [item]' - Pak een item uit de kamer.");
-        System.out.println("'gebruik [item]' - Gebruik een item uit je inventory.");
-        System.out.println("'stop' - Stop het spel.");
+        TextPrinter.print("🆘 Help:");
+        TextPrinter.print("'status' - Bekijk je status.");
+        TextPrinter.print("'help' - Toon deze hulptekst.");
+        TextPrinter.print("'ga naar kamer X' - Ga naar een kamer.");
+        TextPrinter.print("'check' - Bekijk items in de kamer.");
+        TextPrinter.print("'pak [item]' - Pak een item uit de kamer.");
+        TextPrinter.print("'gebruik [item]' - Gebruik een item uit je inventory.");
+        TextPrinter.print("'stop' - Stop het spel.");
         System.out.println();
     }
 
     public void printKamerOpties(List<Kamer> kamers) {
-        System.out.println("📍 Beschikbare kamers:");
+        TextPrinter.print("📍 Beschikbare kamers:");
         for (int i = 0; i < kamers.size(); i++) {
             if (!kamers.get(i).isVoltooid()) {
                 System.out.println((i + 1) + ". " + kamers.get(i).getNaam());
@@ -82,9 +83,9 @@ public class UserInterface {
 
     public void printItems(List<Item> items) {
         if (items.isEmpty()) {
-            System.out.println("📦 Geen items in deze kamer.");
+            TextPrinter.print("📦 Geen items in deze kamer.");
         } else {
-            System.out.println("📦 Items in deze kamer:");
+            TextPrinter.print("📦 Items in deze kamer:");
             for (int i = 0; i < items.size(); i++) {
                 System.out.println((i + 1) + ") " + items.get(i));
             }
@@ -92,15 +93,15 @@ public class UserInterface {
     }
 
     public void printOnbekendCommando() {
-        System.out.println("❌ Onbekend commando. Gebruik: ga naar kamer X");
+        TextPrinter.print("❌ Onbekend commando. Gebruik: ga naar kamer X");
     }
 
     public void printAfscheid() {
-        System.out.println("Tot ziens!");
+        TextPrinter.print("Tot ziens!");
     }
 
     public void printKamerVoltooid() {
-        System.out.println("✅ Deze kamer is voltooid!");
+        TextPrinter.print("✅ Deze kamer is voltooid!");
     }
 
     public void printGefeliciteerdArt() {

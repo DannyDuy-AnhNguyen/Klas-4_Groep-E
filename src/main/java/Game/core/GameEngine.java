@@ -59,7 +59,7 @@ public class GameEngine {
                 if (assistent != null) {
                     assistent.activeer();
                 } else {
-                    System.out.println("❌ Er is geen assistent beschikbaar in deze kamer.");
+                    TextPrinter.print("❌ Er is geen assistent beschikbaar in deze kamer.");
                 }
             }
             default -> {
