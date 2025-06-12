@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>GameEngine.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GameEngine.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">kamer</span><span class="s2">.</span><span class="s1">Kamer</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">assistent</span><span class="s2">.</span><span class="s1">Assistent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">ItemBoek</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">kamer</span><span class="s2">.</span><span class="s1">KamerBetreed</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">DatabaseVoortgang</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">GameEngine </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">Speler speler</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">UserInterface ui</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">RoomManager roomManager</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Status status</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Kamer huidigeKamer</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">GameEngine</span><span class="s2">(</span><span class="s1">UserInterface ui</span><span class="s2">, </span><span class="s1">RoomManager roomManager</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">ui </span><span class="s2">= </span><span class="s1">ui</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">roomManager </span><span class="s2">= </span><span class="s1">roomManager</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">startGame</span><span class="s2">() {</span>
+
+        <span class="s1">speler </span><span class="s2">= </span><span class="s1">ui</span><span class="s2">.</span><span class="s1">leesSpeler</span><span class="s2">();</span>
+        <span class="s1">roomManager</span><span class="s2">.</span><span class="s1">setSpeler</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">);</span>
+
+        <span class="s1">status </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Status</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">);</span>
+
+        <span class="s1">ui</span><span class="s2">.</span><span class="s1">printCommandoUitleg</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">());</span>
+
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">huidigeKamer </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">huidigeKamer</span><span class="s2">.</span><span class="s1">isVoltooid</span><span class="s2">()) {</span>
+                <span class="s1">ui</span><span class="s2">.</span><span class="s1">printKamerOpties</span><span class="s2">(</span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">getBeschikbareKamers</span><span class="s2">());</span>
+            <span class="s2">}</span>
+            <span class="s1">String input </span><span class="s2">= </span><span class="s1">ui</span><span class="s2">.</span><span class="s1">leesInvoer</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">().</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+            <span class="s1">verwerkCommando</span><span class="s2">(</span><span class="s1">input</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">verwerkCommando</span><span class="s2">(</span><span class="s1">String input</span><span class="s2">) {</span>
+        <span class="s0">switch </span><span class="s2">(</span><span class="s1">input</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s3">&quot;stop&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                <span class="s1">ui</span><span class="s2">.</span><span class="s1">printAfscheid</span><span class="s2">();</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">exit</span><span class="s2">(</span><span class="s4">0</span><span class="s2">);</span>
+            <span class="s2">}</span>
+            <span class="s0">case </span><span class="s3">&quot;status&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                <span class="s1">Status status </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Status</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">);</span>
+                <span class="s1">status</span><span class="s2">.</span><span class="s1">toonStatus</span><span class="s2">(); </span><span class="s5">// i.p.v. alleen update</span>
+            <span class="s2">}</span>
+            <span class="s0">case </span><span class="s3">&quot;help&quot; </span><span class="s1">-&gt; ui</span><span class="s2">.</span><span class="s1">printHelp</span><span class="s2">();</span>
+            <span class="s0">case </span><span class="s3">&quot;check&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                <span class="s1">Kamer kamer </span><span class="s2">= </span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">getKamerOpPositie</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getPositie</span><span class="s2">());</span>
+                <span class="s1">ui</span><span class="s2">.</span><span class="s1">printItems</span><span class="s2">(</span><span class="s1">kamer</span><span class="s2">.</span><span class="s1">getItems</span><span class="s2">());</span>
+            <span class="s2">}</span>
+            <span class="s0">case </span><span class="s3">&quot;inventory&quot; </span><span class="s1">-&gt; speler</span><span class="s2">.</span><span class="s1">toonInventory</span><span class="s2">();</span>
+            <span class="s0">case </span><span class="s3">&quot;info&quot; </span><span class="s1">-&gt; ItemBoek</span><span class="s2">.</span><span class="s1">toonInfo</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+            <span class="s0">case </span><span class="s3">&quot;assistent&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                <span class="s1">Kamer kamer </span><span class="s2">= </span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">getKamerOpPositie</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getPositie</span><span class="s2">());</span>
+                <span class="s1">Assistent assistent </span><span class="s2">= </span><span class="s1">Assistent</span><span class="s2">.</span><span class="s1">maakVoorKamer</span><span class="s2">(</span><span class="s1">kamer</span><span class="s2">.</span><span class="s1">getKamerID</span><span class="s2">());</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">assistent </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                    <span class="s1">assistent</span><span class="s2">.</span><span class="s1">activeer</span><span class="s2">();</span>
+                <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;❌ Er is geen assistent beschikbaar in deze kamer.&quot;</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+            <span class="s0">default </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">input</span><span class="s2">.</span><span class="s1">startsWith</span><span class="s2">(</span><span class="s3">&quot;pak &quot;</span><span class="s2">)) {</span>
+                    <span class="s1">roomManager</span><span class="s2">.</span><span class="s1">verwerkPak</span><span class="s2">(</span><span class="s1">input</span><span class="s2">);</span>
+                <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">input</span><span class="s2">.</span><span class="s1">startsWith</span><span class="s2">(</span><span class="s3">&quot;gebruik &quot;</span><span class="s2">)) {</span>
+                    <span class="s1">speler</span><span class="s2">.</span><span class="s1">gebruikItem</span><span class="s2">(</span><span class="s1">input</span><span class="s2">.</span><span class="s1">substring</span><span class="s2">(</span><span class="s4">8</span><span class="s2">).</span><span class="s1">trim</span><span class="s2">());</span>
+                <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">input</span><span class="s2">.</span><span class="s1">startsWith</span><span class="s2">(</span><span class="s3">&quot;ga naar kamer&quot;</span><span class="s2">)) {</span>
+                    <span class="s1">verwerkKamerNavigatie</span><span class="s2">(</span><span class="s1">input</span><span class="s2">);</span>
+                <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                    <span class="s1">ui</span><span class="s2">.</span><span class="s1">printOnbekendCommando</span><span class="s2">();</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">verwerkKamerNavigatie</span><span class="s2">(</span><span class="s1">String input</span><span class="s2">) {</span>
+        <span class="s1">huidigeKamer </span><span class="s2">= </span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">verwerkKamerCommando</span><span class="s2">(</span><span class="s1">input</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">huidigeKamer </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">huidigeKamer</span><span class="s2">.</span><span class="s1">isVoltooid</span><span class="s2">()) {</span>
+                <span class="s1">ui</span><span class="s2">.</span><span class="s1">printKamerVoltooid</span><span class="s2">();</span>
+                <span class="s1">DatabaseVoortgang</span><span class="s2">.</span><span class="s1">slaOp</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">, </span><span class="s1">huidigeKamer</span><span class="s2">.</span><span class="s1">getKamerID</span><span class="s2">());</span>
+                <span class="s1">controleerEnStartFinale</span><span class="s2">();</span>
+                <span class="s1">huidigeKamer </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+            <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                <span class="s1">huidigeKamer</span><span class="s2">.</span><span class="s1">betreed</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">);</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">huidigeKamer</span><span class="s2">.</span><span class="s1">isVoltooid</span><span class="s2">()) {</span>
+                    <span class="s1">DatabaseVoortgang</span><span class="s2">.</span><span class="s1">slaOp</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">, </span><span class="s1">huidigeKamer</span><span class="s2">.</span><span class="s1">getKamerID</span><span class="s2">());</span>
+                    <span class="s1">controleerEnStartFinale</span><span class="s2">();</span>
+                <span class="s2">}</span>
+
+                <span class="s1">huidigeKamer </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">controleerEnStartFinale</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">alleNormaleKamersVoltooid</span><span class="s2">() &amp;&amp; !</span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">isFinaleKamerVoltooid</span><span class="s2">()) {</span>
+            <span class="s1">Kamer finale </span><span class="s2">= </span><span class="s1">roomManager</span><span class="s2">.</span><span class="s1">activeerFinaleKamer</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">finale </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">finale</span><span class="s2">.</span><span class="s1">betreed</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">);</span>
+                <span class="s1">status</span><span class="s2">.</span><span class="s1">update</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">); </span><span class="s5">// Toon status na finale</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">finale</span><span class="s2">.</span><span class="s1">isVoltooid</span><span class="s2">()) {</span>
+                    <span class="s1">ui</span><span class="s2">.</span><span class="s1">printGefeliciteerdArt</span><span class="s2">();</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">exit</span><span class="s2">(</span><span class="s4">0</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

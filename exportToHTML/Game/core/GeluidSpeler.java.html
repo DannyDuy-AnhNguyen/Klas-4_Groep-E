@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>GeluidSpeler.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GeluidSpeler.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">sound</span><span class="s2">.</span><span class="s1">sampled</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">InputStream</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">GeluidSpeler </span><span class="s2">{</span>
+    <span class="s0">public static void </span><span class="s1">speelGeluid</span><span class="s2">(</span><span class="s1">String resourcePad</span><span class="s2">) {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;🔍 Probeer geluid te laden van: &quot; </span><span class="s2">+ </span><span class="s1">resourcePad</span><span class="s2">);</span>
+
+        <span class="s0">try </span><span class="s2">(</span><span class="s1">InputStream input </span><span class="s2">= </span><span class="s1">GeluidSpeler</span><span class="s2">.</span><span class="s0">class</span><span class="s2">.</span><span class="s1">getClassLoader</span><span class="s2">().</span><span class="s1">getResourceAsStream</span><span class="s2">(</span><span class="s1">resourcePad</span><span class="s2">)) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">input </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">err</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;❌ Bestand niet gevonden in resources: &quot; </span><span class="s2">+ </span><span class="s1">resourcePad</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;✅ Bestand gevonden. Probeer te decoderen...&quot;</span><span class="s2">);</span>
+
+            <span class="s1">AudioInputStream audioStream </span><span class="s2">= </span><span class="s1">AudioSystem</span><span class="s2">.</span><span class="s1">getAudioInputStream</span><span class="s2">(</span><span class="s1">input</span><span class="s2">);</span>
+            <span class="s1">AudioFormat baseFormat </span><span class="s2">= </span><span class="s1">audioStream</span><span class="s2">.</span><span class="s1">getFormat</span><span class="s2">();</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;🎼 Origineel formaat: &quot; </span><span class="s2">+ </span><span class="s1">baseFormat</span><span class="s2">);</span>
+
+            <span class="s1">AudioFormat decodedFormat </span><span class="s2">= </span><span class="s0">new </span><span class="s1">AudioFormat</span><span class="s2">(</span>
+                    <span class="s1">AudioFormat</span><span class="s2">.</span><span class="s1">Encoding</span><span class="s2">.</span><span class="s1">PCM_SIGNED</span><span class="s2">,</span>
+                    <span class="s1">baseFormat</span><span class="s2">.</span><span class="s1">getSampleRate</span><span class="s2">(),</span>
+                    <span class="s4">16</span><span class="s2">,</span>
+                    <span class="s1">baseFormat</span><span class="s2">.</span><span class="s1">getChannels</span><span class="s2">(),</span>
+                    <span class="s1">baseFormat</span><span class="s2">.</span><span class="s1">getChannels</span><span class="s2">() * </span><span class="s4">2</span><span class="s2">,</span>
+                    <span class="s1">baseFormat</span><span class="s2">.</span><span class="s1">getSampleRate</span><span class="s2">(),</span>
+                    <span class="s0">false</span>
+            <span class="s2">);</span>
+
+            <span class="s1">AudioInputStream decodedStream </span><span class="s2">= </span><span class="s1">AudioSystem</span><span class="s2">.</span><span class="s1">getAudioInputStream</span><span class="s2">(</span><span class="s1">decodedFormat</span><span class="s2">, </span><span class="s1">audioStream</span><span class="s2">);</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;🔊 Geluid afspelen...&quot;</span><span class="s2">);</span>
+
+            <span class="s1">Clip clip </span><span class="s2">= </span><span class="s1">AudioSystem</span><span class="s2">.</span><span class="s1">getClip</span><span class="s2">();</span>
+            <span class="s1">clip</span><span class="s2">.</span><span class="s1">open</span><span class="s2">(</span><span class="s1">decodedStream</span><span class="s2">);</span>
+            <span class="s1">clip</span><span class="s2">.</span><span class="s1">start</span><span class="s2">();</span>
+
+            <span class="s0">while </span><span class="s2">(</span><span class="s1">clip</span><span class="s2">.</span><span class="s1">isRunning</span><span class="s2">()) {</span>
+                <span class="s1">Thread</span><span class="s2">.</span><span class="s1">sleep</span><span class="s2">(</span><span class="s4">50</span><span class="s2">);</span>
+            <span class="s2">}</span>
+
+            <span class="s1">clip</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;✅ Geluid klaar.&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">err</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;❌ Fout tijdens afspelen:&quot;</span><span class="s2">);</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

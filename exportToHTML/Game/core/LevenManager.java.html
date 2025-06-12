@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>LevenManager.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+LevenManager.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">LevenManager </span><span class="s2">{</span>
+    <span class="s0">private final </span><span class="s1">Speler speler</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">LevenManager</span><span class="s2">(</span><span class="s1">Speler speler</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">speler </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">verliesLeven</span><span class="s2">() {</span>
+        <span class="s1">speler</span><span class="s2">.</span><span class="s1">setLevens</span><span class="s2">(</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getLevens</span><span class="s2">() - </span><span class="s3">1</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;💔 Je hebt een leven verloren! Resterende levens: &quot; </span><span class="s2">+ </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getLevens</span><span class="s2">());</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+        <span class="s1">speler</span><span class="s2">.</span><span class="s1">notifyObservers</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getLevens</span><span class="s2">() &lt;= </span><span class="s3">0</span><span class="s2">) {</span>
+            <span class="s1">speler</span><span class="s2">.</span><span class="s1">gameOver</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">resetLevens</span><span class="s2">() {</span>
+        <span class="s1">speler</span><span class="s2">.</span><span class="s1">setLevens</span><span class="s2">(</span><span class="s3">3</span><span class="s2">);</span>
+        <span class="s1">speler</span><span class="s2">.</span><span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

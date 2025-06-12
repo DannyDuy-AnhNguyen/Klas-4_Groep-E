@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>InventoryManager.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+InventoryManager.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">Gebruikbaar</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">GebruiktVoorMonster</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">Item</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">VerandertAantalVragen</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">Speler</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">InventoryManager </span><span class="s2">{</span>
+    <span class="s0">private final </span><span class="s1">Speler speler</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">InventoryManager</span><span class="s2">(</span><span class="s1">Speler speler</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">speler </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">voegItemToe</span><span class="s2">(</span><span class="s1">Item item</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Item</span><span class="s2">&gt; </span><span class="s1">inventory </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">inventory</span><span class="s2">.</span><span class="s1">size</span><span class="s2">() &gt;= </span><span class="s3">5</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;❌ Je inventory zit vol (max 5 items).&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">inventory</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">item</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;👜 Je hebt het item '&quot; </span><span class="s2">+ </span><span class="s1">item</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">() + </span><span class="s4">&quot;' opgepakt.&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+        <span class="s1">speler</span><span class="s2">.</span><span class="s1">notifyObservers</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">inventory</span><span class="s2">.</span><span class="s1">size</span><span class="s2">() == </span><span class="s3">5 </span><span class="s2">&amp;&amp; </span><span class="s1">inventory</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">().</span><span class="s1">allMatch</span><span class="s2">(</span><span class="s1">i -&gt; i</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">().</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s4">&quot;Rots&quot;</span><span class="s2">))) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;🥚 EASTER EGG: Je inventory zit VOL met nutteloze rotsen. 🤡&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">gebruikItem</span><span class="s2">(</span><span class="s1">String naam</span><span class="s2">) {</span>
+        <span class="s1">Item item </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">().</span><span class="s1">stream</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">i -&gt; i</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">().</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s1">naam</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">findFirst</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">orElse</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">item </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;❌ Je hebt het item '&quot; </span><span class="s2">+ </span><span class="s1">naam </span><span class="s2">+ </span><span class="s4">&quot;' niet.&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+            <span class="s0">return false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;🧪 Je gebruikt het item: &quot; </span><span class="s2">+ </span><span class="s1">item</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">());</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+
+        <span class="s0">boolean </span><span class="s1">gebruikt </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">item </span><span class="s0">instanceof </span><span class="s1">GebruiktVoorMonster wapen</span><span class="s2">) {</span>
+            <span class="s1">wapen</span><span class="s2">.</span><span class="s1">gebruikTegenMonster</span><span class="s2">();</span>
+            <span class="s1">gebruikt </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">item </span><span class="s0">instanceof </span><span class="s1">VerandertAantalVragen aanpassing</span><span class="s2">) {</span>
+            <span class="s1">aanpassing</span><span class="s2">.</span><span class="s1">pasAantalVragenAan</span><span class="s2">(</span><span class="s3">0</span><span class="s2">);</span>
+            <span class="s1">gebruikt </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">item </span><span class="s0">instanceof </span><span class="s1">Gebruikbaar gebruikbaarItem</span><span class="s2">) {</span>
+            <span class="s1">gebruikbaarItem</span><span class="s2">.</span><span class="s1">gebruik</span><span class="s2">();</span>
+            <span class="s1">gebruikt </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;❓ Geen effect bekend voor dit item.&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">gebruikt</span><span class="s2">) {</span>
+            <span class="s1">speler</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">().</span><span class="s1">remove</span><span class="s2">(</span><span class="s1">item</span><span class="s2">);</span>
+            <span class="s1">speler</span><span class="s2">.</span><span class="s1">notifyObservers</span><span class="s2">();</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s1">gebruikt</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">toonInventory</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">().</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;📭 Je hebt geen items in je inventory.&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;📦 Je inventory bevat:&quot;</span><span class="s2">);</span>
+            <span class="s0">for </span><span class="s2">(</span><span class="s1">Item item </span><span class="s2">: </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getInventory</span><span class="s2">()) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;• &quot; </span><span class="s2">+ </span><span class="s1">item</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">());</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

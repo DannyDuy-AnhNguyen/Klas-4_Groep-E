@@ -1,0 +1,294 @@
+<html>
+<head>
+<title>Speler.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #7a7e85;}
+.s5 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Speler.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">item</span><span class="s2">.</span><span class="s1">Item</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">joker</span><span class="s2">.</span><span class="s1">Joker</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Scanner</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Speler </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">String naam</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">positie</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">score </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">streak </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">sleutels </span><span class="s2">= </span><span class="s3">1</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">levens </span><span class="s2">= </span><span class="s3">3</span><span class="s2">;</span>
+    <span class="s0">private boolean </span><span class="s1">jokerGekozen </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s0">private boolean </span><span class="s1">eersteKamerBetreden </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">hintCounter </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+    <span class="s4">// Deze variabele zorgt voor overzicht hoeveel hints de speler nog kan gebruiken.</span>
+    <span class="s4">// Van deze variabele wordt bijgehouden hoe vaak de speler nog hints kunt gebruiken.</span>
+    <span class="s0">private int </span><span class="s1">hintsLeft </span><span class="s2">= </span><span class="s3">4</span><span class="s2">;</span>
+
+    <span class="s0">private final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">voltooideKamers </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+    <span class="s0">private final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">monsters </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+    <span class="s0">private final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Item</span><span class="s2">&gt; </span><span class="s1">inventory </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+    <span class="s0">private final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Observer</span><span class="s2">&gt; </span><span class="s1">observers </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+    <span class="s0">private final </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Joker</span><span class="s2">&gt; </span><span class="s1">jokers </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">private final </span><span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+
+    <span class="s4">// Managers</span>
+    <span class="s0">private final </span><span class="s1">InventoryManager inventoryManager</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">LevenManager levenManager</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">JokerManager jokerManager</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">MonsterLogboek monsterLogboek</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">VoltooideKamersTracker kamerTracker</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">Speler</span><span class="s2">() {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">inventoryManager </span><span class="s2">= </span><span class="s0">new </span><span class="s1">InventoryManager</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">levenManager </span><span class="s2">= </span><span class="s0">new </span><span class="s1">LevenManager</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">jokerManager </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JokerManager</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">monsterLogboek </span><span class="s2">= </span><span class="s0">new </span><span class="s1">MonsterLogboek</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">kamerTracker </span><span class="s2">= </span><span class="s0">new </span><span class="s1">VoltooideKamersTracker</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Naam &amp; positie ===</span>
+    <span class="s0">public </span><span class="s1">String getNaam</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">naam</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNaam</span><span class="s2">(</span><span class="s1">String naam</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">naam </span><span class="s2">= </span><span class="s1">naam</span><span class="s2">;</span>
+        <span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public int </span><span class="s1">getPositie</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">positie</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setPositie</span><span class="s2">(</span><span class="s0">int </span><span class="s1">positie</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">positie </span><span class="s2">= </span><span class="s1">positie</span><span class="s2">;</span>
+        <span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Score &amp; streak ===</span>
+    <span class="s0">public int </span><span class="s1">getScore</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">score</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">verhoogScore</span><span class="s2">(</span><span class="s0">int </span><span class="s1">punten</span><span class="s2">) {</span>
+        <span class="s1">score </span><span class="s2">+= </span><span class="s1">punten</span><span class="s2">;</span>
+        <span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">verlaagScore</span><span class="s2">(</span><span class="s0">int </span><span class="s1">punten</span><span class="s2">) {</span>
+        <span class="s1">score </span><span class="s2">= </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">max</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s1">score </span><span class="s2">- </span><span class="s1">punten</span><span class="s2">);</span>
+        <span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public int </span><span class="s1">getStreak</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">streak</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStreak</span><span class="s2">(</span><span class="s0">int </span><span class="s1">streak</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">streak </span><span class="s2">= </span><span class="s1">streak</span><span class="s2">;</span>
+        <span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Sleutelsysteem ===</span>
+    <span class="s0">public int </span><span class="s1">getSleutels</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">sleutels</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">voegSleutelToe</span><span class="s2">() {</span>
+        <span class="s1">sleutels</span><span class="s2">++;</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;🔑 Je hebt een sleutel verdiend! Totaal sleutels: &quot; </span><span class="s2">+ </span><span class="s1">sleutels</span><span class="s2">);</span>
+        <span class="s1">notifyObservers</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">gebruikSleutel</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">sleutels </span><span class="s2">&gt; </span><span class="s3">0</span><span class="s2">) {</span>
+            <span class="s1">sleutels</span><span class="s2">--;</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;🔓 Sleutel gebruikt. Resterende sleutels: &quot; </span><span class="s2">+ </span><span class="s1">sleutels</span><span class="s2">);</span>
+            <span class="s1">notifyObservers</span><span class="s2">();</span>
+            <span class="s0">return true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">return false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Levenssysteem (via LevenManager) ===</span>
+    <span class="s0">public int </span><span class="s1">getLevens</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">levens</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLevens</span><span class="s2">(</span><span class="s0">int </span><span class="s1">levens</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">levens </span><span class="s2">= </span><span class="s1">levens</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">verliesLeven</span><span class="s2">() {</span>
+        <span class="s1">levenManager</span><span class="s2">.</span><span class="s1">verliesLeven</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">resetLevens</span><span class="s2">() {</span>
+        <span class="s1">levenManager</span><span class="s2">.</span><span class="s1">resetLevens</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">gameOver</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">🛑 GAME OVER! Je hebt geen levens meer.&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s5">&quot;Wil je opnieuw beginnen? (ja/nee): &quot;</span><span class="s2">);</span>
+        <span class="s1">String keuze </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">().</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">keuze</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s5">&quot;ja&quot;</span><span class="s2">)) {</span>
+            <span class="s1">clearConsole</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;🔄 Het spel wordt opnieuw gestart...</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s2">);</span>
+            <span class="s1">Game</span><span class="s2">.</span><span class="s1">Main</span><span class="s2">.</span><span class="s1">main</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;&quot;&quot; 
+        ╔══════════════════════════════╗ 
+        ║    💀  YOU DIED, RIP...      ║ 
+        ╚══════════════════════════════╝ 
+        &quot;&quot;&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;💀 Oei... Zelfs een Scrum Master kon je niet redden.&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;👋 Bedankt voor het spelen!&quot;</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">exit</span><span class="s2">(</span><span class="s3">0</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Joker ===</span>
+    <span class="s0">public boolean </span><span class="s1">isJokerGekozen</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">jokerGekozen</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setJokerGekozen</span><span class="s2">(</span><span class="s0">boolean </span><span class="s1">gekozen</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">jokerGekozen </span><span class="s2">= </span><span class="s1">gekozen</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">voegJokerToe</span><span class="s2">(</span><span class="s1">Joker joker</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">jokerManager</span><span class="s2">.</span><span class="s1">voegJokerToe</span><span class="s2">(</span><span class="s1">joker</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Joker</span><span class="s2">&gt; </span><span class="s1">getJokers</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">jokers</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s4">// === hintJoker waar de hint gebruikt wordt ===</span>
+    <span class="s4">// Van deze 2 onderstaande methodes wordt bijgehouden hoeveel hints de speler de hints gebruikt heeft.</span>
+    <span class="s0">public void </span><span class="s1">verhoogHintCounter</span><span class="s2">() {</span>
+        <span class="s1">hintCounter</span><span class="s2">++;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public int </span><span class="s1">getHintCounter</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">hintCounter</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// == Toont hoeveel hints de speler nog kunt gebruiken ==</span>
+    <span class="s4">// Van deze 3 onderstaande methodes wordt bijgehouden hoe vaak de speler nog hints kunt gebruiken.</span>
+    <span class="s0">public void </span><span class="s1">verlaagHintCounter</span><span class="s2">(){</span>
+        <span class="s1">hintsLeft</span><span class="s2">--;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public boolean </span><span class="s1">gebruikHint</span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">hintsLeft </span><span class="s2">&gt; </span><span class="s3">0</span><span class="s2">) {</span>
+            <span class="s1">verlaagHintCounter</span><span class="s2">();</span>
+            <span class="s1">verhoogHintCounter</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s5">&quot;U heeft zoveel hints nog over📘: &quot; </span><span class="s2">+ </span><span class="s1">hintsLeft</span><span class="s2">);;</span>
+            <span class="s0">return true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">return false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public int </span><span class="s1">getHintsLeft</span><span class="s2">(){</span>
+        <span class="s0">return </span><span class="s1">hintsLeft</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s4">// === Inventory ===</span>
+    <span class="s0">public void </span><span class="s1">voegItemToe</span><span class="s2">(</span><span class="s1">Item item</span><span class="s2">) {</span>
+        <span class="s1">inventoryManager</span><span class="s2">.</span><span class="s1">voegItemToe</span><span class="s2">(</span><span class="s1">item</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">gebruikItem</span><span class="s2">(</span><span class="s1">String naam</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">inventoryManager</span><span class="s2">.</span><span class="s1">gebruikItem</span><span class="s2">(</span><span class="s1">naam</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">toonInventory</span><span class="s2">() {</span>
+        <span class="s1">inventoryManager</span><span class="s2">.</span><span class="s1">toonInventory</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Item</span><span class="s2">&gt; </span><span class="s1">getInventory</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">inventory</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Kamers ===</span>
+    <span class="s0">public void </span><span class="s1">voegVoltooideKamerToe</span><span class="s2">(</span><span class="s0">int </span><span class="s1">kamerIndex</span><span class="s2">) {</span>
+        <span class="s1">kamerTracker</span><span class="s2">.</span><span class="s1">voegKamerToe</span><span class="s2">(</span><span class="s1">kamerIndex</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Integer</span><span class="s2">&gt; </span><span class="s1">getVoltooideKamers</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">voltooideKamers</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Monsters ===</span>
+    <span class="s0">public void </span><span class="s1">voegMonsterToe</span><span class="s2">(</span><span class="s1">String monster</span><span class="s2">) {</span>
+        <span class="s1">monsterLogboek</span><span class="s2">.</span><span class="s1">voegToe</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">verwijderMonster</span><span class="s2">(</span><span class="s1">String monster</span><span class="s2">) {</span>
+        <span class="s1">monsterLogboek</span><span class="s2">.</span><span class="s1">verwijder</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">getMonsters</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">monsters</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Observer ===</span>
+    <span class="s0">public void </span><span class="s1">voegObserverToe</span><span class="s2">(</span><span class="s1">Observer observer</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(!</span><span class="s1">observers</span><span class="s2">.</span><span class="s1">contains</span><span class="s2">(</span><span class="s1">observer</span><span class="s2">)) {</span>
+            <span class="s1">observers</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">observer</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">notifyObservers</span><span class="s2">() {</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Observer observer </span><span class="s2">: </span><span class="s1">observers</span><span class="s2">) {</span>
+            <span class="s1">observer</span><span class="s2">.</span><span class="s1">update</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Eerste kamer tracker ===</span>
+    <span class="s0">public boolean </span><span class="s1">isEersteKamerBetreden</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">eersteKamerBetreden</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">markeerEersteKamerBetreden</span><span class="s2">() {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">eersteKamerBetreden </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// === Console clearen ===</span>
+    <span class="s0">private void </span><span class="s1">clearConsole</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s5">&quot;</span><span class="s0">\033</span><span class="s5">[H</span><span class="s0">\033</span><span class="s5">[2J&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">flush</span><span class="s2">();</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s3">50</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>JokerManager.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+JokerManager.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">joker</span><span class="s2">.</span><span class="s1">Joker</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">JokerManager </span><span class="s2">{</span>
+    <span class="s0">private final </span><span class="s1">Speler speler</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">JokerManager</span><span class="s2">(</span><span class="s1">Speler speler</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">speler </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">voegJokerToe</span><span class="s2">(</span><span class="s1">Joker joker</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Joker</span><span class="s2">&gt; </span><span class="s1">jokers </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getJokers</span><span class="s2">();</span>
+        <span class="s1">jokers</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">joker</span><span class="s2">);</span>
+        <span class="s0">return true</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+<span class="s2">}</span></pre>
+</body>
+</html>

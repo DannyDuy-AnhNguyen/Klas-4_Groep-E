@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Status.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Status.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">Game</span><span class="s2">.</span><span class="s1">core</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Status </span><span class="s0">implements </span><span class="s1">Observer </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">Speler speler</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">Status</span><span class="s2">(</span><span class="s1">Speler speler</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">speler </span><span class="s2">= </span><span class="s1">speler</span><span class="s2">;</span>
+        <span class="s1">speler</span><span class="s2">.</span><span class="s1">voegObserverToe</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);  </span><span class="s3">// toevoegen als observer</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">update</span><span class="s2">(</span><span class="s1">Speler speler</span><span class="s2">) {</span>
+        <span class="s3">// eventueel logica voor status bijwerken, maar GEEN print</span>
+        <span class="s3">// deze methode wordt stil uitgevoerd op wijzigingen</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">toonStatus</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;</span><span class="s0">\n</span><span class="s4">=== STATUS ===&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Speler: &quot; </span><span class="s2">+ </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getNaam</span><span class="s2">());</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Score: &quot; </span><span class="s2">+ </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getScore</span><span class="s2">());</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Voltooide kamers: &quot; </span><span class="s2">+ </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getVoltooideKamers</span><span class="s2">().</span><span class="s1">size</span><span class="s2">());</span>
+        <span class="s0">if </span><span class="s2">(!</span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getMonsters</span><span class="s2">().</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Actieve monsters: &quot; </span><span class="s2">+ </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getMonsters</span><span class="s2">());</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Geen actieve monsters.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s3">//Deze system print laat zien hoeveel hints de speler gebruikt heeft. De speler kan maximaal 4 hints gebruiken.</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Aantal gebruikte hints: &quot; </span><span class="s2">+ </span><span class="s1">speler</span><span class="s2">.</span><span class="s1">getHintCounter</span><span class="s2">());</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;==================</span><span class="s0">\n</span><span class="s4">&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>
