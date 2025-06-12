@@ -33,30 +33,27 @@ public class GameEngine {
     }
 
     private void verwerkCommando(String input) {
-        switch (input) {
-            case "stop" -> {
-                ui.printAfscheid();
-                System.exit(0);
-            }
-            case "status" -> status.update(speler);
-            case "help" -> ui.printHelp();
-            case "check" -> {
-                Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
-                ui.printItems(kamer.getItems());
-            }
-            default -> {
-                if (input.startsWith("pak ")) {
-                    roomManager.verwerkPak(input, speler);
-                } else if (input.startsWith("gebruik ")) {
-                    speler.gebruikItem(input.substring(8).trim());
-                } else if (input.startsWith("ga naar kamer")) {
-                    verwerkKamerNavigatie(input);
-                } else {
-                    ui.printOnbekendCommando();
-                }
-            }
+        if (input.equals("stop")) {
+            ui.printAfscheid();
+            System.exit(0);
+        } else if (input.equals("status")) {
+            status.update(speler);
+        } else if (input.equals("help")) {
+            ui.printHelp();
+        } else if (input.equals("check")) {
+            Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
+            ui.printItems(kamer.getItems());
+        } else if (input.startsWith("pak ")) {
+            roomManager.verwerkPak(input, speler);
+        } else if (input.startsWith("gebruik ")) {
+            speler.gebruikItem(input.substring(8).trim());
+        } else if (input.startsWith("ga naar kamer")) {
+            verwerkKamerNavigatie(input);
+        } else {
+            ui.printOnbekendCommando();
         }
     }
+
 
     private void verwerkKamerNavigatie(String input) {
         huidigeKamer = roomManager.verwerkKamerCommando(input, speler);
