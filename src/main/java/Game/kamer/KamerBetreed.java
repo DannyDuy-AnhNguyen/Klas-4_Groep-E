@@ -195,21 +195,17 @@ public class KamerBetreed {
         String gekozenJoker = scanner.nextLine().trim().toLowerCase();
         System.out.println();
 
+        //Voor deze methode verwerkJoker heb ik een extra methode gemaakt zodat deze methode overzichtelijker is!
         if (gekozenJoker.equals("info")) {
-            System.out.println("Bij welke joker wil je meer informatie weten? 'hint', 'key' of 'beide'");
-            if(gekozenJoker.equals("hint")){
-                System.out.println("");
-            } else if(gekozenJoker.equals("key")){
-                System.out.println("");
-            } else{
-                System.out.println("");
-            }
+            //Binnen deze methode krijg je meer info over hint en key
+            provideJokerInfo(gekozenJoker);
             return;
         }
 
+
         if (gekozenJoker.equals("annuleer")) {
-            System.out.println("❌ Jokerkeuze geannuleerd.");
-            return;
+        System.out.println("❌ Jokerkeuze geannuleerd.");
+        return;
         }
 
         boolean jokerGebruikt = false;
@@ -252,6 +248,17 @@ public class KamerBetreed {
     // Deze methode zorgt ervoor dat de gebruiker maximaal aantal hints kunt gebruiken.
     private boolean validateMaxedUsedTotalHints(Speler speler){
         return speler.gebruikHint();
+    }
+
+    private void provideJokerInfo(String gekozenJoker){
+        System.out.println("ℹ️Bij welke joker wil je meer informatie weten? type dan 'hint' of 'key'. Wil je geen info, dan kun je iets willekeurig intypen.");
+        gekozenJoker = scanner.nextLine().trim().toLowerCase();
+        if(gekozenJoker.equals("hint")){
+            System.out.println("📘Hint kun je in elke kamer gebruiken. \nElke speler kan maximaal 4 keer hints gebruiken. \nHints zijn kun je krijgen als je een kamer betreed. \nHints kun je alleen gebruiken bij de normale vragen.\nNIET BIJ MONSTER VRAGEN!!!\n");
+        } else if(gekozenJoker.equals("key")){
+            System.out.println("🗝️Key kun je alleen in de kamer 'Sprint Review' en 'Daily Scrum' krijgen en gebruiken.\nDe key zorgt ervoor dat je een extra sleutel kunt gebruiken waarmee je binnen andere kamers kunt betreden.\nOm dat te kunnen doen, type de commando 'naar andere kamer' en dan 'ga naar kamer [nummer/naam]'\n");
+        }
+
     }
 
     public void toonHelp() {
