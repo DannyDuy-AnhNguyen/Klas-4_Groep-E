@@ -1,13 +1,13 @@
 package Game.stub;
 
 import Game.core.Speler;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class StubSpeler extends Speler {
+
     public StubSpeler() {
-        super();                 // roept de no-arg constructor van Speler aan
-        setNaam("TestSpeler");   // zet een vaste naam
+        super(); // Zorg dat Speler een default constructor heeft
     }
 
     @Override
@@ -17,13 +17,24 @@ public class StubSpeler extends Speler {
 
     @Override
     public List<Integer> getVoltooideKamers() {
-        // retourneer twee voltooide kamers (indices)
-        return List.of(1, 2);
+        List<Integer> kamers = new ArrayList<>();
+        kamers.add(1);
+        kamers.add(2);
+        return kamers;
     }
 
     @Override
     public List<String> getMonsters() {
-        // geen actieve monsters
-        return List.of();
+        return new ArrayList<>(); // Lege lijst = geen monsters
+    }
+
+    @Override
+    public String getNaam() {
+        return "StubSpeler";
+    }
+
+    @Override
+    public boolean gebruikHint() {
+        return super.gebruikHint();
     }
 }

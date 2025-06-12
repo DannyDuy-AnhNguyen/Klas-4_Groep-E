@@ -176,7 +176,6 @@ public abstract class Kamer {
         if (keyToegestaan) {
             System.out.println("🃏 Kies je joker: 'hint' of 'key'");
             String keuze = scanner.nextLine().trim().toLowerCase();
-
             if (keuze.equals("key")) {
                 if (keyToegestaan) {
                     speler.voegJokerToe(keyJoker);

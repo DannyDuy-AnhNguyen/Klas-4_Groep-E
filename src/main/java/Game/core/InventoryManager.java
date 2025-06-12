@@ -20,11 +20,13 @@ public class InventoryManager {
 
         if (inventory.size() >= 5) {
             System.out.println("❌ Je inventory zit vol (max 5 items).");
+            System.out.println();
             return;
         }
 
         inventory.add(item);
         System.out.println("👜 Je hebt het item '" + item.getNaam() + "' opgepakt.");
+        System.out.println();
         speler.notifyObservers();
 
         if (inventory.size() == 5 && inventory.stream().allMatch(i -> i.getNaam().equalsIgnoreCase("Rots"))) {
@@ -40,10 +42,12 @@ public class InventoryManager {
 
         if (item == null) {
             System.out.println("❌ Je hebt het item '" + naam + "' niet.");
+            System.out.println();
             return false;
         }
 
         System.out.println("🧪 Je gebruikt het item: " + item.getNaam());
+        System.out.println();
 
         boolean gebruikt = false;
 
@@ -58,6 +62,7 @@ public class InventoryManager {
             gebruikt = true;
         } else {
             System.out.println("❓ Geen effect bekend voor dit item.");
+            System.out.println();
         }
 
         if (gebruikt) {
@@ -71,6 +76,7 @@ public class InventoryManager {
     public void toonInventory() {
         if (speler.getInventory().isEmpty()) {
             System.out.println("📭 Je hebt geen items in je inventory.");
+            System.out.println();
         } else {
             System.out.println("📦 Je inventory bevat:");
             for (Item item : speler.getInventory()) {

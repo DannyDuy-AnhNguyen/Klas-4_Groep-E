@@ -37,6 +37,7 @@ public class RoomManager {
         String prefix = "ga naar kamer";
         if (input.length() <= prefix.length()) {
             System.out.println("Ongeldig commando, gebruik: 'ga naar kamer [nummer|naam]'");
+            System.out.println();
             return null;
         }
 
@@ -45,6 +46,7 @@ public class RoomManager {
 
         if (gekozenKamer == null) {
             System.out.println("Onbekende kamer: " + argument);
+            System.out.println();
             return null;
         }
 
@@ -87,16 +89,19 @@ public class RoomManager {
     public Kamer activeerFinaleKamer(Speler speler) {
         Kamer finale = kamerFactory.getKamer("Finale TIA Kamer – Waarom Scrum?");
         System.out.println("Activeer finale kamer: " + finale.getNaam());
+        System.out.println();
 
         finale.getDeur().setOpen(true);
 
         if (!kamers.contains(finale)) {
             kamers.add(finale);
             System.out.println("Finale kamer toegevoegd aan kamers lijst.");
+            System.out.println();
         }
 
         speler.setPositie(kamers.indexOf(finale));
         System.out.println("Speler positie naar finale kamer: " + speler.getPositie());
+        System.out.println();
 
         return finale;
     }
@@ -113,6 +118,7 @@ public class RoomManager {
                 gekozenItem = kamerItems.remove(index);
             } else {
                 System.out.println("❌ Ongeldig itemnummer.");
+                System.out.println();
                 return;
             }
         } catch (NumberFormatException e) {
@@ -123,6 +129,7 @@ public class RoomManager {
             inventoryManager.voegItemToe(gekozenItem);
         } else if (!itemInput.matches("\\d+")) {
             System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+            System.out.println();
         }
     }
 }

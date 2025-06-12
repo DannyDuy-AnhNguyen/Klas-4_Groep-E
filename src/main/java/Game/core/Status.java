@@ -24,6 +24,7 @@ public class Status implements Observer {
         } else {
             System.out.println("Geen actieve monsters.");
         }
+        //Deze system print laat zien hoeveel hints de speler gebruikt heeft. De speler kan maximaal 4 hints gebruiken.
         System.out.println("Aantal gebruikte hints: " + speler.getHintCounter());
         System.out.println("==================\n");
     }

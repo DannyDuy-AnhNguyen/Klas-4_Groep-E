@@ -2,7 +2,6 @@ package Game.mocks;
 
 import Game.core.Speler;      // Voor de Speler-klasse
 
-
 public class StatusMockTest {
     public static void main(String[] args) {
         Speler speler = new Speler();
@@ -20,4 +19,3 @@ public class StatusMockTest {
         }
     }
 }
-

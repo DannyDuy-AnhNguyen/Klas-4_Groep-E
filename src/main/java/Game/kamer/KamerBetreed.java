@@ -178,8 +178,21 @@ public class KamerBetreed {
             System.out.println("- " + joker.getNaam() + status);
         }
 
-        System.out.println("Typ de naam van de joker die je wilt gebruiken (of typ 'annuleer'):");
+        System.out.println("Typ de naam van de joker die je wilt gebruiken, type 'info' als je wilt weten hoe de jokers werkt (of typ 'annuleer':)");
         String gekozenJoker = scanner.nextLine().trim().toLowerCase();
+        System.out.println();
+
+        if (gekozenJoker.equals("info")) {
+            System.out.println("Bij welke joker wil je meer informatie weten? 'hint', 'key' of 'beide'");
+            if(gekozenJoker.equals("hint")){
+                System.out.println("");
+            } else if(gekozenJoker.equals("key")){
+                System.out.println("");
+            } else{
+                System.out.println("");
+            }
+            return;
+        }
 
         if (gekozenJoker.equals("annuleer")) {
             System.out.println("❌ Jokerkeuze geannuleerd.");
@@ -234,6 +247,7 @@ public class KamerBetreed {
         System.out.println("Gebruik 'status' om je huidige status te zien.");
         System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
         System.out.println("Gebruik 'help' om deze hulp te zien.");
+        System.out.println("Gebruik 'assistent' als je algemene hulp nodig hebt bij een kamer (note: je kan niet in elke kamer deze commando gebruiken!) ");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
         System.out.println("Typ bestrijd monster op elk moment als je een monster hebt die je nog moet bestrijden");
         System.out.println("Gebruik 'pak [itemnaam/itemnummer]' om een item op te pakken als je de item wilt claimen");

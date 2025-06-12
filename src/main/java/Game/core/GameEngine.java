@@ -1,6 +1,9 @@
 package Game.core;
 
 import Game.kamer.Kamer;
+import Game.assistent.Assistent;
+import Game.item.ItemBoek;
+import Game.kamer.KamerBetreed;
 
 public class GameEngine {
     private final Speler speler;
@@ -38,11 +41,25 @@ public class GameEngine {
                 ui.printAfscheid();
                 System.exit(0);
             }
-            case "status" -> status.update(speler);
+            case "status" -> {
+                Status status = new Status(speler);
+                status.toonStatus(); // i.p.v. alleen update
+            }
             case "help" -> ui.printHelp();
             case "check" -> {
                 Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
                 ui.printItems(kamer.getItems());
+            }
+            case "inventory" -> speler.toonInventory();
+            case "info" -> ItemBoek.toonInfo(false);
+            case "assistent" -> {
+                Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
+                Assistent assistent = Assistent.maakVoorKamer(kamer.getKamerID());
+                if (assistent != null) {
+                    assistent.activeer();
+                } else {
+                    System.out.println("❌ Er is geen assistent beschikbaar in deze kamer.");
+                }
             }
             default -> {
                 if (input.startsWith("pak ")) {

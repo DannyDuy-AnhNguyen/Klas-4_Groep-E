@@ -12,7 +12,7 @@ public class Speler {
     private int positie;
     private int score = 0;
     private int streak = 0;
-    private int sleutels = 5;
+    private int sleutels = 1;
     private int levens = 3;
     private boolean jokerGekozen = false;
     private boolean eersteKamerBetreden = false;
@@ -137,7 +137,7 @@ public class Speler {
         } else {
             System.out.println("""
         ╔══════════════════════════════╗
-        ║    💀  YOU DIED, RIP...     ║
+        ║    💀  YOU DIED, RIP...      ║
         ╚══════════════════════════════╝
         """);
             System.out.println();
