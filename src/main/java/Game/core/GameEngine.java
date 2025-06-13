@@ -128,7 +128,7 @@ public class GameEngine {
         if (roomManager.alleNormaleKamersVoltooid() && !roomManager.isFinaleKamerVoltooid()) {
             Kamer finale = roomManager.activeerFinaleKamer(speler);
             if (finale != null) {
-                finale.setStatus(status); // <-- Zet status eerst
+                finale.setStatus(status);
                 finale.betreed(speler);
                 status.update(speler);
                 if (finale.isVoltooid()) {

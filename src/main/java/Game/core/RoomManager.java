@@ -115,6 +115,12 @@ public class RoomManager {
     }
 
     public Kamer activeerFinaleKamer(Speler speler) {
+
+        if (!speler.getMonsters().isEmpty()) {
+            System.out.println("⛔ Je hebt nog actieve monsters! Versla ze eerst met 'bestrijd monster' voordat je naar de finale kamer mag.");
+            return null;
+        }
+
         Kamer finale = kamerFactory.getKamer("Finale TIA Kamer – Waarom Scrum?");
         System.out.println("Activeer finale kamer: " + finale.getNaam());
 
