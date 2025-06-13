@@ -9,6 +9,7 @@ public abstract class Monster implements MonsterType {
     protected final String juistAntwoord;
     protected boolean verslagen;
 
+    //Elke monster heeft een eigen unieke eigenschap.
     public Monster(String naam, String beschrijving, String vraag, String juistAntwoord) {
         this.naam = naam;
         this.beschrijving = beschrijving;
@@ -17,6 +18,7 @@ public abstract class Monster implements MonsterType {
         this.verslagen = false;
     }
 
+    //Elke monster heeft een eigen naam.
     @Override
     public String getNaam() {
         return naam;
@@ -32,6 +34,7 @@ public abstract class Monster implements MonsterType {
         return vraag;
     }
 
+    //Activeert wanneer de speler een antwoord als input meegeeft bij de monster vragen.
     @Override
     public boolean beantwoordVraag(String antwoord) {
         if (antwoord.equalsIgnoreCase(juistAntwoord)) {
@@ -44,6 +47,8 @@ public abstract class Monster implements MonsterType {
         }
     }
 
+    //Ook heb je in deze spel een item om de monster te verslaan.
+    //Zie de klasse Item > ItemWapen
     @Override
     public boolean verslaMetItem(Item item) {
         if (item.getNaam().equalsIgnoreCase("zwaard")) {

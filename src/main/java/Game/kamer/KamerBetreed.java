@@ -2,9 +2,8 @@ package Game.kamer;
 
 import Game.core.Speler;
 import Game.database.DatabaseVoortgang;
-import Game.joker.HintJokerInterface;
+import Game.joker.AbstractJoker;
 import Game.joker.Joker;
-import Game.joker.KeyJokerInterface;
 import Game.item.Item;
 import Game.core.Status;
 import Game.item.ItemBoek;
@@ -184,28 +183,24 @@ public class KamerBetreed {
             return;
         }
 
-        //Deze methode moet de joker's polymorfisme veranderen
         System.out.println("🃏 Beschikbare jokers:");
         for (Joker joker : jokers) {
             String status = joker.isUsed() ? " (gebruikt)" : "";
             System.out.println("- " + joker.getNaam() + status);
         }
 
-        System.out.println("Typ de naam van de joker die je wilt gebruiken, type 'info' als je wilt weten hoe de jokers werkt (of typ 'annuleer':)");
+        System.out.println("Typ de naam van de joker die je wilt gebruiken, of 'info' voor uitleg, of 'annuleer':");
         String gekozenJoker = scanner.nextLine().trim().toLowerCase();
         System.out.println();
 
-        //Voor deze methode verwerkJoker heb ik een extra methode gemaakt zodat deze methode overzichtelijker is!
         if (gekozenJoker.equals("info")) {
-            //Binnen deze methode krijg je meer info over hint en key
-            provideJokerInfo(gekozenJoker);
+            provideJokerInfo(gekozenJoker); // geef uitleg over jokers
             return;
         }
 
-
         if (gekozenJoker.equals("annuleer")) {
-        System.out.println("❌ Jokerkeuze geannuleerd.");
-        return;
+            System.out.println("❌ Jokerkeuze geannuleerd.");
+            return;
         }
 
         boolean jokerGebruikt = false;
@@ -215,16 +210,17 @@ public class KamerBetreed {
 
             if (joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
 
-                if (joker instanceof KeyJokerInterface keyJoker) {
-                    if (!keyJoker.canBeUsedIn(kamer)) {
-                        System.out.println("❌ Deze joker werkt niet in deze kamer.");
+                if (joker instanceof AbstractJoker dailyScrumKeyJoker) {
+                    if (!isKeyJokerToegestaan(kamer)) {
+                        System.out.println("❌ Deze key-joker mag niet in deze kamer worden gebruikt.");
                         break;
                     }
-                    keyJoker.useInKey(kamer, speler);
+                    dailyScrumKeyJoker.useIn(kamer, speler);
                     jokerGebruikt = true;
-                } else if(joker instanceof HintJokerInterface hintJoker){
-                    if(validateMaxedUsedTotalHints(speler)){
-                        hintJoker.useInHint(kamer);
+
+                } else if (joker instanceof AbstractJoker hintJoker) {
+                    if (validateMaxedUsedTotalHints(speler)) {
+                        hintJoker.useIn(kamer, speler);
                         jokerGebruikt = true;
                     } else {
                         System.out.println("❌ Je hebt al het maximum aantal hints gebruikt.");
@@ -235,15 +231,23 @@ public class KamerBetreed {
                 if (jokerGebruikt && joker.isUsed()) {
                     speler.getJokers().remove(joker);
                 }
+
                 break;
             }
         }
 
+
         if (!jokerGebruikt) {
             System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
         }
-        System.out.println();
     }
+
+    public boolean isKeyJokerToegestaan(Kamer kamer) {
+        // Alleen Daily Scrum en Sprint Review staan key toe
+        String naam = kamer.getNaam().toLowerCase();
+        return naam.equals("Daily Scrum") || naam.equals("Sprint Review");
+    }
+
 
     // Deze methode zorgt ervoor dat de gebruiker maximaal aantal hints kunt gebruiken.
     private boolean validateMaxedUsedTotalHints(Speler speler){

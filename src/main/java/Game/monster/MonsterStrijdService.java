@@ -5,6 +5,7 @@ import Game.monster.MonsterType;
 
 import java.util.Scanner;
 
+//Deze klasse wordt uitgevoerd zodra je bij de normale kamer zoals 'Daily Scrum' een fout antwoord meegegeven hebt.
 public class MonsterStrijdService {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -50,6 +51,8 @@ public class MonsterStrijdService {
             }
         }
 
+        //Deze code controleert of je antwoord goed is of niet. ZO niet, dan verlies je een leven.
+        //Elke speler heeft 3 levens.
         for (int i = 0; i < vragenTeBeantwoorden; i++) {
             monster.verwerkOpdracht(i);
             System.out.print("Jouw antwoord: ");

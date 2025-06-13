@@ -12,6 +12,7 @@ public class ScrumVerwarring extends Monster {
             "b", // Vraag 5
             "c"  // Vraag 6
     };
+    private final MonsterHelper monsterHelper;
 
     public ScrumVerwarring() {
         super(
@@ -20,6 +21,7 @@ public class ScrumVerwarring extends Monster {
                 "Wat zorgt het Scrumboard voor?\nA) Voor klanten/stakeholders om de voortgang te volgen.\nB) Voor overzicht en duidelijkheid.\nC) Voor wat, wie en waar iemand van het Development team mee bezig is.\nD) Alle bovenstaande vragen",
                 "d"
         );
+        this.monsterHelper = new MonsterHelper(juisteAntwoorden);
     }
 
     @Override
@@ -63,10 +65,6 @@ public class ScrumVerwarring extends Monster {
 
     @Override
     public String getJuisteAntwoord(int index) {
-        if (index >= 0 && index < juisteAntwoorden.length) {
-            return juisteAntwoorden[index];
-        } else {
-            return ""; // Of eventueel: throw new IllegalArgumentException("Ongeldig index");
-        }
+        return monsterHelper.getJuisteAntwoord(index);
     }
 }

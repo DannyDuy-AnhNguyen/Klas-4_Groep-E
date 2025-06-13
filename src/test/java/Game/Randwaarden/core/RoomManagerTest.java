@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 public class RoomManagerTest {
 
+    //minimale lengte: 1 t/m 5 exclusief de Finale Kamer TIA
     @Test
     public void testOndergrens() {
         Speler speler = new Speler();

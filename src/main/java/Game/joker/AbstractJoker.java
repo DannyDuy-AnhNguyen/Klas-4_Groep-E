@@ -1,5 +1,8 @@
 package Game.joker;
 
+import Game.core.Speler;
+import Game.kamer.Kamer;
+
 public class AbstractJoker implements Joker{
     protected boolean used = false;
     private final String naam;
@@ -7,6 +10,11 @@ public class AbstractJoker implements Joker{
     //Elke joker sub klasse heeft ook een naam nodig.
     public AbstractJoker(String naam) {
         this.naam = naam;
+    }
+
+    @Override
+    public void useIn(Kamer kamer, Speler speler){
+        used = true;
     }
 
     //Deze methode wordt gebruikt in beide joker sub klasses🙂

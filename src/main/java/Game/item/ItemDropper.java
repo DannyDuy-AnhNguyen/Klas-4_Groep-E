@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+//De Context Klasse voor de items.
 public class ItemDropper {
     private static final Random random = new Random();
 

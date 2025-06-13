@@ -1,5 +1,6 @@
 package Game.item;
 
+//De
 public abstract class Item {
     protected String naam;
 

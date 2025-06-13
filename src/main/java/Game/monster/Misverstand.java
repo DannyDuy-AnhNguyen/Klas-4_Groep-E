@@ -10,6 +10,7 @@ public class Misverstand extends Monster implements MonsterType {
             "b", // Vraag 3
             "b"  // Vraag 4
     };
+    private final MonsterHelper monsterHelper;
 
     public Misverstand() {
         super(
@@ -18,6 +19,7 @@ public class Misverstand extends Monster implements MonsterType {
                 "Wat is het doel van een Sprint Planning?\nA) Het plannen van vakantie\nB) Het bepalen van het werk voor de Sprint\nC) Het kiezen van een Scrum Master",
                 "b"
         );
+        this.monsterHelper = new MonsterHelper(juisteAntwoorden);
     }
 
     @Override
@@ -55,10 +57,6 @@ public class Misverstand extends Monster implements MonsterType {
 
     @Override
     public String getJuisteAntwoord(int index) {
-        if (index >= 0 && index < juisteAntwoorden.length) {
-            return juisteAntwoorden[index];
-        } else {
-            return ""; // Of eventueel: throw new IllegalArgumentException("Ongeldig index");
-        }
+        return monsterHelper.getJuisteAntwoord(index);
     }
 }

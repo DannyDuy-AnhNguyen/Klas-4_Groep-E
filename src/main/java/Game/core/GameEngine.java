@@ -54,7 +54,7 @@ public class GameEngine {
                 ui.printItems(kamer.getItems());
             }
             case "inventory" -> speler.toonInventory();
-            case "info" -> ItemBoek.toonInfo(false);
+            case "info" -> ItemBoek.toonInfo(true);
             case "assistent" -> {
                 Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
                 Assistent assistent = Assistent.maakVoorKamer(kamer.getKamerID());
@@ -115,15 +115,15 @@ public class GameEngine {
 //    }
 
     private void controleerEnStartFinale() {
-        roomManager.getBeschikbareKamers().stream()
-                .filter(k -> !k.getNaam().toLowerCase().contains("finale"))
-                .forEach(k -> System.out.println("🧩 " + k.getNaam() + " (ID: " + k.getKamerID() + ") → isVoltooid(): " + k.isVoltooid()));
-        System.out.println("📦 Voltooide kamerIDs van speler: " + speler.getVoltooideKamers());
-
-
-        System.out.println("➡️ Check finale voorwaarden...");
-        System.out.println("Normale kamers voltooid? " + roomManager.alleNormaleKamersVoltooid());
-        System.out.println("Finale al voltooid? " + roomManager.isFinaleKamerVoltooid());
+//        roomManager.getBeschikbareKamers().stream()
+//                .filter(k -> !k.getNaam().toLowerCase().contains("finale"))
+//                .forEach(k -> System.out.println("🧩 " + k.getNaam() + " (ID: " + k.getKamerID() + ") → isVoltooid(): " + k.isVoltooid()));
+//        System.out.println("📦 Voltooide kamerIDs van speler: " + speler.getVoltooideKamers());
+//
+//
+//        System.out.println("➡️ Check finale voorwaarden...");
+//        System.out.println("Normale kamers voltooid? " + roomManager.alleNormaleKamersVoltooid());
+//        System.out.println("Finale al voltooid? " + roomManager.isFinaleKamerVoltooid());
 
         if (roomManager.alleNormaleKamersVoltooid() && !roomManager.isFinaleKamerVoltooid()) {
             Kamer finale = roomManager.activeerFinaleKamer(speler);

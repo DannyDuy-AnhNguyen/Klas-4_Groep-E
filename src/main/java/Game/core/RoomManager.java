@@ -14,18 +14,19 @@ public class RoomManager {
     private InventoryManager inventoryManager;
     private Speler speler;
 
-        public RoomManager(KamerFactory kamerFactory, Speler speler) {
-        this.kamerFactory = kamerFactory;
-        this.toegangsManager = new ToegangsManager();
-        this.speler = speler;
-        this.inventoryManager = new InventoryManager(speler);
-
-        for (String key : kamerFactory.getKamerKeys()) {
-            Kamer kamer = kamerFactory.getKamer(key);
-            kamer.getDeur().setOpen(false);
-            kamers.add(kamer);
-        }
-    }
+//    //Deze constructor wordt alleen gebruikt voor de test Roommanager
+//        public RoomManager(KamerFactory kamerFactory, Speler speler) {
+//        this.kamerFactory = kamerFactory;
+//        this.toegangsManager = new ToegangsManager();
+//        this.speler = speler;
+//        this.inventoryManager = new InventoryManager(speler);
+//
+//        for (String key : kamerFactory.getKamerKeys()) {
+//            Kamer kamer = kamerFactory.getKamer(key);
+//            kamer.getDeur().setOpen(false);
+//            kamers.add(kamer);
+//        }
+//    }
 
 
     public RoomManager(KamerFactory kamerFactory) {
@@ -39,6 +40,7 @@ public class RoomManager {
             kamers.add(kamer);
         }
     }
+
 
     public void setSpeler(Speler speler) {
         this.speler = speler;
@@ -78,7 +80,7 @@ public class RoomManager {
         }
 
         if (!speler.isJokerGekozen()) {
-            gekozenKamer.initSpeler(speler);
+            gekozenKamer.initSpeler(speler, gekozenKamer);
             speler.setJokerGekozen(true);
         }
 

@@ -71,16 +71,6 @@ public class UserInterface {
         System.out.println();
     }
 
-//    public void printKamerOpties(List<Kamer> kamers) {
-//        System.out.println("📍 Beschikbare kamers:");
-//        for (int i = 0; i < kamers.size(); i++) {
-//            if (!kamers.get(i).isVoltooid()) {
-//                System.out.println((i + 1) + ". " + kamers.get(i).getNaam());
-//            }
-//        }
-//    }
-
-
     public void printKamerOpties(List<Kamer> kamers, Speler speler) {
         System.out.println("📍 Beschikbare kamers:");
         //Kijkt in de kamer lijst welke kamers beschikbaar zijn.

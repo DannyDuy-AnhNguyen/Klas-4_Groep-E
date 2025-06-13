@@ -4,11 +4,11 @@ import static Game.core.ConsoleKleuren.*;
 
 public class ItemBoek extends Item{
 
+    private static boolean storylineGetoond = false;
+
     public ItemBoek(String naam){
         super(naam);
     }
-
-    private static boolean storylineGetoond = false;
 
     public static void toonInfo(boolean eersteKeer) {
         if (eersteKeer && !storylineGetoond) {
@@ -27,6 +27,7 @@ public class ItemBoek extends Item{
         toonItemUitleg();
     }
 
+    //Toont uitleg hoe de items werken. Zie de methode toonInfo hoe deze methode gebruikt wordt.
     private static void toonItemUitleg() {
         System.out.println();
         System.out.println("- Zwaard: Verslaat elk monster in één klap. Krachtig, maar mogelijk zeldzaam.");

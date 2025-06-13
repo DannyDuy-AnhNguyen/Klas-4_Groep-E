@@ -2,6 +2,7 @@ package Game.monster;
 
 import Game.item.Item;
 import Game.core.Speler;
+import Game.monster.MonsterHelper;
 
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class VerliesVanFocus extends Monster {
             "b", // Vraag 5
             "c"  // Vraag 6
     };
+    private final MonsterHelper monsterHelper;
 
     public VerliesVanFocus() {
         super(
@@ -20,6 +22,7 @@ public class VerliesVanFocus extends Monster {
                 "Wat gebeurt er tijdens een goede Daily Scrum?\nA) De Scrum Master controleert of iedereen hard genoeg werkt\nB) Teamleden rapporteren aan de Product Owner\nC) Teamleden stemmen het werk op elkaar af richting het sprintdoel\nD) Het team plant de hele sprint opnieuw",
                 "c"
         );
+        this.monsterHelper = new MonsterHelper(juisteAntwoorden);
     }
 
     @Override
@@ -56,10 +59,6 @@ public class VerliesVanFocus extends Monster {
 
     @Override
     public String getJuisteAntwoord(int index) {
-        if (index >= 0 && index < juisteAntwoorden.length) {
-            return juisteAntwoorden[index];
-        } else {
-            return ""; // Of eventueel: throw new IllegalArgumentException("Ongeldig index");
-        }
+        return monsterHelper.getJuisteAntwoord(index);
     }
 }

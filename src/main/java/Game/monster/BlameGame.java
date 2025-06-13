@@ -12,6 +12,7 @@ public class BlameGame extends Monster {
             "b", // Vraag 5
             "c"  // Vraag 6
     };
+    private final MonsterHelper monsterHelper;
 
     public BlameGame() {
         super(
@@ -20,6 +21,7 @@ public class BlameGame extends Monster {
                 "Wat is het doel van een Sprint Retrospective?\nA) Elkaar beschuldigen\nB) De burndown chart bespreken\nC) Samenwerking en verbetering bespreken",
                 "c"
         );
+        this.monsterHelper = new MonsterHelper(juisteAntwoorden);
     }
 
     @Override
@@ -61,10 +63,6 @@ public class BlameGame extends Monster {
 
     @Override
     public String getJuisteAntwoord(int index) {
-        if (index >= 0 && index < juisteAntwoorden.length) {
-            return juisteAntwoorden[index];
-        } else {
-            return ""; // Of eventueel: throw new IllegalArgumentException("Ongeldig index");
-        }
+        return monsterHelper.getJuisteAntwoord(index);
     }
 }

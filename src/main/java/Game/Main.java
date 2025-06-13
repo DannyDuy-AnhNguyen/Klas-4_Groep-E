@@ -34,7 +34,7 @@ public class Main {
         Speler speler = ui.leesSpeler();
 
         KamerFactory kamerFactory = new KamerFactory();
-        RoomManager roomManager = new RoomManager(kamerFactory, speler);
+        RoomManager roomManager = new RoomManager(kamerFactory);
 
         GameEngine engine = new GameEngine(speler, ui, roomManager);
         engine.startGame();

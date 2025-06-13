@@ -12,6 +12,7 @@ public class SprintConfusie extends Monster {
             "c", // Vraag 6
             "b"  // Vraag 7
     };
+    private final MonsterHelper monsterHelper;
 
     public SprintConfusie() {
         super(
@@ -20,6 +21,7 @@ public class SprintConfusie extends Monster {
                 "Wat is het doel van een Sprint Review?\nA) Controleren of iedereen wel op tijd was\nB) Een update geven aan de Scrum Master\nC) Terugkijken op het increment en feedback verzamelen",
                 "c"
         );
+        this.monsterHelper = new MonsterHelper(juisteAntwoorden);
     }
 
     @Override
@@ -58,10 +60,6 @@ public class SprintConfusie extends Monster {
 
     @Override
     public String getJuisteAntwoord(int index) {
-        if (index >= 0 && index < juisteAntwoorden.length) {
-            return juisteAntwoorden[index];
-        } else {
-            return ""; // Of eventueel: throw new IllegalArgumentException("Ongeldig index");
-        }
+        return monsterHelper.getJuisteAntwoord(index);
     }
 }

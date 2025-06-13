@@ -215,7 +215,7 @@ public class DatabaseVoortgang {
                 stmt.setInt(1, gebruikerId);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    Joker joker = JokerFactory.maakJoker(rs.getString("joker_naam"));
+                    Joker joker = JokerFactory.maakJoker(rs.getString("joker_naam"), "");
                     if (joker != null) speler.voegJokerToe(joker);
                 }
             }
