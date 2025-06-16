@@ -27,6 +27,7 @@ public abstract class Kamer {
     protected HintContext hintContext;
     protected Monster monster;
     private MonsterStrijdService monsterStrijdService;
+    private boolean heeftJoker = false;
 
 
     public Kamer(String naam, Antwoord antwoordStrategie) {
@@ -175,6 +176,16 @@ public abstract class Kamer {
         return false; // standaard niet
     }
 
+    //Deze methode zorgt ervoor dat je alleen een joker kan krijgen als je voor het eerst een kamer betreed.
+    //Zoals Daily Scrum of Sprint Review voor het eerst, krijg je een hint of key.
+    public void setHeeftJoker(boolean heeftJokerGekregen) {
+        this.heeftJoker = heeftJokerGekregen;
+    }
+
+    public boolean getHeeftJoker() {
+        return heeftJoker;
+    }
+
 
     //De sleutel wordt alleen gebruikt in de Daily Scrum en Review kamer als extra sleutel.
     public void geefExtraSleutel(Speler speler) {
@@ -184,46 +195,56 @@ public abstract class Kamer {
 
     // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
     public void initSpeler(Speler speler, Kamer huidigeKamer) {
+
         // Maak een lijst met mogelijke jokers voor deze kamer
         List<Joker> beschikbareJokers = new ArrayList<>();
         boolean keyToegestaan = false;
 
-        beschikbareJokers.add(new HintJoker("hint"));
+        if(!getHeeftJoker()) {
+            beschikbareJokers.add(new HintJoker("hint"));
 
-        // KeyJoker alleen als kamer "Daily Scrum" of "Sprint Review"
-        if (huidigeKamer.accepteertKeyJoker()) {
-            beschikbareJokers.add(new KeyJoker("key"));
-            keyToegestaan = true;
-        }
-
-
-        if (keyToegestaan) {
-            System.out.println("🃏 Kies je joker:");
-            for (Joker joker : beschikbareJokers) {
-                System.out.println("- " + joker.getNaam());
+            // KeyJoker alleen als kamer "Daily Scrum" of "Sprint Review"
+            if (huidigeKamer.accepteertKeyJoker()) {
+                beschikbareJokers.add(new KeyJoker("key"));
+                keyToegestaan = true;
             }
 
-            String keuze = scanner.nextLine().trim().toLowerCase();
 
-            // Zoek gekozen joker in beschikbare jokers
-            // Het filtert de
-            Joker gekozenJoker = beschikbareJokers.stream()
-                    .filter(j -> j.getNaam().equalsIgnoreCase(keuze))
-                    .findFirst()
-                    .orElse(null);
+            if (keyToegestaan) {
+                System.out.println("🃏 Kies je joker:");
+                for (Joker joker : beschikbareJokers) {
+                    System.out.println("- " + joker.getNaam());
+                }
 
-            if (gekozenJoker != null) {
-                speler.voegJokerToe(gekozenJoker);
-                System.out.println("✅ Je hebt de " + gekozenJoker.getNaam() + " joker gekozen.");
+                String keuze = scanner.nextLine().trim().toLowerCase();
+
+                // Zoek gekozen joker in beschikbare jokers
+                Joker gekozenJoker = beschikbareJokers.stream()
+                        // Het filtert de items die aan de voorwaarde voldoen
+                        .filter(j -> j.getNaam().equalsIgnoreCase(keuze))
+                        //Find first toont het eerste item in de stream.
+                        .findFirst()
+                        //Or else is vergelijkbaar met de else van de if else statement.
+                        .orElse(null);
+
+                if (gekozenJoker != null) {
+                    speler.voegJokerToe(gekozenJoker);
+                    System.out.println("✅ Je hebt de " + gekozenJoker.getNaam() + " joker gekozen.");
+                    setHeeftJoker(true);
+                } else {
+                    System.out.println("⚠️ Ongeldige keuze. Alleen beschikbare jokers zijn toegevoegd.");
+                    // Voeg standaard HintJoker toe
+                    speler.voegJokerToe(new HintJoker("hint"));
+                    System.out.println("💡 Hint joker automatisch toegevoegd.");
+                    setHeeftJoker(true);
+                }
             } else {
-                System.out.println("⚠️ Ongeldige keuze. Alleen beschikbare jokers zijn toegevoegd.");
-                // Voeg standaard HintJoker toe
+                System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
                 speler.voegJokerToe(new HintJoker("hint"));
-                System.out.println("💡 Hint joker automatisch toegevoegd.");
+                setHeeftJoker(true);
             }
-        } else{
-            System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
-            speler.voegJokerToe(new HintJoker("hint"));
+        } else {
+            System.out.println("Je hebt al bij deze kamer een joker gekregen😂!");
         }
     }
 }

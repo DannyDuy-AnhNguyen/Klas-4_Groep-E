@@ -174,6 +174,12 @@ public class Speler {
         return jokers;
     }
 
+    //Deze code controleert of de gebruiker al een hint of key gekregen heeft van de kamer die hij betreden heeft.
+    public boolean heeftJoker(String naam) {
+        return jokers.stream().anyMatch(j -> j.getNaam().equalsIgnoreCase(naam) && !j.isUsed());
+    }
+
+
 
     // === hintJoker waar de hint gebruikt wordt ===
     // Van deze 2 onderstaande methodes wordt bijgehouden hoeveel hints de speler de hints gebruikt heeft.

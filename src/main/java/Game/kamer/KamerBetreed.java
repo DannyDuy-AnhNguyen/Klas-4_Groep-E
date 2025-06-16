@@ -163,7 +163,11 @@ public class KamerBetreed {
         if (!kamer.isVoltooid()) {
             kamer.setVoltooid();
             kamer.getDeur().setOpen(true);
+            //Deze joker zorgt ervoor dat de gebruiker weer een joker kunt krijgen
+            //Deze methode wordt eerder uitgevoerd dan de methode 'getHeeftJoker()', omdat de 'getHeeftJoker()' binnen de methode setJokerGekozen() zit. Zie RoomManager.
             speler.setJokerGekozen(false);
+            //Deze joker zorgt ervoor dat de gebruiker
+            kamer.setHeeftJoker(false);
             System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             speler.voegSleutelToe();
             speler.voegVoltooideKamerToe(kamer.getKamerID());
