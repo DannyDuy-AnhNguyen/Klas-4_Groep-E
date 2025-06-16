@@ -15,25 +15,31 @@ import static org.junit.Assert.assertTrue;
 
 public class KamerBetreedTest {
 
+    //De setup om de duplicatie code te voorkomen.
+    private Kamer maakKamer() {
+        return new KamerDailyScrum(new AntwoordDailyScrum());
+    }
 
-    //Bij deze test is het gebruiken van de hintJoker maximaal 4.
-@Test
-    public void checkSpelerKanMaximaalVierHintJokersGebruiken() {
-        Antwoord antwoord = new AntwoordDailyScrum();
-        Kamer kamer = new KamerDailyScrum(antwoord);
-
-        String testInput = "hint\nhint\nhint\nhint\n";
-        Scanner scanner = new Scanner(new ByteArrayInputStream(testInput.getBytes()));
-        KamerBetreed kamerBetreed = new KamerBetreed(scanner);
-
+    private Speler maakSpelerMetHintJokers(int aantal) {
         Speler speler = new Speler();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < aantal; i++) {
             speler.voegJokerToe(new HintJoker("hint"));
         }
+        return speler;
+    }
 
-        for (int i = 0; i < 4; i++) {
-            kamerBetreed.verwerkJoker(kamer, speler);
-        }
+    private KamerBetreed maakKamerBetreedMetInput(String input) {
+        Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
+        return new KamerBetreed(scanner);
+    }
+
+
+    //Bij deze test is het gebruiken van de hintJoker maximaal 4.
+    @Test
+    public void checkSpelerKanMaximaalVierHintJokersGebruiken() {
+        Kamer kamer = maakKamer();
+        Speler speler = maakSpelerMetHintJokers(4);
+        KamerBetreed kamerBetreed = maakKamerBetreedMetInput("hint\nhint\nhint\nhint\n");
 
         kamerBetreed.betreed(kamer, speler);
 
@@ -43,17 +49,11 @@ public class KamerBetreedTest {
 
     //IN deze test is de minimale hint minimaal 0. Ook mag de minimale of maximale waarde omloog of omhoog gaan zodra de gebruiker 'annuleer' als input geeft
     // Als de gebruiker al binnen een kamer 'joker' als input gegeven heeft.
-@Test
+    @Test
     public void checkMinimaleWaardeOfHetNietOmhoogOfOmlaagGaat() {
-        Antwoord antwoord = new AntwoordDailyScrum();
-        Kamer kamer = new KamerDailyScrum(antwoord);
-
-        String testInput = "annuleer\n"; // of "\n" als je wilt dat gebruiker niets typt
-        Scanner scanner = new Scanner(new ByteArrayInputStream(testInput.getBytes()));
-        KamerBetreed kamerBetreed = new KamerBetreed(scanner);
-
-        Speler speler = new Speler();
-        speler.voegJokerToe(new HintJoker("hint"));
+        Kamer kamer = maakKamer();
+        Speler speler = maakSpelerMetHintJokers(1); // Één joker is genoeg om te testen
+        KamerBetreed kamerBetreed = maakKamerBetreedMetInput("annuleer\n");
 
         kamerBetreed.verwerkJoker(kamer, speler);
 
@@ -64,26 +64,17 @@ public class KamerBetreedTest {
 
     //IN deze test probeert de speler meer dan 4 hints te gebruiken.
     //Als de test werkt, zou de speler een foutmelding ontvangen na de maximale aantal hints.
-@Test
+    @Test
     public void checkSpelerMagGeenVijfHintJokersGebruiken(){
-        Antwoord antwoord = new AntwoordDailyScrum();
-        Kamer kamer = new KamerDailyScrum(antwoord);
-
-        String testInput = "hint\nhint\nhint\nhint\nhint\n";
-        Scanner scanner = new Scanner(new ByteArrayInputStream(testInput.getBytes()));
-        KamerBetreed kamerBetreed = new KamerBetreed(scanner);
-
-        Speler speler = new Speler();
-        for (int i = 0; i < 5; i++) {
-            speler.voegJokerToe(new HintJoker("hint"));
-        }
+        Kamer kamer = maakKamer();
+        Speler speler = maakSpelerMetHintJokers(5);
+        KamerBetreed kamerBetreed = maakKamerBetreedMetInput("hint\nhint\nhint\nhint\nhint\n");
 
         for (int i = 0; i < 5; i++) {
             kamerBetreed.verwerkJoker(kamer, speler);
         }
 
         kamerBetreed.betreed(kamer, speler);
-
         assertEquals("Speler mag mag niet meer dan 5 hints gebruiken", 4, speler.getHintCounter());
         assertEquals("Als de hintCounter tot 0 komt, dan kan de speler geen hints meer gebruiken oftewel de waarde is 0", 0, speler.getHintsLeft());
     }

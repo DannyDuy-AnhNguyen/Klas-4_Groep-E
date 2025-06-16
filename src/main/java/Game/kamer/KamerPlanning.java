@@ -97,28 +97,6 @@ public class KamerPlanning extends Kamer {
         return 1;
     }
 
-    private void verwerkPak(String input, Speler speler) {
-        Item gekozenItem = null;
-
-        try {
-            int index = Integer.parseInt(input) - 1;
-            if (index >= 0 && index < items.size()) {
-                gekozenItem = items.remove(index);
-            } else {
-                System.out.println("❌ Ongeldig itemnummer.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            gekozenItem = neemItem(input);
-        }
-
-        if (gekozenItem != null) {
-            speler.voegItemToe(gekozenItem);
-        } else if (!input.matches("\\d+")) {
-            System.out.println("❌ Dat item is niet gevonden in deze kamer.");
-        }
-    }
-
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
         return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);

@@ -80,14 +80,19 @@ public class UserInterface {
 
             //In de if zijn de deuren van de kamers gesloten en en de kamers zijn natuurlijk nog niet voltooid als je een nieuw spel begint.
             if (!deurOpen && !voltooid) {
-                System.out.println(kamer.getKamerID() + ". " + kamer.getNaam());
+                System.out.println(printBeschikbareKamers(kamer)); //Deze methode print de beschikbare kamers.
             }
             //In de else if is voor het geval als de speler binnen een kamer bijvoorbeeld 'Daily Scrum' zit
             // die de commando 'naar andere kamer' meegeeft zodat je nog de kamer kunt zien die je nog niet voltooid hebt.
             else if(deurOpen && !voltooid) {
-                System.out.println(kamer.getKamerID() + ". " + kamer.getNaam());
+                System.out.println(printBeschikbareKamers(kamer)); //Deze methode print de beschikbare kamers.
             }
         }
+    }
+
+    //Deze methode voorkomt de duplicatie code binnen de methode 'printKamerOpties'.
+    private String printBeschikbareKamers(Kamer kamer){
+        return kamer.getKamerID() + ". " + kamer.getNaam();
     }
 
     public void printItems(List<Item> items) {

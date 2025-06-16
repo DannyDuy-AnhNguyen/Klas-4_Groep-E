@@ -39,12 +39,13 @@ public class KamerRetrospective extends Kamer {
     @Override
     public void toonHint(){
         // 🎯 Hints voor vraag 0
-        hintContext.voegHintToe(0, new HelpHint("Bij de Sprint Planning doet iedereen mee."));
-        hintContext.voegHintToe(0, new FunnyHint("Sprint Planning is het plannen met iedereen om .. een dorp aan te vallen."));
+        hintContext.voegHintToe(0, new HelpHint("Er wordt gereflecteerd met de hele team terug te kijken en verbeteren"));
+        hintContext.voegHintToe(0, new FunnyHint("Mario Kart Retro Circuits! Leuke circuits van eerdere circuits die in Mario Kart plaatsgevonden heeft."));
 
         // 🎯 Hints voor vraag 1
-        hintContext.voegHintToe(1, new HelpHint("In de sprint planning wordt gekeken wat het doel de aankomende sprint"));
-        hintContext.voegHintToe(1, new FunnyHint("Om een doelpunt te maken moet je sprinten naar het doel om een doelpunt te scoren."));
+        hintContext.voegHintToe(1, new HelpHint("Retrospective haal je zoveel mogelijk informatie op. Waar haal je de meeste informatie tijdens een sprint?"));
+        hintContext.voegHintToe(1, new FunnyHint("Mr. Retro geeft jou een deadline😭. Je hebt 2 weken de tijd om zoveel mogelijk informatie te halen, anders gaat die jou veranderen naar een noodle."));
+
         hintContext.toonWillekeurigeHint(getHuidigeVraag());
     }
 
