@@ -195,56 +195,42 @@ public abstract class Kamer {
 
     // Bij init speler, controleer of KeyJoker in deze kamer überhaupt kan worden gebruikt
     public void initSpeler(Speler speler, Kamer huidigeKamer) {
+        if (getHeeftJoker()) {
+            System.out.println("Je hebt al bij deze kamer een joker gekregen 😂!");
+            return;
+        }
 
-        // Maak een lijst met mogelijke jokers voor deze kamer
+        //Een lijst wordt gemaakt met daarbij de beschikbare jokers.
         List<Joker> beschikbareJokers = new ArrayList<>();
-        boolean keyToegestaan = false;
+        beschikbareJokers.add(new HintJoker("hint"));
 
-        if(!getHeeftJoker()) {
-            beschikbareJokers.add(new HintJoker("hint"));
+        if (huidigeKamer.accepteertKeyJoker()) {
+            beschikbareJokers.add(new KeyJoker("key"));
 
-            // KeyJoker alleen als kamer "Daily Scrum" of "Sprint Review"
-            if (huidigeKamer.accepteertKeyJoker()) {
-                beschikbareJokers.add(new KeyJoker("key"));
-                keyToegestaan = true;
+            System.out.println("🃏 Kies je joker:");
+            for (Joker joker : beschikbareJokers) {
+                System.out.println("- " + joker.getNaam());
             }
 
+            String keuze = scanner.nextLine().trim().toLowerCase();
 
-            if (keyToegestaan) {
-                System.out.println("🃏 Kies je joker:");
-                for (Joker joker : beschikbareJokers) {
-                    System.out.println("- " + joker.getNaam());
-                }
+            // Zoek gekozen joker in beschikbare jokers
+            Joker gekozenJoker = beschikbareJokers.stream()
+                    // Het filtert de items die aan de voorwaarde voldoen
+                    .filter(j -> j.getNaam().equalsIgnoreCase(keuze))
+                    //Find first toont het eerste item in de stream.
+                    .findFirst()
+                    //Or else is vergelijkbaar met de else van de if else statement.
+                    //Dit is voor een ongeldige keuze
+                    .orElse(new HintJoker("hint"));
 
-                String keuze = scanner.nextLine().trim().toLowerCase();
-
-                // Zoek gekozen joker in beschikbare jokers
-                Joker gekozenJoker = beschikbareJokers.stream()
-                        // Het filtert de items die aan de voorwaarde voldoen
-                        .filter(j -> j.getNaam().equalsIgnoreCase(keuze))
-                        //Find first toont het eerste item in de stream.
-                        .findFirst()
-                        //Or else is vergelijkbaar met de else van de if else statement.
-                        .orElse(null);
-
-                if (gekozenJoker != null) {
-                    speler.voegJokerToe(gekozenJoker);
-                    System.out.println("✅ Je hebt de " + gekozenJoker.getNaam() + " joker gekozen.");
-                    setHeeftJoker(true);
-                } else {
-                    System.out.println("⚠️ Ongeldige keuze. Alleen beschikbare jokers zijn toegevoegd.");
-                    // Voeg standaard HintJoker toe
-                    speler.voegJokerToe(new HintJoker("hint"));
-                    System.out.println("💡 Hint joker automatisch toegevoegd.");
-                    setHeeftJoker(true);
-                }
-            } else {
-                System.out.println("🃏 Kies je joker: alleen 'hint' is beschikbaar in deze kamer.");
-                speler.voegJokerToe(new HintJoker("hint"));
-                setHeeftJoker(true);
-            }
+            speler.voegJokerToe(gekozenJoker);
+            System.out.println("✅ Je hebt de " + gekozenJoker.getNaam() + " joker gekozen.");
+            setHeeftJoker(true);
         } else {
-            System.out.println("Je hebt al bij deze kamer een joker gekregen😂!");
+            System.out.println("🃏 Alleen 'hint' is beschikbaar in deze kamer.");
+            speler.voegJokerToe(new HintJoker("hint"));
+            setHeeftJoker(true);
         }
     }
 }
