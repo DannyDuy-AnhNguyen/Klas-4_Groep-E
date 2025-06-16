@@ -4,19 +4,19 @@ import Game.core.Speler;
 import Game.monster.MonsterType;
 
 import java.util.Scanner;
+import Game.item.*;
 
-//Deze klasse wordt uitgevoerd zodra je bij de normale kamer zoals 'Daily Scrum' een fout antwoord meegegeven hebt.
 public class MonsterStrijdService {
 
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void bestrijdMonster(Speler speler, MonsterType monster, String monsterNaam) {
-        System.out.println("❗ Monster '" + monsterNaam + "' verschijnt! Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
+        System.out.println("Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
 
-        // Geldige invoer afdwingen (ja/nee)
+        // Vraag om bevestiging
         String keuze;
         while (true) {
-            System.out.print("Wil je de monster nu bestrijden? (ja/nee): ");
+            System.out.println("Wil je de monster nu bestrijden? (ja/nee): ");
             keuze = scanner.nextLine().trim().toLowerCase();
             if (keuze.equals("ja") || keuze.equals("nee")) break;
             System.out.println("Ongeldige invoer. Typ 'ja' of 'nee'.");
@@ -29,18 +29,14 @@ public class MonsterStrijdService {
 
         int vragenTeBeantwoorden = 4;
 
-        // Vraag of speler een item wil gebruiken
-        String gebruikItemKeuze;
-        while (true) {
-            System.out.print("Wil je een item gebruiken om het makkelijker te maken? (ja/nee): ");
-            gebruikItemKeuze = scanner.nextLine().trim().toLowerCase();
-            if (gebruikItemKeuze.equals("ja") || gebruikItemKeuze.equals("nee")) break;
-            System.out.println("Ongeldige invoer. Typ 'ja' of 'nee'.");
-        }
+        // Item gebruiken
+        System.out.print("Wil je een item gebruiken om het makkelijker te maken? (ja/nee): ");
+        String gebruikItemKeuze = scanner.nextLine().trim().toLowerCase();
 
         if (gebruikItemKeuze.equals("ja")) {
+            speler.toonInventory();
             while (true) {
-                System.out.println("Welk item wil je gebruiken? (Typ 'stop' om geen item te gebruiken)");
+                System.out.print("Welk item wil je gebruiken? (Typ 'stop' om over te slaan): ");
                 String itemNaam = scanner.nextLine().trim();
 
                 if (itemNaam.equalsIgnoreCase("stop")) {
@@ -48,50 +44,72 @@ public class MonsterStrijdService {
                     break;
                 }
 
-                boolean gebruikt = speler.gebruikItem(itemNaam);
+                Item item = speler.getInventory().stream()
+                        .filter(i -> i.getNaam().equalsIgnoreCase(itemNaam))
+                        .findFirst()
+                        .orElse(null);
+
+                if (item == null) {
+                    System.out.println("❌ Dat item zit niet in je inventory. Probeer opnieuw.");
+                    continue;
+                }
+
+                boolean gebruikt = false;
+
+                // Direct verslaan
+                if (item instanceof GebruiktVoorMonster wapen) {
+                    wapen.gebruikTegenMonster();
+                    vragenTeBeantwoorden = 0;
+                    gebruikt = true;
+                }
+
+                // Veranderen van aantal vragen
+                else if (item instanceof VerandertAantalVragen verminderaar) {
+                    vragenTeBeantwoorden = verminderaar.pasAantalVragenAan(vragenTeBeantwoorden);
+                    gebruikt = true;
+                }
+
                 if (gebruikt) {
-                    if (itemNaam.equalsIgnoreCase("Scrum Zwaard")) {
-                        vragenTeBeantwoorden = 0;
-                        System.out.println("⚔️ Het zwaard heeft het monster direct verslagen!");
-                    } else if (itemNaam.equalsIgnoreCase("Splitter")) {
-                        vragenTeBeantwoorden = 2;
-                        System.out.println("🪓 Dankzij de Splitter hoef je maar 2 vragen te beantwoorden.");
-                    } else {
-                        System.out.println("✅ Je hebt het item '" + itemNaam + "' gebruikt.");
-                    }
+                    speler.getInventory().remove(item);
+                    speler.notifyObservers();
                     break;
-                } else {
-                    System.out.println("❌ Je hebt dit item niet in je inventory of het item bestaat niet. Probeer opnieuw.");
                 }
+
+                System.out.println("Dit item kan hier niet gebruikt worden. Probeer een ander.");
             }
         }
 
-        // Monster bestrijden met vragen
+        // Monsterbestrijding
         for (int i = 0; i < vragenTeBeantwoorden; i++) {
-            monster.verwerkOpdracht(i);
-            String antwoord;
+            boolean goedBeantwoord = false;
 
-            while (true) {
-                System.out.print("Jouw antwoord (a/b/c/d): ");
-                antwoord = scanner.nextLine().trim().toLowerCase();
-                if (antwoord.matches("[abcd]")) break;
-                System.out.println("❌ Ongeldige invoer. Typ alleen a, b, c of d.");
-            }
+            while (!goedBeantwoord) {
+                monster.verwerkOpdracht(i);
+                String antwoord;
 
-            if (!antwoord.equals(monster.getJuisteAntwoord(i).toLowerCase())) {
-                speler.verliesLeven();
-                System.out.println("❌ Fout antwoord! Monster " + monsterNaam + " heeft jou een klap gegeven... Je verliest een leven. Levens over: " + speler.getLevens());
-                System.out.println();
-                if (speler.getLevens() <= 0) {
-                    System.out.println("💀 Game Over!");
-                    return;
+                while (true) {
+                    System.out.print("");
+                    antwoord = scanner.nextLine().trim().toLowerCase();
+                    if (antwoord.matches("[abcd]")) break;
+                    System.out.println("Ongeldige invoer. Typ alleen a, b, c of d.");
                 }
-            } else {
-                System.out.println("✅ Goed antwoord!");
+
+                if (!antwoord.equals(monster.getJuisteAntwoord(i).toLowerCase())) {
+                    speler.verliesLeven();
+                    System.out.println("Fout antwoord! Monster " + monsterNaam + " heeft jou een klap gegeven... Levens over: " + speler.getLevens());
+
+                    if (speler.getLevens() <= 0) {
+                        System.out.println("💀 Game Over!");
+                        return;
+                    }
+                } else {
+                    System.out.println("Goed antwoord!");
+                    goedBeantwoord = true;
+                }
             }
         }
 
-        System.out.println("🎉 Je hebt de monster verslagen!");
+        System.out.println("🎉 Je hebt het monster verslagen!");
         speler.verwijderMonster(monsterNaam);
     }
 }
