@@ -206,6 +206,7 @@ public abstract class Kamer {
             String keuze = scanner.nextLine().trim().toLowerCase();
 
             // Zoek gekozen joker in beschikbare jokers
+            // Het filtert de
             Joker gekozenJoker = beschikbareJokers.stream()
                     .filter(j -> j.getNaam().equalsIgnoreCase(keuze))
                     .findFirst()

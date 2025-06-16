@@ -6,6 +6,7 @@ import Game.joker.Joker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import Game.monster.MonsterType;
 
 public class Speler {
     private String naam;
@@ -27,6 +28,7 @@ public class Speler {
     private final List<Item> inventory = new ArrayList<>();
     private final List<Observer> observers = new ArrayList<>();
     private final List<Joker> jokers = new ArrayList<>();
+
 
     private final Scanner scanner = new Scanner(System.in);
 

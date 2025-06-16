@@ -9,7 +9,7 @@ public class HiddenEasterEgg {
                 speler.getInventory().stream().allMatch(i -> i.getNaam().equalsIgnoreCase("Rots"));
 
         if (alleRotsen) {
-            System.out.println(" EASTER EGG: Je inventory zit VOL met nutteloze rotsen. ");
+            System.out.println("EASTER EGG: Je inventory zit VOL met nutteloze rotsen. ");
         }
     }
 }

@@ -8,8 +8,8 @@ import Game.item.Item;
 import Game.core.Status;
 import Game.item.ItemBoek;
 import Game.assistent.Assistent;
-import Game.monster.Monster;
-import Game.monster.MonsterStrijdService;
+import Game.monster.*;
+import Game.core.Speler;
 
 import java.util.List;
 import java.util.Scanner;
@@ -102,15 +102,17 @@ public class KamerBetreed {
                     }
                     System.out.println();
                 case "bestrijd monster":
-                    if (kamer.heeftMonster() && !kamer.getMonster().isVerslagen()) {
-                        Monster monster = kamer.getMonster();
-                        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
-                        if (monster.isVerslagen()) {
-                            // Je kunt hier eventueel de loop onderbreken als het monster verslagen is
-                            huidigeVraag = 2; // om de while te beëindigen
-                        }
+                    List<String> actieveMonsters = speler.getMonsters();
+                    if (actieveMonsters.isEmpty()) {
+                        System.out.println("✅ Je wordt momenteel niet achtervolgd door een monster.");
                     } else {
-                        System.out.println("Er is geen actief monster om te bestrijden in deze kamer.");
+                        String monsterNaam = actieveMonsters.get(0); // eerste monster uit de lijst
+                        MonsterType actiefMonster = MonsterFactory.maakMonster(monsterNaam);
+                        if (actiefMonster != null) {
+                            MonsterStrijdService.bestrijdMonster(speler, actiefMonster, monsterNaam);
+                        } else {
+                            System.out.println("⚠️ Monster '" + monsterNaam + "' bestaat niet meer.");
+                        }
                     }
                     break;
                 default:
@@ -146,10 +148,9 @@ public class KamerBetreed {
                         speler.setJokerGekozen(false);
                         System.out.println("Je verlaat deze kamer.\n");
                         return;
-                    } else if (antwoord.matches("[a-d]") || !antwoord.contains(" ")) {
+                    } else if (antwoord.matches("[a-d]") || antwoord.toLowerCase().contains("sprint")) {
                         boolean antwoordCorrect = kamer.getAntwoordStrategie().verwerkAntwoord(antwoord.trim().toLowerCase(), huidigeVraag);
                         kamer.verwerkResultaat(antwoordCorrect, speler);
-
                         if (antwoordCorrect) {
                             huidigeVraag++;
                         }
@@ -187,7 +188,8 @@ public class KamerBetreed {
         System.out.println();
     }
 
-    //Voor de Randwaard test maak Danny de methode 'public'
+    //Deze methode zorgt ervoor dat de gebruiker de joker kunt gebruiken.
+    //De speler kan voor de beschikbare jokers, info of annuleer kiezen.
     public void verwerkJoker(Kamer kamer, Speler speler) {
         List<Joker> jokers = speler.getJokers();
         if (jokers.isEmpty()) {
@@ -215,6 +217,8 @@ public class KamerBetreed {
             return;
         }
 
+        //In deze code wordt de joker gebruikt door de speler.
+        //Dit werkt voor zowel de hint als key joker.
         for (Joker joker : jokers) {
             if (!joker.isUsed() && joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
                 joker.useIn(kamer, speler);
@@ -228,18 +232,7 @@ public class KamerBetreed {
 
     }
 
-    public boolean isKeyJokerToegestaan(Kamer kamer) {
-        // Alleen Daily Scrum en Sprint Review staan key toe
-        String naam = kamer.getNaam().toLowerCase();
-        return naam.equals("Daily Scrum") || naam.equals("Sprint Review");
-    }
-
-
     // Deze methode zorgt ervoor dat de gebruiker maximaal aantal hints kunt gebruiken.
-    private boolean validateMaxedUsedTotalHints(Speler speler){
-        return speler.gebruikHint();
-    }
-
     private void provideJokerInfo(String gekozenJoker){
         System.out.println("ℹ️Bij welke joker wil je meer informatie weten? type dan 'hint' of 'key'. Wil je geen info, dan kun je iets willekeurig intypen.");
         gekozenJoker = scanner.nextLine().trim().toLowerCase();
@@ -289,6 +282,11 @@ public class KamerBetreed {
                 return "Speler verliest leven";
             }
         }
+    }
+
+    public boolean isMeerkeuzeVraag(int vraagNummer) {
+        // Bijvoorbeeld: als vraagNummer 0 en 1 zijn multiple choice, anders niet
+        return vraagNummer == 0; // of een andere logica passend bij jouw game
     }
 
     //Verwerk resultaat van elke kamer

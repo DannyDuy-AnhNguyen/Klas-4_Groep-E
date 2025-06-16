@@ -1,11 +1,14 @@
 package Game.core;
 
+import java.util.List;
 import Game.kamer.Kamer;
 import Game.assistent.Assistent;
 import Game.item.ItemBoek;
 import Game.kamer.KamerBetreed;
 import Game.database.DatabaseVoortgang;
-import Game.monster.Monster;
+import Game.monster.*;
+
+
 
 public class GameEngine {
     private Speler speler;
@@ -66,8 +69,18 @@ public class GameEngine {
                 }
             }
             case "bestrijd monster" -> {
-                Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
-                kamer.bestrijdMonster(speler);
+                List<String> actieveMonsters = speler.getMonsters();
+                if (actieveMonsters.isEmpty()) {
+                    System.out.println("⚠️ Je hebt geen actieve monsters om te bestrijden.");
+                } else {
+                    String monsterNaam = actieveMonsters.get(0); // eventueel de eerste, of laat gebruiker kiezen
+                    MonsterType monster = MonsterFactory.maakMonster(monsterNaam);
+                    if (monster != null) {
+                        MonsterStrijdService.bestrijdMonster(speler, monster, monsterNaam);
+                    } else {
+                        System.out.println("❌ Monster '" + monsterNaam + "' kon niet geladen worden.");
+                    }
+                }
             }
             default -> {
                 if (input.startsWith("pak ")) {

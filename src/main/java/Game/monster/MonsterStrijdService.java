@@ -11,7 +11,7 @@ public class MonsterStrijdService {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void bestrijdMonster(Speler speler, MonsterType monster, String monsterNaam) {
-        System.out.println("Deze monster achtervolgt jou de hele spel tenzij je hem nu verslaat!");
+        System.out.println("Monster " + monsterNaam + " achtervolgt jou de hele spel tenzij je hem nu verslaat!");
 
         // Vraag om bevestiging
         String keuze;

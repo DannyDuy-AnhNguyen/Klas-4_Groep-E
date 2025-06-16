@@ -26,7 +26,8 @@ public class ItemDropper {
         // Voeg bruikbare items toe
         List<Item> bruikbareItems = List.of(
                 new ItemWapen("Scrum Zwaard"),
-                new ItemSplitter("Splitter")
+                new ItemSplitter("Splitter"),
+                new ItemVragenGum("VragenGum")
         );
         mogelijkeItems.addAll(bruikbareItems);
 

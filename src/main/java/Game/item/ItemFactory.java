@@ -8,6 +8,8 @@ public class ItemFactory {
             case "splitter" -> new ItemSplitter("Splitter");
             case "rots" -> new ItemNutteloos("Rots");
             case "boek" -> new ItemBoek("boek");
+            case "vragengum" -> new ItemVragenGum("VragenGum");
+
             default -> null;
         };
     }
