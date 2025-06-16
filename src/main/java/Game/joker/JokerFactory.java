@@ -1,15 +1,11 @@
 package Game.joker;
 
 public class JokerFactory {
-    public static Joker maakJoker(String naam, String kamerNaam) {
+    public static Joker maakJoker(String naam) {
         if (naam == null) return null;
         return switch (naam.toLowerCase()) {
             case "hint" -> new HintJoker("hint");
-            case "key" -> switch (kamerNaam.toLowerCase()) {
-                case "daily scrum" -> new DailyScrumKeyJoker("key");
-                case "sprint review" -> new SprintReviewKeyJoker("key");
-                default -> null;
-            };
+            case "key" -> new KeyJoker("key");
             default -> null;
         };
     }

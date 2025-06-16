@@ -4,19 +4,17 @@ import Game.core.Deur;
 import Game.item.Item;
 import Game.core.Speler;
 import Game.joker.HintJoker;
-import Game.joker.DailyScrumKeyJoker;
 import Game.joker.Joker;
-import Game.joker.SprintReviewKeyJoker;
 import Game.core.Status;
 import Game.antwoord.Antwoord;
 import Game.hint.HintContext;
+import Game.joker.KeyJoker;
 import Game.monster.Monster;
 import Game.monster.MonsterStrijdService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 public abstract class Kamer {
     protected String naam;
@@ -184,19 +182,12 @@ public abstract class Kamer {
         List<Joker> beschikbareJokers = new ArrayList<>();
         boolean keyToegestaan = false;
 
+        beschikbareJokers.add(new HintJoker("hint"));
+
         // KeyJoker alleen als kamer "Daily Scrum" of "Sprint Review"
-        String kamerNaam = huidigeKamer.getNaam().toLowerCase();
-        switch (kamerNaam) {
-            case "daily scrum" -> {
-                beschikbareJokers.add(new HintJoker("hint"));
-                beschikbareJokers.add(new DailyScrumKeyJoker("key"));
-                keyToegestaan = true;
-            }
-            case "sprint review" -> {
-                beschikbareJokers.add(new HintJoker("hint"));
-                beschikbareJokers.add(new SprintReviewKeyJoker("key"));
-                keyToegestaan = true;
-            }
+        if (huidigeKamer.accepteertKeyJoker()) {
+            beschikbareJokers.add(new KeyJoker("key"));
+            keyToegestaan = true;
         }
 
 
