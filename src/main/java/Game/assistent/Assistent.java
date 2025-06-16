@@ -21,7 +21,7 @@ public class Assistent {
 
     public void toonMotivatie() {
         System.out.println(" " + motivatie);
-    }
+    } 
 
     public void activeer() {
         toonHint();

@@ -18,17 +18,12 @@ public class KamerPlanning extends Kamer {
     private Status status;
     private final Scanner scanner = new Scanner(System.in);
     private KamerBetreed betreedHandler = new KamerBetreed();
-    private final Antwoord antwoordStrategie;
 
     public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
         this.monster = new Misverstand();
         deur.setOpen(false);
-    }
-
-    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override
@@ -45,6 +40,7 @@ public class KamerPlanning extends Kamer {
     public void toonHint() {
         hintContext.voegHintToe(0, new HelpHint("Bij de Sprint Planning doet iedereen mee."));
         hintContext.voegHintToe(0, new FunnyHint("Sprint Planning is het plannen met iedereen om .. een dorp aan te vallen."));
+
         hintContext.voegHintToe(1, new HelpHint("In de sprint planning wordt gekeken wat het doel van de aankomende sprint is."));
         hintContext.voegHintToe(1, new FunnyHint("Om een doelpunt te maken moet je sprinten naar het doel om een doelpunt te scoren."));
 
@@ -125,7 +121,7 @@ public class KamerPlanning extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override

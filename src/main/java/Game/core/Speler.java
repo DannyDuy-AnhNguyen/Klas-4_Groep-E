@@ -20,6 +20,7 @@ public class Speler {
     // Deze variabele zorgt voor overzicht hoeveel hints de speler nog kan gebruiken.
     // Van deze variabele wordt bijgehouden hoe vaak de speler nog hints kunt gebruiken.
     private int hintsLeft = 4;
+    private int keysLeft = 1;
 
     private final List<Integer> voltooideKamers = new ArrayList<>();
     private final List<String> monsters = new ArrayList<>();
@@ -90,6 +91,10 @@ public class Speler {
     // === Sleutelsysteem ===
     public int getSleutels() {
         return sleutels;
+    }
+
+    public int getKeysLeft(){
+        return keysLeft--;
     }
 
     public void voegSleutelToe() {

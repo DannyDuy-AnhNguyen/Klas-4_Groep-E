@@ -25,8 +25,16 @@ public class KeyJoker extends AbstractJoker {
             return;
         }
 
+        //Omdat je alleen binnen twee kamers de key kunt gebruiken,
+        //is het ook handig als de maximale sleutels 2 is.
+        if (speler.getSleutels() >= 2){
+            System.out.println("❌ Je hebt al het maximale aantal keys gebruikt!");
+            return;
+        }
+
         kamer.geefExtraSleutel(speler);
         System.out.println("🔐 KeyJoker gebruikt in kamer: " + kamer.getNaam());
+        System.out.println("🗝️Aantal sleutels die je nog kan gebruiken: " + speler.getKeysLeft());
         used = true;
     }
 

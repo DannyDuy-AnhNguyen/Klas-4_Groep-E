@@ -18,17 +18,12 @@ public class KamerRetrospective extends Kamer {
     private boolean introGetoond = false;
     private final Scanner scanner = new Scanner(System.in);
     private KamerBetreed betreedHandler = new KamerBetreed();
-    private final Antwoord antwoordStrategie;
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Kamer Retrospective", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
         this.monster = new BlameGame();
         deur.setOpen(false);
-    }
-
-    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override
@@ -89,18 +84,6 @@ public class KamerRetrospective extends Kamer {
     public void verwerkResultaat(boolean correct, Speler speler) {
         betreedHandler.verwerkResultaat(correct, speler, this);
     }
-//    public void verwerkResultaat(boolean correct, Speler speler) {
-//        if (correct) {
-//            speler.verhoogScore(10);
-//            verwerkFeedback(huidigeVraag);
-//            huidigeVraag++;
-//            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
-//        } else {
-//            System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt!");
-//            speler.voegMonsterToe("Blame Game");
-//            bestrijdMonster(speler);
-//        }
-//    }
 
     @Override
     public void betreed(Speler speler) {
@@ -114,7 +97,7 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override

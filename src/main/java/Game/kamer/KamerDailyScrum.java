@@ -15,7 +15,6 @@ public class KamerDailyScrum extends Kamer {
     private final HintContext hintContext = new HintContext();
     private Status status;
     private KamerBetreed betreedHandler = new KamerBetreed();
-    private final Antwoord antwoordStrategie;
 
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum", antwoordStrategie);
@@ -24,9 +23,6 @@ public class KamerDailyScrum extends Kamer {
         deur.setOpen(false);
     }
 
-    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-    }
 
     @Override
     public void verhoogHuidigeVraag(){
@@ -102,7 +98,7 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override

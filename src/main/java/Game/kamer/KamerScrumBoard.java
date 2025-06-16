@@ -14,17 +14,12 @@ public class KamerScrumBoard extends Kamer {
     private Status status;
     private final HintContext hintContext = new HintContext();
     private KamerBetreed betreedHandler = new KamerBetreed();
-    private final Antwoord antwoordStrategie;
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
         this.monster = new ScrumVerwarring();
         deur.setOpen(false);
-    }
-
-    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override
@@ -100,7 +95,7 @@ public class KamerScrumBoard extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override

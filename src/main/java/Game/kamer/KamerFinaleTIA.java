@@ -13,15 +13,10 @@ public class KamerFinaleTIA extends Kamer {
     private final HintContext hintContext = new HintContext();
 //    private Status status;
     private KamerBetreed betreedHandler = new KamerBetreed();
-    private final Antwoord antwoordStrategie;
 
     public KamerFinaleTIA(Antwoord antwoordStrategie) {
         super("Finale TIA Kamer – Waarom Scrum?", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
-    }
-
-    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override

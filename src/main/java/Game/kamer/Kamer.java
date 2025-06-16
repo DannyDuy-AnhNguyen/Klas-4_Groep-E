@@ -67,6 +67,7 @@ public abstract class Kamer {
         this.status = status;
     }
 
+    //De getAntwoordStrategie zorgt ervoor dat het antwoord van de goede antwoord strategy klasse het antwoord doorgeeft.
     public Antwoord getAntwoordStrategie() {
         return antwoordStrategie;
     }
@@ -111,6 +112,7 @@ public abstract class Kamer {
     // Abstracte methoden die concrete kamers moeten implementeren
     public abstract void betreedIntro(); // In plaats van KamerInfo() maken we gebruik van deze abstracte methode.
     public abstract void betreed(Speler speler);
+    //Deze methode zorgt ervoor dat de correcte antwoord meegegeven kan worden.
     public abstract boolean verwerkAntwoord(String antwoord, Speler speler);
     public abstract void verwerkFeedback(int huidigeVraag);
     public abstract void verwerkOpdracht(int huidigeVraag);

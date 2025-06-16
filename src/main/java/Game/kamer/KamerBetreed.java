@@ -16,7 +16,6 @@ import java.util.Scanner;
 public class KamerBetreed {
 
     private Scanner scanner = new Scanner(System.in);
-    private int hintCounter = 0;
 
     //Ik heb hier 2 constructors toegevoegd voor de randwaardentest hoeveel hints die kan gebruiken
     // Default constructor

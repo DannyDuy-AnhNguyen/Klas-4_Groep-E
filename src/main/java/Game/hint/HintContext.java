@@ -31,7 +31,7 @@ public class HintContext {
             return;
         }
 
-        //De
+        //De random hebben we geïmporteerd zodat
         Hint gekozenHint = hints.get(random.nextInt(hints.size()));
         gekozenHint.toon();
     }

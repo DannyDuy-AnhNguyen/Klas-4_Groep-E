@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class KamerBetreedTest {
 
+
     //Bij deze test is het gebruiken van de hintJoker maximaal 4.
     @Test
     public void checkSpelerKanMaximaalVierHintJokersGebruiken() {
@@ -83,8 +84,14 @@ public class KamerBetreedTest {
 
         kamerBetreed.betreed(kamer, speler);
 
-        assertEquals("Speler mag maximaal 4 hints gebruiken", 4, speler.getHintCounter());
-        assertEquals("Na 4 hints zijn er geen hints meer beschikbaar", 0, speler.getHintsLeft());
+        assertEquals("Speler mag mag niet meer dan 5 hints gebruiken", 4, speler.getHintCounter());
+        assertEquals("Als de hintCounter tot 0 komt, dan kan de speler geen hints meer gebruiken oftewel de waarde is 0", 0, speler.getHintsLeft());
     }
 
+//    public void roeptScannerEnSpelerOp(String testInput){
+//        Scanner scanner = new Scanner(new ByteArrayInputStream(testInput.getBytes()));
+//        KamerBetreed kamerBetreed = new KamerBetreed(scanner);
+//
+//        Speler speler = new Speler();
+//    }
 }

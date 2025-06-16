@@ -14,17 +14,12 @@ public class KamerReview extends Kamer {
     private final HintContext hintContext = new HintContext();
     private Status status;
     private KamerBetreed betreedHandler = new KamerBetreed();
-    private final Antwoord antwoordStrategie;
 
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review", antwoordStrategie);
         this.antwoordStrategie = antwoordStrategie;
         this.monster = new SprintConfusie();
         deur.setOpen(false);
-    }
-
-    protected boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override
@@ -111,7 +106,7 @@ public class KamerReview extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        return antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
     }
 
     @Override
