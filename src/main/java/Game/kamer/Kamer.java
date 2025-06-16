@@ -44,6 +44,10 @@ public abstract class Kamer {
 
     public abstract void verhoogHuidigeVraag();
 
+    public Monster getMonster() {
+        return monster;
+    }
+
     //Deze methode controleerd of de kamer wel of geen monster heeft (Alleen KamerFinaleTIA heeft geen monster)🔍
     public boolean heeftMonster() {
         return monster != null;
@@ -52,11 +56,15 @@ public abstract class Kamer {
     // Deze methode zorgt ervoor dat het binnen de kamerBetreed de monsters gebruikt kunt worden.
     // Zie methode binnen de klasse 'KamerBetreed' > verwerkResultaat
     public void bestrijdMonster(Speler speler) {
-        if (heeftMonster()) {
-            monsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
-        } else {
-            System.out.println("Deze kamer heeft geen monster!");
+        if (monster == null) {
+            System.out.println("Er is geen monster om te bestrijden in deze kamer.");
+            return;
         }
+        if (monster.isVerslagen()) {
+            System.out.println("Het monster is al verslagen.");
+            return;
+        }
+        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
     }
 
     public Status getStatus() {
@@ -70,10 +78,6 @@ public abstract class Kamer {
     //De getAntwoordStrategie zorgt ervoor dat het antwoord van de goede antwoord strategy klasse het antwoord doorgeeft.
     public Antwoord getAntwoordStrategie() {
         return antwoordStrategie;
-    }
-
-    public HintContext getHintContext() {
-        return hintContext;
     }
 
 
@@ -221,6 +225,4 @@ public abstract class Kamer {
             speler.voegJokerToe(new HintJoker("hint"));
         }
     }
-
-
 }

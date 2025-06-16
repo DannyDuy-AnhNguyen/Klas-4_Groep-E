@@ -8,6 +8,8 @@ import Game.item.Item;
 import Game.core.Status;
 import Game.item.ItemBoek;
 import Game.assistent.Assistent;
+import Game.monster.Monster;
+import Game.monster.MonsterStrijdService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -99,6 +101,17 @@ public class KamerBetreed {
                         System.out.println("❌ Er is geen assistent beschikbaar in deze kamer.");
                     }
                     System.out.println();
+                case "bestrijd monster":
+                    if (kamer.heeftMonster() && !kamer.getMonster().isVerslagen()) {
+                        Monster monster = kamer.getMonster();
+                        MonsterStrijdService.bestrijdMonster(speler, monster, monster.getNaam());
+                        if (monster.isVerslagen()) {
+                            // Je kunt hier eventueel de loop onderbreken als het monster verslagen is
+                            huidigeVraag = 2; // om de while te beëindigen
+                        }
+                    } else {
+                        System.out.println("Er is geen actief monster om te bestrijden in deze kamer.");
+                    }
                     break;
                 default:
                     if (antwoord.startsWith("pak ")) {
@@ -133,15 +146,15 @@ public class KamerBetreed {
                         speler.setJokerGekozen(false);
                         System.out.println("Je verlaat deze kamer.\n");
                         return;
-                    } else if (antwoord.matches("[a-d]")) {
-                        boolean antwoordCorrect = kamer.getAntwoordStrategie().verwerkAntwoord(antwoord, huidigeVraag);
+                    } else if (antwoord.matches("[a-d]") || !antwoord.contains(" ")) {
+                        boolean antwoordCorrect = kamer.getAntwoordStrategie().verwerkAntwoord(antwoord.trim().toLowerCase(), huidigeVraag);
                         kamer.verwerkResultaat(antwoordCorrect, speler);
 
                         if (antwoordCorrect) {
                             huidigeVraag++;
                         }
                     } else {
-                        System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'check', 'inventory', 'pak [item]', 'gebruik [item]', 'help' of 'naar andere kamer'.\n");
+                        System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', Je kan voor andere mogelijke commando's 'help' typen voor meerdere mogelijkheden.\n");
                     }
             }
         }

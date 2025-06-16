@@ -17,7 +17,7 @@ public class KamerBetreedTest {
 
 
     //Bij deze test is het gebruiken van de hintJoker maximaal 4.
-    @Test
+@Test
     public void checkSpelerKanMaximaalVierHintJokersGebruiken() {
         Antwoord antwoord = new AntwoordDailyScrum();
         Kamer kamer = new KamerDailyScrum(antwoord);
@@ -43,7 +43,7 @@ public class KamerBetreedTest {
 
     //IN deze test is de minimale hint minimaal 0. Ook mag de minimale of maximale waarde omloog of omhoog gaan zodra de gebruiker 'annuleer' als input geeft
     // Als de gebruiker al binnen een kamer 'joker' als input gegeven heeft.
-    @Test
+@Test
     public void checkMinimaleWaardeOfHetNietOmhoogOfOmlaagGaat() {
         Antwoord antwoord = new AntwoordDailyScrum();
         Kamer kamer = new KamerDailyScrum(antwoord);
@@ -64,7 +64,7 @@ public class KamerBetreedTest {
 
     //IN deze test probeert de speler meer dan 4 hints te gebruiken.
     //Als de test werkt, zou de speler een foutmelding ontvangen na de maximale aantal hints.
-    @Test
+@Test
     public void checkSpelerMagGeenVijfHintJokersGebruiken(){
         Antwoord antwoord = new AntwoordDailyScrum();
         Kamer kamer = new KamerDailyScrum(antwoord);
@@ -88,10 +88,4 @@ public class KamerBetreedTest {
         assertEquals("Als de hintCounter tot 0 komt, dan kan de speler geen hints meer gebruiken oftewel de waarde is 0", 0, speler.getHintsLeft());
     }
 
-//    public void roeptScannerEnSpelerOp(String testInput){
-//        Scanner scanner = new Scanner(new ByteArrayInputStream(testInput.getBytes()));
-//        KamerBetreed kamerBetreed = new KamerBetreed(scanner);
-//
-//        Speler speler = new Speler();
-//    }
 }

@@ -1,61 +1,28 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-
-public class ScrumPuzzel {
-    public static void main(String[] args) {
-        // De juiste volgorde van termen
-        List<String> juisteVolgorde = List.of(
-            "Product Backlog",
-            "Sprint Backlog",
-            "To Do",
-            "Testing",
-            "Done"
-        );
-
-        // De termen door elkaar (geshuffeld)
-        List<String> doorElkaar = new ArrayList<>(juisteVolgorde);
-        Collections.shuffle(doorElkaar);
-
-        // Print de termen met nummers
-        System.out.println("Orden de volgende termen door het juiste nummer in te voeren:");
-        for (int i = 0; i < doorElkaar.size(); i++) {
-            System.out.printf("%d: %s%n", i + 1, doorElkaar.get(i));
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        List<String> antwoordVolgorde = new ArrayList<>();
-
-        // Vraag gebruiker om juiste volgorde in te voeren
-        System.out.println("\nVoer de nummers in de juiste volgorde in, gescheiden door spaties:");
-        String line = scanner.nextLine();
-        String[] inputs = line.trim().split("\\s+");
-
-        for (String inp : inputs) {
-            try {
-                int index = Integer.parseInt(inp) - 1;
-                if (index >= 0 && index < doorElkaar.size()) {
-                    antwoordVolgorde.add(doorElkaar.get(index));
-                } else {
-                    System.out.println("Ongeldig nummer: " + inp);
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Voer alleen nummers in.");
-                return;
-            }
-        }
-
-        // Check of de volgorde klopt
-        if (antwoordVolgorde.equals(juisteVolgorde)) {
-            System.out.println("Goed gedaan! De volgorde is correct.");
-        } else {
-            System.out.println("Helaas, de volgorde is niet correct.");
-            System.out.println("Juiste volgorde is:");
-            for (String stap : juisteVolgorde) {
-                System.out.println(stap);
-            }
-        }
-    }
-}
+                        /
+                        _,.------....___,.' ',.-.
+                     ,-'          _,.--"        |
+                   ,'         _.-'              .
+                  /   ,     ,'                   `
+                 .   /     /                     ``.
+                 |  |     .                       \.\
+       ____      |___._.  |       __               \ `.
+     .'    `---""       ``"-.--"'`  \               .  \
+    .  ,            __               `              |   .
+    `,'         ,-"'  .               \             |    L
+   ,'          '    _.'                -._          /    |
+  ,`-.    ,".   `--'                      >.      ,'     |
+ . .'\'   `-'       __    ,  ,-.         /  `.__.-      ,'
+ ||:, .           ,'  ;  /  / \ `        `.    .      .'/
+ j|:D  \          `--'  ' ,'_  . .         `.__, \   , /
+/ L:_  |                 .  "' :_;                `.'.'
+.    ""'                  """""'                    V
+ `.                                 .    `.   _,..  `
+   `,_   .    .                _,-'/    .. `,'   __  `
+    ) \`._        ___....----"'  ,'   .'  \ |   '  \  .
+   /   `. "`-.--"'         _,' ,'     `---' |    `./  |
+  .   _  `""'--.._____..--"   ,             '         |
+  | ." `. `-.                /-.           /          ,
+  | `._.'    `,_            ;  /         ,'          .
+ .'          /| `-.        . ,'         ,           ,
+ '-.__ __ _,','    '`-..___;-...__   ,.'\ ____.___.'
+ `"^--'..'   '-`-^-'"--    `-^-'`.''"""""`.,^.`.--'

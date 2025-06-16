@@ -5,6 +5,7 @@ import Game.assistent.Assistent;
 import Game.item.ItemBoek;
 import Game.kamer.KamerBetreed;
 import Game.database.DatabaseVoortgang;
+import Game.monster.Monster;
 
 public class GameEngine {
     private Speler speler;
@@ -63,6 +64,10 @@ public class GameEngine {
                 } else {
                     System.out.println("❌ Er is geen assistent beschikbaar in deze kamer.");
                 }
+            }
+            case "bestrijd monster" -> {
+                Kamer kamer = roomManager.getKamerOpPositie(speler.getPositie());
+                kamer.bestrijdMonster(speler);
             }
             default -> {
                 if (input.startsWith("pak ")) {

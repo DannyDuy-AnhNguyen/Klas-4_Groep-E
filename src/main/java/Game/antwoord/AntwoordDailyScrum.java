@@ -8,7 +8,7 @@ public class AntwoordDailyScrum implements Antwoord {
         if (huidigeVraag == 0) {
             return antwoord.equals("a");
         } else if (huidigeVraag == 1) {
-            return antwoord.equals("a");
+            return antwoord.equals("sprint");
         } else {
             return false;
         }

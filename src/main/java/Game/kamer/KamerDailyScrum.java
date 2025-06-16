@@ -57,7 +57,7 @@ public class KamerDailyScrum extends Kamer {
         switch (vraagIndex) {
             case 0 -> System.out.println("Een projectleider is geen officiële rol binnen Scrum.");
             case 1 ->
-                    System.out.println("De meeste sprints duren 1 tot 4 weken. Kort genoeg om snel te kunnen bijsturen.");
+                    System.out.println("Het ontbrekende woord was inderdaad 'sprint'. De meeste sprints duren 1 tot 4 weken. Kort genoeg om snel te kunnen bijsturen.");
         }
     }
 
@@ -72,11 +72,8 @@ public class KamerDailyScrum extends Kamer {
                 System.out.println("d) Product Owner");
             }
             case 1 -> {
-                System.out.println("Vraag 2: Hoelang duurt een standaard sprint meestal?");
-                System.out.println("a) 1 tot 4 weken");
-                System.out.println("b) 1 tot 4 maanden");
-                System.out.println("c) 1 tot 4 dagen");
-                System.out.println("d) 1 tot 4 jaren");
+                System.out.println("Vraag 2: Vul het ontbrekende woord in:");
+                System.out.println("Een standaard ______ duurt meestal 1 tot 4 weken.");
             }
         }
     }
