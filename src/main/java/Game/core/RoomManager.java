@@ -15,18 +15,18 @@ public class RoomManager {
     private Speler speler;
 
 //    //Deze constructor wordt alleen gebruikt voor de test Roommanager
-//        public RoomManager(KamerFactory kamerFactory, Speler speler) {
-//        this.kamerFactory = kamerFactory;
-//        this.toegangsManager = new ToegangsManager();
-//        this.speler = speler;
-//        this.inventoryManager = new InventoryManager(speler);
-//
-//        for (String key : kamerFactory.getKamerKeys()) {
-//            Kamer kamer = kamerFactory.getKamer(key);
-//            kamer.getDeur().setOpen(false);
-//            kamers.add(kamer);
-//        }
-//    }
+        public RoomManager(KamerFactory kamerFactory, Speler speler) {
+        this.kamerFactory = kamerFactory;
+        this.toegangsManager = new ToegangsManager();
+        this.speler = speler;
+        this.inventoryManager = new InventoryManager(speler);
+
+        for (String key : kamerFactory.getKamerKeys()) {
+            Kamer kamer = kamerFactory.getKamer(key);
+            kamer.getDeur().setOpen(false);
+            kamers.add(kamer);
+        }
+    }
 
 
     public RoomManager(KamerFactory kamerFactory) {

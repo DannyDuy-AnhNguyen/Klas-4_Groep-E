@@ -163,6 +163,15 @@ public abstract class Kamer {
         System.out.println();
     }
 
+    //Controleert in welke kamer je wel de keyjoker mag gebruiken.
+    //Daarom deze methode automatisch een false boolean.
+    //Alleen de kamers 'SprintReview' en 'DailyScrum' mag de keyjoker gebruiken.
+    //Zie de accepteertKeyJoker() methode in de KamerReview en KamerDailyScrum.
+    public boolean accepteertKeyJoker() {
+        return false; // standaard niet
+    }
+
+
     //De sleutel wordt alleen gebruikt in de Daily Scrum en Review kamer als extra sleutel.
     public void geefExtraSleutel(Speler speler) {
         speler.voegSleutelToe(); // Spelerbeheer doet alles goed via Observer
@@ -179,10 +188,12 @@ public abstract class Kamer {
         String kamerNaam = huidigeKamer.getNaam().toLowerCase();
         switch (kamerNaam) {
             case "daily scrum" -> {
+                beschikbareJokers.add(new HintJoker("hint"));
                 beschikbareJokers.add(new DailyScrumKeyJoker("key"));
                 keyToegestaan = true;
             }
             case "sprint review" -> {
+                beschikbareJokers.add(new HintJoker("hint"));
                 beschikbareJokers.add(new SprintReviewKeyJoker("key"));
                 keyToegestaan = true;
             }

@@ -6,9 +6,9 @@ import Game.kamer.Kamer;
 import java.util.Set;
 
 //Beschikbaar in 2 specifieke kamers. Daily Scrum en Review
-public class SprintReviewKeyJoker extends AbstractJoker{
+public class KeyJoker extends AbstractJoker {
     //Deze variabele zorgt ervoor dat alleen de toegevoegde kamers de keys werken op basis van de 'KamerFactory'.
-    public SprintReviewKeyJoker(String naam){
+    public KeyJoker(String naam){
         super(naam);
     }
 
@@ -19,6 +19,7 @@ public class SprintReviewKeyJoker extends AbstractJoker{
             return;
         }
 
+        //
         if (!kamer.accepteertKeyJoker()) {
             System.out.println("🚫 Deze kamer accepteert geen KeyJoker.");
             return;
@@ -30,3 +31,5 @@ public class SprintReviewKeyJoker extends AbstractJoker{
     }
 
 }
+
+

@@ -110,4 +110,10 @@ public class KamerDailyScrum extends Kamer {
         betreedHandler.toonHelp();
     }
 
+    //In Daily Scrum kamer kun je een KeyJoker gebruiken.
+    //Daarom geeft die een boolean 'true' terug.
+    @Override
+    public boolean accepteertKeyJoker() {
+        return true;
+    }
 }

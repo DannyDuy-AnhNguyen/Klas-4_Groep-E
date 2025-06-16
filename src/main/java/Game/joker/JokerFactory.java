@@ -6,8 +6,8 @@ public class JokerFactory {
         return switch (naam.toLowerCase()) {
             case "hint" -> new HintJoker("hint");
             case "key" -> switch (kamerNaam.toLowerCase()) {
-                case "daily scrum" -> new DailyScrumKeyJoker("key-daily");
-                case "sprint review" -> new SprintReviewKeyJoker("key-review");
+                case "daily scrum" -> new DailyScrumKeyJoker("key");
+                case "sprint review" -> new SprintReviewKeyJoker("key");
                 default -> null;
             };
             default -> null;

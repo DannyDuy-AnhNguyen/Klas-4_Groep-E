@@ -18,10 +18,18 @@ public class DailyScrumKeyJoker extends AbstractJoker {
             System.out.println("❌ KeyJoker is al gebruikt.");
             return;
         }
+
+        //
+        if (!kamer.accepteertKeyJoker()) {
+            System.out.println("🚫 Deze kamer accepteert geen KeyJoker.");
+            return;
+        }
+
         kamer.geefExtraSleutel(speler);
         System.out.println("🔐 KeyJoker gebruikt in kamer: " + kamer.getNaam());
         used = true;
     }
+
 }
 
 

@@ -203,43 +203,17 @@ public class KamerBetreed {
             return;
         }
 
-        boolean jokerGebruikt = false;
-
         for (Joker joker : jokers) {
-            if (joker.isUsed()) continue;
-
-            if (joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
-
-                if (joker instanceof AbstractJoker dailyScrumKeyJoker) {
-                    if (!isKeyJokerToegestaan(kamer)) {
-                        System.out.println("❌ Deze key-joker mag niet in deze kamer worden gebruikt.");
-                        break;
-                    }
-                    dailyScrumKeyJoker.useIn(kamer, speler);
-                    jokerGebruikt = true;
-
-                } else if (joker instanceof AbstractJoker hintJoker) {
-                    if (validateMaxedUsedTotalHints(speler)) {
-                        hintJoker.useIn(kamer, speler);
-                        jokerGebruikt = true;
-                    } else {
-                        System.out.println("❌ Je hebt al het maximum aantal hints gebruikt.");
-                        return;
-                    }
-                }
-
-                if (jokerGebruikt && joker.isUsed()) {
+            if (!joker.isUsed() && joker.getNaam().equalsIgnoreCase(gekozenJoker)) {
+                joker.useIn(kamer, speler);
+                if (joker.isUsed()) {
                     speler.getJokers().remove(joker);
                 }
-
-                break;
+                return;
             }
         }
+        System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
 
-
-        if (!jokerGebruikt) {
-            System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
-        }
     }
 
     public boolean isKeyJokerToegestaan(Kamer kamer) {

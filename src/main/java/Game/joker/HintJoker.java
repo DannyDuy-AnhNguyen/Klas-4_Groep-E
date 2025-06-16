@@ -10,13 +10,21 @@ public class HintJoker extends AbstractJoker {
     }
 
     @Override
-    public void useIn(Kamer kamer, Speler speler){
+    public void useIn(Kamer kamer, Speler speler) {
         if (used) {
-            System.out.println("❌Deze Hintjoker is al gebruikt🙂‍↔️.");
+            System.out.println("❌ Deze Hintjoker is al gebruikt.");
             return;
         }
+
+        if (speler.getHintCounter() >= 4) {
+            System.out.println("❌ Je hebt al het maximum aantal hints gebruikt.");
+            return;
+        }
+
         kamer.toonHint();
+        speler.gebruikHint();
         used = true;
     }
+
 
 }

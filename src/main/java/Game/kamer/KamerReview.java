@@ -118,4 +118,11 @@ public class KamerReview extends Kamer {
     public void toonHelp() {
         betreedHandler.toonHelp();
     }
+
+    //In Sprint Review kamer kun je een KeyJoker gebruiken.
+    //Daarom geeft die een boolean 'true' terug.
+    @Override
+    public boolean accepteertKeyJoker() {
+        return true;
+    }
 }
