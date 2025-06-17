@@ -11,3 +11,4 @@ public class MockObserver implements Observer {
         aantalUpdates++;
     }
 }
+

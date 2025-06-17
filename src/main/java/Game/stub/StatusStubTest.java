@@ -8,6 +8,9 @@ public class StatusStubTest {
         Speler stub = new StubSpeler();
         Status status = new Status(stub);       // Koppelen aan een StubSpeler
 
+//        //Test om te kijken of de hints gebruikt kunt worden.
+//        stub.gebruikHint();
+//        stub.gebruikHint();
 
         status.toonStatus();
 

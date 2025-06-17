@@ -8,6 +8,8 @@ import Game.joker.JokerFactory;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DatabaseVoortgang {
 
@@ -36,6 +38,23 @@ public class DatabaseVoortgang {
             e.printStackTrace();
         }
     }
+
+    private static void vervangStringsInTabel(Connection conn, String deleteSql, String insertSql, int gebruikerId, List<String> waarden) throws SQLException {
+        try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
+            deleteStmt.setInt(1, gebruikerId);
+            deleteStmt.executeUpdate();
+        }
+
+        try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+            for (String waarde : waarden) {
+                insertStmt.setInt(1, gebruikerId);
+                insertStmt.setString(2, waarde);
+                insertStmt.addBatch();
+            }
+            insertStmt.executeBatch();
+        }
+    }
+
 
     private static void maakGebruikerAanAlsNietBestaat(Connection conn, String naam) throws SQLException {
         String sql = "INSERT IGNORE INTO gebruikers (gebruikersnaam) VALUES (?)";
@@ -85,18 +104,25 @@ public class DatabaseVoortgang {
             stmt.executeUpdate();
         }
     }
-
     private static void slaInventoryOp(Connection conn, Speler speler, int gebruikerId) throws SQLException {
-        try (PreparedStatement delete = conn.prepareStatement("DELETE FROM speler_inventory WHERE gebruiker_id = ?")) {
-            delete.setInt(1, gebruikerId);
-            delete.executeUpdate();
-        }
+        // 1. Verzamel telling per itemnaam
+        Map<String, Long> itemTelling = speler.getInventory().stream()
+                .collect(Collectors.groupingBy(Item::getNaam, Collectors.counting()));
 
-        String insert = "INSERT INTO speler_inventory (gebruiker_id, item_naam) VALUES (?, ?)";
+        // 2. Verwijder oude inventory
+//        String delete = "DELETE FROM speler_inventory WHERE gebruiker_id = ?";
+//        try (PreparedStatement deleteStmt = conn.prepareStatement(delete)) {
+//            deleteStmt.setInt(1, gebruikerId);
+//            deleteStmt.executeUpdate();
+//        }
+
+        // 3. Voeg nieuwe inventory toe met aantal
+        String insert = "INSERT INTO speler_inventory (gebruiker_id, item_naam, aantal) VALUES (?, ?, ?)";
         try (PreparedStatement insertStmt = conn.prepareStatement(insert)) {
-            for (Item item : speler.getInventory()) {
+            for (Map.Entry<String, Long> entry : itemTelling.entrySet()) {
                 insertStmt.setInt(1, gebruikerId);
-                insertStmt.setString(2, item.getNaam());
+                insertStmt.setString(2, entry.getKey());
+                insertStmt.setInt(3, entry.getValue().intValue());
                 insertStmt.addBatch();
             }
             insertStmt.executeBatch();
@@ -104,38 +130,26 @@ public class DatabaseVoortgang {
     }
 
     private static void slaMonstersOp(Connection conn, Speler speler, int gebruikerId) throws SQLException {
-        try (PreparedStatement delete = conn.prepareStatement("DELETE FROM speler_monsters WHERE gebruiker_id = ?")) {
-            delete.setInt(1, gebruikerId);
-            delete.executeUpdate();
-        }
+    vervangStringsInTabel(
+            conn,
+            "DELETE FROM speler_monsters WHERE gebruiker_id = ?",
+            "INSERT INTO speler_monsters (gebruiker_id, monster_naam) VALUES (?, ?)",
+            gebruikerId,
+            speler.getMonsters()
+    );
+}
 
-        String insert = "INSERT INTO speler_monsters (gebruiker_id, monster_naam) VALUES (?, ?)";
-        try (PreparedStatement insertStmt = conn.prepareStatement(insert)) {
-            for (String monster : speler.getMonsters()) {
-                insertStmt.setInt(1, gebruikerId);
-                insertStmt.setString(2, monster);
-                insertStmt.addBatch();
-            }
-            insertStmt.executeBatch();
-        }
-    }
+private static void slaJokersOp(Connection conn, Speler speler, int gebruikerId) throws SQLException {
+    List<String> jokerNamen = speler.getJokers().stream().map(Joker::getNaam).toList();
+    vervangStringsInTabel(
+            conn,
+            "DELETE FROM speler_jokers WHERE gebruiker_id = ?",
+            "INSERT INTO speler_jokers (gebruiker_id, joker_naam) VALUES (?, ?)",
+            gebruikerId,
+            jokerNamen
+    );
+}
 
-    private static void slaJokersOp(Connection conn, Speler speler, int gebruikerId) throws SQLException {
-        try (PreparedStatement delete = conn.prepareStatement("DELETE FROM speler_jokers WHERE gebruiker_id = ?")) {
-            delete.setInt(1, gebruikerId);
-            delete.executeUpdate();
-        }
-
-        String insert = "INSERT INTO speler_jokers (gebruiker_id, joker_naam) VALUES (?, ?)";
-        try (PreparedStatement insertStmt = conn.prepareStatement(insert)) {
-            for (Joker joker : speler.getJokers()) {
-                insertStmt.setInt(1, gebruikerId);
-                insertStmt.setString(2, joker.getNaam()); // zorg dat Joker.getNaam() bestaat
-                insertStmt.addBatch();
-            }
-            insertStmt.executeBatch();
-        }
-    }
 
     private static void slaKamerVoortgangOp(Connection conn, int gebruikerId, int kamerId) throws SQLException {
         String sql = """
@@ -192,12 +206,18 @@ public class DatabaseVoortgang {
             }
 
             // Inventory
-            try (PreparedStatement stmt = conn.prepareStatement("SELECT item_naam FROM speler_inventory WHERE gebruiker_id = ?")) {
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT item_naam, aantal FROM speler_inventory WHERE gebruiker_id = ?")) {
                 stmt.setInt(1, gebruikerId);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    Item item = ItemFactory.maakItem(rs.getString("item_naam"));
-                    if (item != null) speler.voegItemToe(item);
+                    String naam = rs.getString("item_naam");
+                    int aantal = rs.getInt("aantal");
+                    Item item = ItemFactory.maakItem(naam);
+                    if (item != null) {
+                        for (int i = 0; i < aantal; i++) {
+                            speler.voegItemToe(ItemFactory.maakItem(naam)); // maak nieuwe instanties
+                        }
+                    }
                 }
             }
 

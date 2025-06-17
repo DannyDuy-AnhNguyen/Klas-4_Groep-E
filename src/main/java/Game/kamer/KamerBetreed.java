@@ -148,7 +148,7 @@ public class KamerBetreed {
                         speler.setJokerGekozen(false);
                         System.out.println("Je verlaat deze kamer.\n");
                         return;
-                    } else if (antwoord.matches("[a-d]") || antwoord.toLowerCase().contains("sprint")) {
+                    } else if (antwoord.matches("[a-e]") || antwoord.toLowerCase().contains("sprint")) {
                         boolean antwoordCorrect = kamer.getAntwoordStrategie().verwerkAntwoord(antwoord.trim().toLowerCase(), huidigeVraag);
                         kamer.verwerkResultaat(antwoordCorrect, speler);
                         if (antwoordCorrect) {
@@ -233,7 +233,6 @@ public class KamerBetreed {
             }
         }
         System.out.println("❌ Geen geldige joker gevonden of reeds gebruikt.");
-
     }
 
     // Deze methode zorgt ervoor dat de gebruiker maximaal aantal hints kunt gebruiken.
@@ -296,7 +295,7 @@ public class KamerBetreed {
     //Verwerk resultaat van elke kamer
     public void verwerkResultaat(boolean correct, Speler speler, Kamer kamer){
         if (correct) {
-            System.out.println("\n✅ Correct!");
+            System.out.println("\n Correct!");
             speler.verhoogScore(10);
 
             int huidigeVraag = kamer.getHuidigeVraag(); // eerst ophalen

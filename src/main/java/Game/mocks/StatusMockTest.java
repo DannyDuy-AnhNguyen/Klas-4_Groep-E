@@ -20,3 +20,5 @@ public class StatusMockTest {
         }
     }
 }
+
+//interacties checken

@@ -200,8 +200,9 @@ public class Speler {
 
     public boolean gebruikHint() {
         if (hintsLeft > 0) {
-            verlaagHintCounter();
-            verhoogHintCounter();
+            hintsLeft--;
+            hintCounter++;
+            notifyObservers();
             System.out.println("U heeft zoveel hints nog over📘: " + hintsLeft);;
             return true;
         }

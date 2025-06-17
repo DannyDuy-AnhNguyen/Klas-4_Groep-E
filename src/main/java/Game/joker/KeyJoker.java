@@ -38,6 +38,19 @@ public class KeyJoker extends AbstractJoker {
         used = true;
     }
 
+    //Deze methode wordt gebruikt in beide joker sub klasses🙂
+    @Override
+    public boolean isUsed() {
+        return used;
+    }
+
+    //Deze methode wordt gebruikt in beide joker sub klasses🙂
+
+    @Override
+    public String getNaam() {
+        return naam;
+    }
+
 }
 
 

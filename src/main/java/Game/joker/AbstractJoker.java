@@ -3,9 +3,9 @@ package Game.joker;
 import Game.core.Speler;
 import Game.kamer.Kamer;
 
-public class AbstractJoker implements Joker{
+abstract public class AbstractJoker implements Joker{
     protected boolean used = false;
-    private final String naam;
+    protected String naam;
 
     //Elke joker sub klasse heeft ook een naam nodig.
     public AbstractJoker(String naam) {

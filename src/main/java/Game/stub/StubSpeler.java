@@ -11,6 +11,11 @@ public class StubSpeler extends Speler {
     }
 
     @Override
+    public String getNaam() {
+        return "StubSpeler";
+    }
+
+    @Override
     public int getScore() {
         return 100;
     }
@@ -25,12 +30,7 @@ public class StubSpeler extends Speler {
 
     @Override
     public List<String> getMonsters() {
-        return new ArrayList<>(); // Lege lijst = geen monsters
-    }
-
-    @Override
-    public String getNaam() {
-        return "StubSpeler";
+        return new ArrayList<>(); // geen monsters
     }
 
     @Override

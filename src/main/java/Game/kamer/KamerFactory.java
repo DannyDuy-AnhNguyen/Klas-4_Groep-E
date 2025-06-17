@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public class KamerFactory {
+    //Een Map is een verzameling van sleutel/waarde-paren.  Map<K, V> = Key en Value
+    //Hashmap is een concrete implementatie van Map
+    //De voordelen van Hashmap zijn:
+    //-snelle toegang tot gegevens.
+    //-Handig om dingen zoals naam, ID of sleutels op te slaan en op te roepen
     private final Map<String, Kamer> kamers = new HashMap<>();
 
     public KamerFactory() {
@@ -37,7 +42,7 @@ public class KamerFactory {
     }
 
 
-
+    //Deze methode accepteerd ook de string met spaties. het controleert de kamer string
     private String normaliseer(String s) {
         return s.toLowerCase().replaceAll("\\s+", "");
     }

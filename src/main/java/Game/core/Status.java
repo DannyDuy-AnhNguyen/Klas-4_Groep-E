@@ -24,8 +24,7 @@ public class Status implements Observer {
         } else {
             System.out.println("Geen actieve monsters.");
         }
-        //De speler kan zien hoeveel keys hij nog in totaal heeft. Als die '0'
-        System.out.println("Totale aantal keys: "+ speler.getSleutels());
+
         //Deze system print laat zien hoeveel hints de speler gebruikt heeft. De speler kan maximaal 4 hints gebruiken.
         System.out.println("Aantal gebruikte hints: " + speler.getHintCounter());
         System.out.println("==================\n");
